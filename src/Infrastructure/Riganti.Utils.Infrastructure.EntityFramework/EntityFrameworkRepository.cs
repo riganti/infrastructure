@@ -76,7 +76,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// </summary>
         public void Insert(IEnumerable<TEntity> entities)
         {
-            foreach (var entity in entities)
+            foreach (var entity in entities.ToList())
             {
                 Insert(entity);
             }
@@ -95,7 +95,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// </summary>
         public void Update(IEnumerable<TEntity> entities)
         {
-            foreach (var entity in entities)
+            foreach (var entity in entities.ToList())
             {
                 Update(entity);
             }
@@ -114,7 +114,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// </summary>
         public void Delete(IEnumerable<TEntity> entities)
         {
-            foreach (var entity in entities)
+            foreach (var entity in entities.ToList())
             {
                 Delete(entity);
             }
@@ -125,7 +125,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// </summary>
         public virtual void Delete(TKey id)
         {
-            var fake = new TEntity() {Id = id};
+            var fake = new TEntity() { Id = id };
             Context.Set<TEntity>().Attach(fake);
             Context.Set<TEntity>().Remove(fake);
         }

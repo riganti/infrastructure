@@ -9,7 +9,8 @@ namespace Riganti.Utils.Infrastructure.Core
     public class ThreadLocalUnitOfWorkRegistry : UnitOfWorkRegistryBase
     {
 
-        private readonly ThreadLocal<Stack<IUnitOfWork>> stack = new ThreadLocal<Stack<IUnitOfWork>>();
+        private readonly ThreadLocal<Stack<IUnitOfWork>> stack 
+            = new ThreadLocal<Stack<IUnitOfWork>>(() => new Stack<IUnitOfWork>());
 
         /// <summary>
         /// Gets the stack of currently active unit of work objects.
