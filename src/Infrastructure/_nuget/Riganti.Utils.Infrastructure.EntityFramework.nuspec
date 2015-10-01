@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>Riganti.Utils.Infrastructure.EntityFramework</id>
+        <version>1.0.1</version>
+        <title>Riganti Utils - Infrastructure for Entity Framework</title>
+        <authors>RIGANTI s.r.o.</authors>
+        <owners>Tomas Herceg</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Implementation of generic infrastructure with Entity Framework.</description>
+        <dependencies>
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="Riganti.Utils.Infrastructure.Core" version="1.0.0" />
+				<dependency id="EntityFramework" version="6.1.3" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Riganti.Utils.Infrastructure.EntityFramework\bin\Debug\Riganti.Utils.Infrastructure.EntityFramework.dll" target="lib\net45\Riganti.Utils.Infrastructure.EntityFramework.dll" />
+    </files>
+</package>

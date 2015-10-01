@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.Core", "Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj", "{EBA57E7A-0552-4B0A-BF69-BD27CCE9F608}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.EntityFramework", "Riganti.Utils.Infrastructure.EntityFramework\Riganti.Utils.Infrastructure.EntityFramework.csproj", "{DA0AB05C-4934-43CE-BC53-3BEB9FD8BFE3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EBA57E7A-0552-4B0A-BF69-BD27CCE9F608}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBA57E7A-0552-4B0A-BF69-BD27CCE9F608}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBA57E7A-0552-4B0A-BF69-BD27CCE9F608}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBA57E7A-0552-4B0A-BF69-BD27CCE9F608}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA0AB05C-4934-43CE-BC53-3BEB9FD8BFE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA0AB05C-4934-43CE-BC53-3BEB9FD8BFE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA0AB05C-4934-43CE-BC53-3BEB9FD8BFE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA0AB05C-4934-43CE-BC53-3BEB9FD8BFE3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
