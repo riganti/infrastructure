@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Riganti.Utils.Infrastructure.Core</id>
-        <version>1.0.1</version>
+        <version>1.0.3</version>
         <title>Riganti Utils - Infrastructure Core Library</title>
         <authors>RIGANTI s.r.o.</authors>
         <owners>Tomas Herceg</owners>
