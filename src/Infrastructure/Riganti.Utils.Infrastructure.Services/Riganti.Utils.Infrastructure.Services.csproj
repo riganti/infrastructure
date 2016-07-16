@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ICurrentUserProvider.cs" />
+    <Compile Include="Logging\AggregateLogger.cs" />
     <Compile Include="Logging\CultureAdditionalDataProvider.cs" />
     <Compile Include="Logging\DefaultExceptionFormatter.cs" />
     <Compile Include="Logging\DefaultWebAdditionalDataProvider.cs" />
