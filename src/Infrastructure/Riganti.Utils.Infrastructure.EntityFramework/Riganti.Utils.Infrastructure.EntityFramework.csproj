@@ -57,6 +57,7 @@
     <Compile Include="EntityFrameworkRepository.cs" />
     <Compile Include="EntityFrameworkUnitOfWork.cs" />
     <Compile Include="EntityFrameworkUnitOfWorkProvider.cs" />
+    <Compile Include="FirstLevelQueryBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

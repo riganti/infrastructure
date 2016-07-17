@@ -50,8 +50,10 @@
   <ItemGroup>
     <Compile Include="HttpContextUnitOfWorkRegistry.cs" />
     <Compile Include="IEntity.cs" />
+    <Compile Include="IFirstLevelQuery.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="IRepository.cs" />
+    <Compile Include="ISoftDeleteEntity.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="IUnitOfWorkProvider.cs" />
     <Compile Include="IUnitOfWorkRegistry.cs" />
