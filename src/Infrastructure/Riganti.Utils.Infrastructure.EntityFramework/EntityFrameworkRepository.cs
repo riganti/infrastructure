@@ -106,7 +106,27 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// </summary>
         public virtual void Delete(TEntity entity)
         {
-            Context.Set<TEntity>().Remove(entity);
+            if (EnableSoftDelete && typeof(ISoftDeleteEntity).IsAssignableFrom(typeof(TEntity)))
+            {
+                ((ISoftDeleteEntity) entity).DeletedDate = GetSoftDeleteEntityDeletedDateValue();
+            }
+            else
+            {
+                Context.Set<TEntity>().Remove(entity);
+            }
+        }
+
+        /// <summary>
+        /// Gets the value indicating that the soft delete is enabled.
+        /// </summary>
+        protected virtual bool EnableSoftDelete => true;
+
+        /// <summary>
+        /// Gets the value that is stored in the DeletedDate property of ISoftDeleteEntities.
+        /// </summary>
+        protected virtual DateTime? GetSoftDeleteEntityDeletedDateValue()
+        {
+            return DateTime.Now;
         }
 
         /// <summary>
@@ -127,7 +147,15 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         {
             var fake = new TEntity() { Id = id };
             Context.Set<TEntity>().Attach(fake);
-            Context.Set<TEntity>().Remove(fake);
+
+            if (EnableSoftDelete && typeof(ISoftDeleteEntity).IsAssignableFrom(typeof(TEntity)))
+            {
+                ((ISoftDeleteEntity) fake).DeletedDate = GetSoftDeleteEntityDeletedDateValue();
+            }
+            else
+            { 
+                Context.Set<TEntity>().Remove(fake);
+            }
         }
 
         /// <summary>
