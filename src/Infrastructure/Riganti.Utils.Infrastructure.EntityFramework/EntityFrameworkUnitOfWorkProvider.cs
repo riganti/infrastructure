@@ -14,7 +14,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWorkProvider"/> class.
         /// </summary>
-        protected EntityFrameworkUnitOfWorkProvider(IUnitOfWorkRegistry registry, Func<DbContext> dbContextFactory) : base(registry)
+        public EntityFrameworkUnitOfWorkProvider(IUnitOfWorkRegistry registry, Func<DbContext> dbContextFactory) : base(registry)
         {
             this.dbContextFactory = dbContextFactory;
         }
