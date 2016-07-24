@@ -17,5 +17,6 @@ namespace Riganti.Utils.Infrastructure.Services
 
         string Email { get; }
 
+        bool IsInRole(string roleName);
     }
 }
