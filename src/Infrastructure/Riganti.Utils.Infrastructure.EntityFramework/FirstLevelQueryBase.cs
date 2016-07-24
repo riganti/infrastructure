@@ -19,7 +19,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         }
 
 
-        public IQueryable<TEntity> GetEntitySet()
+        public virtual IQueryable<TEntity> GetEntitySet()
         {
             IQueryable<TEntity> set = Context.Set<TEntity>();
 
