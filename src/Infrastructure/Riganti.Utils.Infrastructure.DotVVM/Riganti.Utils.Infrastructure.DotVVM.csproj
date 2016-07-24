@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{30199304-A0F2-491A-BF56-0476336BE444}</ProjectGuid>
+    <ProjectGuid>{046C4C4A-E0AB-4EA3-BE75-9914DD581678}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Riganti.Utils.Infrastructure.Services</RootNamespace>
-    <AssemblyName>Riganti.Utils.Infrastructure.Services</AssemblyName>
+    <RootNamespace>Riganti.Utils.Infrastructure.DotVVM</RootNamespace>
+    <AssemblyName>Riganti.Utils.Infrastructure.DotVVM</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,10 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotVVM.Core, Version=1.0.1.0, Culture=neutral, PublicKeyToken=23f3607db32275da, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotVVM.Core.1.0.1\lib\net451\DotVVM.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,35 +45,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Facades\CrudFacadeBase.cs" />
-    <Compile Include="Facades\FacadeBase.cs" />
-    <Compile Include="Facades\IEntityDTOMapper.cs" />
-    <Compile Include="ICurrentUserProvider.cs" />
-    <Compile Include="Logging\AggregateLogger.cs" />
-    <Compile Include="Logging\CultureAdditionalDataProvider.cs" />
-    <Compile Include="Logging\DefaultExceptionFormatter.cs" />
-    <Compile Include="Logging\DefaultWebAdditionalDataProvider.cs" />
-    <Compile Include="Logging\EmailLogger.cs" />
-    <Compile Include="Logging\ExceptionFormatter.cs" />
-    <Compile Include="Logging\IAdditionalDataProvider.cs" />
-    <Compile Include="Logging\ILogger.cs" />
-    <Compile Include="Logging\LoggerBase.cs" />
-    <Compile Include="Logging\Severity.cs" />
-    <Compile Include="Logging\TextFileLogger.cs" />
-    <Compile Include="Mailing\IMailSender.cs" />
-    <Compile Include="Mailing\MailerService.cs" />
-    <Compile Include="Mailing\MessageSendingEventArgs.cs" />
-    <Compile Include="Mailing\SmtpMailSender.cs" />
+    <Compile Include="DotvvmCrudFacadeBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj">
       <Project>{EBA57E7A-0552-4B0A-BF69-BD27CCE9F608}</Project>
       <Name>Riganti.Utils.Infrastructure.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj">
+      <Project>{30199304-A0F2-491A-BF56-0476336BE444}</Project>
+      <Name>Riganti.Utils.Infrastructure.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
