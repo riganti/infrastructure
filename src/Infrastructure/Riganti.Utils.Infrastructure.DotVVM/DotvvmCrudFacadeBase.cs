@@ -33,7 +33,11 @@ namespace Riganti.Utils.Infrastructure.DotVVM
                 Query.Skip = dataSet.PageIndex * dataSet.PageSize;
                 Query.Take = dataSet.PageSize;
                 Query.SortCriteria.Clear();
-                Query.AddSortCriteria(dataSet.SortExpression, dataSet.SortDescending ? SortDirection.Descending : SortDirection.Ascending);
+
+                if (!string.IsNullOrEmpty(dataSet.SortExpression))
+                {
+                    Query.AddSortCriteria(dataSet.SortExpression, dataSet.SortDescending ? SortDirection.Descending : SortDirection.Ascending);
+                }
 
                 dataSet.TotalItemsCount = Query.GetTotalRowCount();
                 dataSet.Items = Query.Execute();
