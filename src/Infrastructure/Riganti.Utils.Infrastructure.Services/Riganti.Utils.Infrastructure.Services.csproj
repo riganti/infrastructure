@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Facades\CrudFacadeBase.cs" />
     <Compile Include="Facades\FacadeBase.cs" />
+    <Compile Include="Facades\FilteredCrudFacadeBase.cs" />
     <Compile Include="Facades\IEntityDTOMapper.cs" />
     <Compile Include="ICurrentUserProvider.cs" />
     <Compile Include="Logging\AggregateLogger.cs" />

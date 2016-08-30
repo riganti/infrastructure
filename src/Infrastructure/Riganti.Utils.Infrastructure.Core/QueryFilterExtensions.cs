@@ -59,6 +59,16 @@ namespace Riganti.Utils.Infrastructure.Core
             return FilterRequired(data, fieldSelector, valueToFilter.Value);
         }
 
+        public static IQueryable<T> FilterOptional<T, TValue>(this IQueryable<T> data, Expression<Func<T, TValue?>> fieldSelector, TValue? valueToFilter) where TValue : struct
+        {
+            if (valueToFilter == null)
+            {
+                return data;
+            }
+
+            return FilterRequired(data, fieldSelector, valueToFilter);
+        }
+
         public static IQueryable<T> FilterRequired<T, TValue>(this IQueryable<T> data, Expression<Func<T, TValue>> fieldSelector, TValue valueToFilter)
         {
             var body = Expression.Equal(fieldSelector.Body, Expression.Constant(valueToFilter));

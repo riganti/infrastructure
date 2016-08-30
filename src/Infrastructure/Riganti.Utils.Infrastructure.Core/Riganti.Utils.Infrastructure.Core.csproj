@@ -52,6 +52,7 @@
     <Compile Include="AppSettingsConfigurationBase.cs" />
     <Compile Include="HttpContextUnitOfWorkRegistry.cs" />
     <Compile Include="IEntity.cs" />
+    <Compile Include="IFilteredQuery.cs" />
     <Compile Include="IFirstLevelQuery.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="IRepository.cs" />

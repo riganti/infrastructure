@@ -7,43 +7,56 @@ using DotVVM.Framework.Controls;
 using Riganti.Utils.Infrastructure.Core;
 using Riganti.Utils.Infrastructure.Services.Facades;
 
-namespace Riganti.Utils.Infrastructure.DotVVM
+// ReSharper disable once CheckNamespace
+namespace Riganti.Utils.Infrastructure
 {
-    /// <summary>
-    /// A base class for CRUD pages with DotVVM GridViewDataSet support.
-    /// </summary>
-    /// <typeparam name="TEntity">The type of the entity.</typeparam>
-    /// <typeparam name="TKey">The type of the entity primary key.</typeparam>
-    /// <typeparam name="TListDTO">The type of the DTO used in the list of records, e.g. in the GridView control.</typeparam>
-    /// <typeparam name="TDetailDTO">The type of the DTO used in the detail form.</typeparam>
-    public class DotvvmCrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO> : CrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO> where TEntity : IEntity<TKey> where TDetailDTO : IEntity<TKey>
+    public static class DotvvmFacadeExtensions
     {
-
-        public DotvvmCrudFacadeBase(IQuery<TListDTO> query, IRepository<TEntity, TKey> repository, IEntityDTOMapper<TEntity, TDetailDTO> mapper) : base(query, repository, mapper)
+        
+        /// <summary>
+        /// Fills the data set using the query specified in the facade.
+        /// </summary>
+        public static void FillDataSet<TEntity, TKey, TListDTO, TDetailDTO>(this CrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO> facade, GridViewDataSet<TListDTO> dataSet) 
+            where TEntity : IEntity<TKey> where TDetailDTO : IEntity<TKey>
         {
+            using (facade.UnitOfWorkProvider.Create())
+            {
+                facade.Query.Skip = dataSet.PageIndex * dataSet.PageSize;
+                facade.Query.Take = dataSet.PageSize;
+                facade.Query.SortCriteria.Clear();
+
+                if (!string.IsNullOrEmpty(dataSet.SortExpression))
+                {
+                    facade.Query.AddSortCriteria(dataSet.SortExpression, dataSet.SortDescending ? SortDirection.Descending : SortDirection.Ascending);
+                }
+
+                dataSet.TotalItemsCount = facade.Query.GetTotalRowCount();
+                dataSet.Items = facade.Query.Execute();
+            }    
         }
 
         /// <summary>
         /// Fills the data set using the query specified in the facade.
         /// </summary>
-        public virtual void FillDataSet(GridViewDataSet<TListDTO> dataSet)
+        public static void FillDataSet<TEntity, TKey, TListDTO, TDetailDTO, TFilterDTO>(this FilteredCrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO, TFilterDTO> facade, GridViewDataSet<TListDTO> dataSet, TFilterDTO filter)
+            where TEntity : IEntity<TKey> where TDetailDTO : IEntity<TKey>
         {
-            using (UnitOfWorkProvider.Create())
+            using (facade.UnitOfWorkProvider.Create())
             {
-                Query.Skip = dataSet.PageIndex * dataSet.PageSize;
-                Query.Take = dataSet.PageSize;
-                Query.SortCriteria.Clear();
+                facade.Query.Filter = filter;
+                facade.Query.Skip = dataSet.PageIndex * dataSet.PageSize;
+                facade.Query.Take = dataSet.PageSize;
+                facade.Query.SortCriteria.Clear();
 
                 if (!string.IsNullOrEmpty(dataSet.SortExpression))
                 {
-                    Query.AddSortCriteria(dataSet.SortExpression, dataSet.SortDescending ? SortDirection.Descending : SortDirection.Ascending);
+                    facade.Query.AddSortCriteria(dataSet.SortExpression, dataSet.SortDescending ? SortDirection.Descending : SortDirection.Ascending);
                 }
 
-                dataSet.TotalItemsCount = Query.GetTotalRowCount();
-                dataSet.Items = Query.Execute();
-            }    
+                dataSet.TotalItemsCount = facade.Query.GetTotalRowCount();
+                dataSet.Items = facade.Query.Execute();
+            }
         }
-        
 
     }
 }
