@@ -63,6 +63,9 @@
     <Compile Include="Mailing\MessageSendingEventArgs.cs" />
     <Compile Include="Mailing\SmtpMailSender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Storage\FileSystemStorageFolder.cs" />
+    <Compile Include="Storage\IStorageFolder.cs" />
+    <Compile Include="Storage\StorageFolderFileInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

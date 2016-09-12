@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using AutoMapper;
 
 namespace Riganti.Utils.Infrastructure.AutoMapper
 {
-
+    
     public class DropAndCreateCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem> 
         : IMemberValueResolver<TSource, TDestination, ICollection<TSourceItem>, ICollection<TDestinationItem>>
     {
@@ -35,8 +36,9 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 var destItem = Projection(item);
                 destMember.Add(destItem);
             }
-
-            return destMember;
+            
+            return new List<TDestinationItem>(destMember);
         }
+        
     }
 }
