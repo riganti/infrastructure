@@ -58,7 +58,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Expression<Func<TDestinationItem, TKey>> destinationSelector,
                 Func<TSourceItem, TDestinationItem> createFunction = null,
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
-                Action<TSourceItem, TDestinationItem> removeFunction = null,
+                Action<TDestinationItem> removeFunction = null,
                 bool keepRemovedItemsInDestinationCollection = false
             )
         {
@@ -74,7 +74,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Func<TDestinationItem, TKey> destinationSelector,
                 Func<TSourceItem, TDestinationItem> createFunction = null,
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
-                Action<TSourceItem, TDestinationItem> removeFunction = null,
+                Action<TDestinationItem> removeFunction = null,
                 bool keepRemovedItemsInDestinationCollection = false
             )
         {
@@ -84,7 +84,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 DestinationKeySelector = destinationSelector,
                 CreateFunction = createFunction ?? Mapper.Map<TSourceItem, TDestinationItem>,
                 UpdateFunction = updateFunction ?? ((s, d) => Mapper.Map(s, d)),
-                RemoveFunction = removeFunction ?? ((s, d) => { }),
+                RemoveFunction = removeFunction ?? (d => { }),
                 KeepRemovedItemsInDestinationCollection = keepRemovedItemsInDestinationCollection
             }, sourceCollectionSelector);
         }
@@ -96,13 +96,13 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
                 Func<TSourceItem, TDestinationItem> createFunction = null,
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
-                Action<TSourceItem, TDestinationItem> removeFunction = null
+                Action<TDestinationItem> removeFunction = null
             )
             where TDestinationItem : class
         {
             if (removeFunction == null)
             {
-                removeFunction = (s, d) =>
+                removeFunction = d =>
                 {
                     var uow = EntityFrameworkUnitOfWork.TryGetDbContext(unitOfWorkProvider);
                     uow.Set<TDestinationItem>().Remove(d);
@@ -140,13 +140,13 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Func<TDestinationItem, TKey> destinationKeySelector,
                 Func<TSourceItem, TDestinationItem> createFunction = null,
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
-                Action<TSourceItem, TDestinationItem> removeFunction = null
+                Action<TDestinationItem> removeFunction = null
             )
             where TDestinationItem : class
         {
             if (removeFunction == null)
             {
-                removeFunction = (s, d) =>
+                removeFunction = d =>
                 {
                     var uow = EntityFrameworkUnitOfWork.TryGetDbContext(unitOfWorkProvider);
                     uow.Set<TDestinationItem>().Remove(d);

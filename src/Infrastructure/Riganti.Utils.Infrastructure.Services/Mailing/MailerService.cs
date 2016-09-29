@@ -47,15 +47,25 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
         /// <summary>
         /// Sends an e-mail message to a specified recipient.
         /// </summary>
-        public void SendMail(string to, string subject, string body)
+        public void SendMail(string to, string subject, string body, 
+            IEnumerable<string> ccAddresses = null, 
+            IEnumerable<string> bccAddresses = null,
+            IEnumerable<string> replyToAddresses = null,
+            IEnumerable<Attachment> attachments = null  
+        )
         {
-            SendMail(new [] { to }, subject, body);
+            SendMail(new [] { to }, subject, body, ccAddresses, bccAddresses, replyToAddresses, attachments);
         }
 
         /// <summary>
         /// Sends an e-mail message to a specified recipients.
         /// </summary>
-        public void SendMail(string[] to, string subject, string body)
+        public void SendMail(string[] to, string subject, string body,
+            IEnumerable<string> ccAddresses = null,
+            IEnumerable<string> bccAddresses = null,
+            IEnumerable<string> replyToAddresses = null,
+            IEnumerable<Attachment> attachments = null
+        )
         {
             using (var message = new MailMessage())
             {
@@ -66,6 +76,35 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
                 message.Subject = subject;
                 message.Body = body;
                 message.IsBodyHtml = true;
+
+                if (ccAddresses != null)
+                {
+                    foreach (var address in ccAddresses)
+                    {
+                        message.CC.Add(address);
+                    }
+                }
+                if (bccAddresses != null)
+                {
+                    foreach (var address in bccAddresses)
+                    {
+                        message.Bcc.Add(address);
+                    }
+                }
+                if (replyToAddresses != null)
+                {
+                    foreach (var address in replyToAddresses)
+                    {
+                        message.ReplyToList.Add(address);
+                    }
+                }
+                if (attachments != null)
+                {
+                    foreach (var attachment in attachments)
+                    {
+                        message.Attachments.Add(attachment);
+                    }
+                }
 
                 SendMail(message);
             }

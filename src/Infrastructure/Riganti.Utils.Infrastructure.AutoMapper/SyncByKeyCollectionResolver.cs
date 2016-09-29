@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using AutoMapper.Execution;
 
 namespace Riganti.Utils.Infrastructure.AutoMapper
 {
@@ -18,22 +19,22 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
 
         public Action<TSourceItem, TDestinationItem> UpdateFunction { get; set; }
 
-        public Action<TSourceItem, TDestinationItem> RemoveFunction { get; set; }
+        public Action<TDestinationItem> RemoveFunction { get; set; }
 
         public bool KeepRemovedItemsInDestinationCollection { get; set; }
 
 
         public ICollection<TDestinationItem> Resolve(TSource source, TDestination destination, ICollection<TSourceItem> sourceMember, ICollection<TDestinationItem> destMember, ResolutionContext context)
         {
-            var sourceKeys = sourceMember.ToDictionary(SourceKeySelector, i => i);
-            var destinationKeys = destMember.ToDictionary(DestinationKeySelector, i => i);
+            var sourceKeys = sourceMember.Select(SourceKeySelector).ToList();
+            var destinationKeys = destMember.Select(DestinationKeySelector).ToList();
 
             foreach (var sourceItem in sourceMember)
             {
                 var key = SourceKeySelector(sourceItem);
 
                 TDestinationItem destItem;
-                if (!destinationKeys.TryGetValue(key, out destItem))
+                if (!destinationKeys.Contains(key))
                 {
                     // create
                     destItem = CreateFunction(sourceItem);
@@ -42,6 +43,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 else
                 {
                     // update
+                    destItem = destMember.First(i => DestinationKeySelector(i).Equals(key));
                     UpdateFunction(sourceItem, destItem);
                 }
             }
@@ -50,11 +52,10 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
             {
                 var key = DestinationKeySelector(destItem);
 
-                TSourceItem sourceItem;
-                if (!sourceKeys.TryGetValue(key, out sourceItem))
+                if (!sourceKeys.Contains(key))
                 {
                     // delete
-                    RemoveFunction(sourceItem, destItem);
+                    RemoveFunction(destItem);
 
                     if (!KeepRemovedItemsInDestinationCollection)
                     {
