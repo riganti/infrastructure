@@ -136,7 +136,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// </summary>
         protected virtual DateTime? GetSoftDeleteEntityDeletedDateValue()
         {
-            return DateTime.Now;
+            return DateTime.UtcNow;
         }
 
         /// <summary>
