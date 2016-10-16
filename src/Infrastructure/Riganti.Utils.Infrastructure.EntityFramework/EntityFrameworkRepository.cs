@@ -108,12 +108,22 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         {
             if (EnableSoftDelete && typeof(ISoftDeleteEntity).IsAssignableFrom(typeof(TEntity)))
             {
-                ((ISoftDeleteEntity) entity).DeletedDate = GetSoftDeleteEntityDeletedDateValue();
+                SoftDeleteCore((ISoftDeleteEntity)entity);
             }
             else
             {
-                Context.Set<TEntity>().Remove(entity);
+                DeleteCore(entity);
             }
+        }
+
+        protected virtual void DeleteCore(TEntity entity)
+        {
+            Context.Set<TEntity>().Remove(entity);
+        }
+
+        protected virtual void SoftDeleteCore(ISoftDeleteEntity entity)
+        {
+            entity.DeletedDate = GetSoftDeleteEntityDeletedDateValue();
         }
 
         /// <summary>
@@ -147,15 +157,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         {
             var fake = new TEntity() { Id = id };
             Context.Set<TEntity>().Attach(fake);
-
-            if (EnableSoftDelete && typeof(ISoftDeleteEntity).IsAssignableFrom(typeof(TEntity)))
-            {
-                ((ISoftDeleteEntity) fake).DeletedDate = GetSoftDeleteEntityDeletedDateValue();
-            }
-            else
-            { 
-                Context.Set<TEntity>().Remove(fake);
-            }
+            Delete(fake);
         }
 
         /// <summary>
