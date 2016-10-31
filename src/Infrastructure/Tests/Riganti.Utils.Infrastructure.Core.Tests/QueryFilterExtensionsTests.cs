@@ -1,11 +1,8 @@
-﻿using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Riganti.Utils.Infrastructure.Core;
+﻿using System.Linq;
+using Xunit;
 
-namespace Riganti.Utils.Infrastructure.Tests
+namespace Riganti.Utils.Infrastructure.Core.Tests
 {
-    [TestClass]
     public class QueryFilterExtensionsTests
     {
         private IQueryable<CustomerTestData> customers;
@@ -35,57 +32,57 @@ namespace Riganti.Utils.Infrastructure.Tests
             }.AsQueryable();
         }
 
-        [TestMethod]
+        [Fact]
         public void StringFilterTest_Equality_EmptyFilter()
         {
             var filtered = customers.FilterOptionalString(c => c.FirstName, "", StringFilterMode.Equals).ToList();
-            Assert.AreEqual(3, filtered.Count);
+            Assert.Equal(3, filtered.Count);
         }
 
-        [TestMethod]
+        [Fact]
         public void StringFilterTest_Equality_NonEmptyFilter()
         {
             var filtered = customers.FilterOptionalString(c => c.FirstName, "Jim", StringFilterMode.Equals).ToList();
-            Assert.AreEqual(1, filtered.Count);
-            Assert.AreEqual("Jim", filtered[0].FirstName);
+            Assert.Equal(1, filtered.Count);
+            Assert.Equal("Jim", filtered[0].FirstName);
         }
 
-        [TestMethod]
+        [Fact]
         public void StringFilterTest_StartsWith_NonEmptyFilter()
         {
             var filtered = customers.FilterOptionalString(c => c.FirstName, "Ji", StringFilterMode.StartsWith).ToList();
-            Assert.AreEqual(1, filtered.Count);
-            Assert.AreEqual("Jim", filtered[0].FirstName);
+            Assert.Equal(1, filtered.Count);
+            Assert.Equal("Jim", filtered[0].FirstName);
         }
 
-        [TestMethod]
+        [Fact]
         public void StringFilterTest_Contains_NonEmptyFilter()
         {
             var filtered = customers.FilterOptionalString(c => c.FirstName + " " + c.LastName, "e", StringFilterMode.Contains).ToList();
-            Assert.AreEqual(3, filtered.Count);
+            Assert.Equal(3, filtered.Count);
         }
         
-        [TestMethod]
+        [Fact]
         public void OptionalFilterTest_Empty()
         {
             int? categoryId = null;
             var filtered = customers.FilterOptional(c => c.CategoryId, categoryId).ToList();
-            Assert.AreEqual(3, filtered.Count);
+            Assert.Equal(3, filtered.Count);
         }
 
-        [TestMethod]
+        [Fact]
         public void OptionalFilterTest_NonEmpty()
         {
             int? categoryId = 2;
             var filtered = customers.FilterOptional(c => c.CategoryId, categoryId).ToList();
-            Assert.AreEqual(2, filtered.Count);
+            Assert.Equal(2, filtered.Count);
         }
 
-        [TestMethod]
+        [Fact]
         public void RequiredFilterTest_NonEmpty()
         {
             var filtered = customers.FilterOptional(c => c.CategoryId, 1).ToList();
-            Assert.AreEqual(1, filtered.Count);
+            Assert.Equal(1, filtered.Count);
         }
     }
 }

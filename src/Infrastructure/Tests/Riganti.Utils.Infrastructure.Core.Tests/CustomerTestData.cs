@@ -1,4 +1,4 @@
-namespace Riganti.Utils.Infrastructure.Tests
+namespace Riganti.Utils.Infrastructure.Core.Tests
 {
     public class CustomerTestData
     {
