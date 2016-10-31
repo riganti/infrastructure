@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="AppSettingsConfigurationBase.cs" />
     <Compile Include="HttpContextUnitOfWorkRegistry.cs" />
+    <Compile Include="IDateTimeNowProvider.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="IFilteredQuery.cs" />
     <Compile Include="IFirstLevelQuery.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="UnitOfWorkBase.cs" />
     <Compile Include="UnitOfWorkProviderBase.cs" />
     <Compile Include="UnitOfWorkRegistryBase.cs" />
+    <Compile Include="UtcDateTimeNowProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

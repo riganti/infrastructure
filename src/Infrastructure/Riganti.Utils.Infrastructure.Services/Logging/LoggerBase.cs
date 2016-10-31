@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.Services.Logging
 {
@@ -11,6 +12,8 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
     public abstract class LoggerBase : ILogger
     {
         private readonly List<IAdditionalDataProvider> additionalDataProviders = new List<IAdditionalDataProvider>();
+
+        protected readonly IDateTimeNowProvider dateTimeNowProvider;
 
         /// <summary>
         /// Gets or sets the minimum severity of messages that are not ignored.
@@ -23,8 +26,9 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
         public IExceptionFormatter ExceptionFormatter { get; set; } = new DefaultExceptionFormatter();
 
 
-        public LoggerBase(IEnumerable<IAdditionalDataProvider> additionalDataProviders = null)
+        public LoggerBase(IDateTimeNowProvider dateTimeNowProvider, IEnumerable<IAdditionalDataProvider> additionalDataProviders = null)
         {
+            this.dateTimeNowProvider = dateTimeNowProvider;
             if (additionalDataProviders != null)
             {
                 this.additionalDataProviders.AddRange(additionalDataProviders);

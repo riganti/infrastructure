@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.Services.Logging
 {
@@ -11,7 +12,8 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
     {
         private readonly string directory;
 
-        public TextFileLogger(string directory, IEnumerable<IAdditionalDataProvider> additionalDataProviders = null) : base(additionalDataProviders)
+
+        public TextFileLogger(string directory, IDateTimeNowProvider dateTimeNowProvider, IEnumerable<IAdditionalDataProvider> additionalDataProviders = null) : base(dateTimeNowProvider, additionalDataProviders)
         {
             this.directory = directory;
 
@@ -23,12 +25,12 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
 
         protected virtual string GetLogFileName()
         {
-            return Path.Combine(directory, DateTime.Now.ToString("yyyy-MM-dd") + ".txt");
+            return Path.Combine(directory, dateTimeNowProvider.Now.ToString("yyyy-MM-dd") + ".txt");
         }
 
         protected override void LogMessageCore(string message, IDictionary<string, string> additionalData, Severity severity)
         {
-            var output = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}\t{message}\r\n\r\n";
+            var output = $"{dateTimeNowProvider.Now:yyyy-MM-dd HH:mm:ss}\t{message}\r\n\r\n";
             File.AppendAllText(GetLogFileName(), output, Encoding.UTF8);
         }
     }
