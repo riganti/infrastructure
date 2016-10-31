@@ -47,10 +47,13 @@ namespace Riganti.Utils.Infrastructure.Core.Tests
             Assert.Equal("Jim", filtered[0].FirstName);
         }
 
-        [Fact]
-        public void StringFilterTest_StartsWith_NonEmptyFilter()
+        [Theory]
+        [InlineData("J")]
+        [InlineData("Ji")]
+        [InlineData("Jim")]
+        public void StringFilterTest_StartsWith_NonEmptyFilter(string valueToFilter)
         {
-            var filtered = customers.FilterOptionalString(c => c.FirstName, "Ji", StringFilterMode.StartsWith).ToList();
+            var filtered = customers.FilterOptionalString(c => c.FirstName, valueToFilter, StringFilterMode.StartsWith).ToList();
             Assert.Equal(1, filtered.Count);
             Assert.Equal("Jim", filtered[0].FirstName);
         }
