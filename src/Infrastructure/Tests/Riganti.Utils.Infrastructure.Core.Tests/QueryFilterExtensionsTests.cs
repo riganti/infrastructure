@@ -42,9 +42,10 @@ namespace Riganti.Utils.Infrastructure.Core.Tests
         [Fact]
         public void StringFilterTest_Equality_NonEmptyFilter()
         {
-            var filtered = customers.FilterOptionalString(c => c.FirstName, "Jim", StringFilterMode.Equals).ToList();
+            var jim = "Jim";
+            var filtered = customers.FilterOptionalString(c => c.FirstName, jim, StringFilterMode.Equals).ToList();
             Assert.Equal(1, filtered.Count);
-            Assert.Equal("Jim", filtered[0].FirstName);
+            Assert.Equal(jim, filtered[0].FirstName);
         }
 
         [Theory]
