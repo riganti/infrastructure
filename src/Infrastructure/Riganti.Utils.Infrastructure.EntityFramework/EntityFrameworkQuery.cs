@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Riganti.Utils.Infrastructure.Core;
 
@@ -31,5 +32,9 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
             get { return EntityFrameworkUnitOfWork.TryGetDbContext(provider); }
         }
 
+        protected override async Task<IList<TResult>> ExecuteQueryAsync(IQueryable<TResult> query, CancellationToken cancellationToken)
+        {
+            return await query.ToListAsync(cancellationToken);
+        }
     }
 }

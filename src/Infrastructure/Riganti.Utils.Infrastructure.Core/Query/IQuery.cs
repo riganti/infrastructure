@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Riganti.Utils.Infrastructure.Core
 {
@@ -40,6 +42,18 @@ namespace Riganti.Utils.Infrastructure.Core
         /// Executes the query and returns the results.
         /// </summary>
         IList<TResult> Execute();
+
+        /// <summary>
+        /// Asynchronously executes the query and returns the results.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        Task<IList<TResult>> ExecuteAsync();
+
+        /// <summary>
+        /// Asynchronously executes the query and returns the results.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        Task<IList<TResult>> ExecuteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the total row count without respect to paging.
