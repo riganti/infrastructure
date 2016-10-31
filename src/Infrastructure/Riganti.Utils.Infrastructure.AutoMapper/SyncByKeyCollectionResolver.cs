@@ -32,7 +32,6 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
             foreach (var sourceItem in sourceMember)
             {
                 var key = SourceKeySelector(sourceItem);
-                var keyDefault = default(TKey);
 
                 TDestinationItem destItem;
                 if (!destinationKeys.Contains(key))
@@ -41,7 +40,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                     destItem = CreateFunction(sourceItem);
                     destMember.Add(destItem);
                 }
-                else if (!key.Equals(keyDefault))
+                else if (!EqualityComparer<TKey>.Default.Equals(key, default(TKey)))
                 {
                     // update
                     destItem = destMember.First(i => DestinationKeySelector(i).Equals(key));
