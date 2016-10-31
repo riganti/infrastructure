@@ -1,5 +1,7 @@
 using System;
 using System.Data.Entity;
+using System.Threading;
+using System.Threading.Tasks;
 using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.EntityFramework
@@ -15,8 +17,6 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// Gets the <see cref="DbContext"/>.
         /// </summary>
         public DbContext Context { get; private set; }
-
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork"/> class.
@@ -55,6 +55,11 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         protected override void CommitCore()
         {
             Context.SaveChanges();
+        }
+
+        protected override async Task CommitAsyncCore(CancellationToken cancellationToken)
+        {
+            await Context.SaveChangesAsync(cancellationToken);
         }
 
         /// <summary>
