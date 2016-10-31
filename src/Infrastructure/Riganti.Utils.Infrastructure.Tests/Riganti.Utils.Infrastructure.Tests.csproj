@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="CoreNamespacesTests.cs" />
     <Compile Include="CustomerTestData.cs" />
     <Compile Include="QueryFilterExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

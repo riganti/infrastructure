@@ -50,29 +50,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSettingsConfigurationBase.cs" />
-    <Compile Include="HttpContextUnitOfWorkRegistry.cs" />
-    <Compile Include="IDateTimeNowProvider.cs" />
-    <Compile Include="IEntity.cs" />
-    <Compile Include="IFilteredQuery.cs" />
-    <Compile Include="IFirstLevelQuery.cs" />
-    <Compile Include="IQuery.cs" />
-    <Compile Include="IRepository.cs" />
-    <Compile Include="ISoftDeleteEntity.cs" />
-    <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="IUnitOfWorkProvider.cs" />
-    <Compile Include="IUnitOfWorkRegistry.cs" />
+    <Compile Include="UnitOfWork\Registry\HttpContextUnitOfWorkRegistry.cs" />
+    <Compile Include="DateTimeNowProvider\IDateTimeNowProvider.cs" />
+    <Compile Include="Entity\IEntity.cs" />
+    <Compile Include="Query\IFilteredQuery.cs" />
+    <Compile Include="Query\IFirstLevelQuery.cs" />
+    <Compile Include="Query\IQuery.cs" />
+    <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Entity\ISoftDeleteEntity.cs" />
+    <Compile Include="UnitOfWork\IUnitOfWork.cs" />
+    <Compile Include="UnitOfWork\Provider\IUnitOfWorkProvider.cs" />
+    <Compile Include="UnitOfWork\Registry\IUnitOfWorkRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryBase.cs" />
-    <Compile Include="QueryFilterExtensions.cs" />
+    <Compile Include="Query\QueryBase.cs" />
+    <Compile Include="Query\QueryFilterExtensions.cs" />
     <Compile Include="RigantiHelpers.cs" />
-    <Compile Include="SortDirection.cs" />
-    <Compile Include="StringFilterMode.cs" />
-    <Compile Include="ThreadLocalUnitOfWorkRegistry.cs" />
-    <Compile Include="UIException.cs" />
-    <Compile Include="UnitOfWorkBase.cs" />
-    <Compile Include="UnitOfWorkProviderBase.cs" />
-    <Compile Include="UnitOfWorkRegistryBase.cs" />
-    <Compile Include="UtcDateTimeNowProvider.cs" />
+    <Compile Include="Query\SortDirection.cs" />
+    <Compile Include="Query\StringFilterMode.cs" />
+    <Compile Include="UnitOfWork\Registry\ThreadLocalUnitOfWorkRegistry.cs" />
+    <Compile Include="Exception\UIException.cs" />
+    <Compile Include="UnitOfWork\UnitOfWorkBase.cs" />
+    <Compile Include="UnitOfWork\Provider\UnitOfWorkProviderBase.cs" />
+    <Compile Include="UnitOfWork\Registry\UnitOfWorkRegistryBase.cs" />
+    <Compile Include="DateTimeNowProvider\UtcDateTimeNowProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
