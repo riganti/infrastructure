@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.Services.Logging
@@ -45,7 +44,7 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
 
                 LogExceptionCore(exception, additionalData, severity);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // the logging code should not throw any exceptions
                 if (Debugger.IsAttached)
@@ -64,7 +63,7 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
 
                 LogMessageCore(message, additionalData, severity);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // the logging code should not throw any exceptions
                 if (Debugger.IsAttached)

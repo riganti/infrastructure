@@ -1,6 +1,6 @@
 namespace Riganti.Utils.Infrastructure.Services.Facades
 {
-    public interface IEntityDTOMapper<TEntity, TDTO>
+    public interface IEntityDTOMapper<in TEntity, TDTO>
     {
 
         TDTO MapToDTO(TEntity source);

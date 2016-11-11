@@ -1,5 +1,4 @@
-﻿using System.Data.Entity;
-using Riganti.Utils.Infrastructure.Core;
+﻿using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.EntityFramework
 {
@@ -12,7 +11,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkQuery{TResult}"/> class.
         /// </summary>
-        public EntityFrameworkFilteredQuery(IUnitOfWorkProvider provider) : base(provider)
+        protected EntityFrameworkFilteredQuery(IUnitOfWorkProvider provider) : base(provider)
         {
         }
 

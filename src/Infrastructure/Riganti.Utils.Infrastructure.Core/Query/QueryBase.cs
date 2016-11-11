@@ -76,7 +76,6 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <summary>
         ///     Asynchronously executes the query and returns the results.
         /// </summary>
-        /// <param name="cancellationToken"></param>
         public async Task<IList<TResult>> ExecuteAsync()
         {
             return await ExecuteAsync(default(CancellationToken));

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using AutoMapper.Execution;
 
 namespace Riganti.Utils.Infrastructure.AutoMapper
 {
