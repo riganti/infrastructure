@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Remoting;
+using System;
 using Moq;
 using Xunit;
 
-namespace Riganti.Utils.Infrastructure.Core.Tests
+namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork.Registry
 {
     public class UnitOfWorkRegistryBaseTests : UnitOfWorkTestsBase
     {

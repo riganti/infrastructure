@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 
-namespace Riganti.Utils.Infrastructure.Core.Tests
+namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork
 {
     public class UnitOfWorkTestsBase
     {

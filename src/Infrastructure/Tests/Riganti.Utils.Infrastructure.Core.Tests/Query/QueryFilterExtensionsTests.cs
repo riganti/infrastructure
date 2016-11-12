@@ -2,7 +2,7 @@
 using System.Linq;
 using Xunit;
 
-namespace Riganti.Utils.Infrastructure.Core.Tests
+namespace Riganti.Utils.Infrastructure.Core.Tests.Query
 {
     public class QueryFilterExtensionsTests : QueryTestsBase
     {

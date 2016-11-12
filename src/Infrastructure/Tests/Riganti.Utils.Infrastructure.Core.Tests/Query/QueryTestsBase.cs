@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Riganti.Utils.Infrastructure.Core.Tests
+namespace Riganti.Utils.Infrastructure.Core.Tests.Query
 {
     public class QueryTestsBase
     {

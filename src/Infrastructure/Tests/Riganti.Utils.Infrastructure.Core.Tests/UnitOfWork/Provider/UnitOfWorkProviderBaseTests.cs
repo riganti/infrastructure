@@ -1,7 +1,7 @@
-﻿using Moq;
+using Moq;
 using Xunit;
 
-namespace Riganti.Utils.Infrastructure.Core.Tests
+namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork.Provider
 {
     public class UnitOfWorkProviderBaseTests : UnitOfWorkTestsBase
     {
