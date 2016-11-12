@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Riganti.Utils.Infrastructure.Core
 {
@@ -19,7 +20,8 @@ namespace Riganti.Utils.Infrastructure.Core
         /// </summary>
         public void RegisterUnitOfWork(IUnitOfWork unitOfWork)
         {
-            GetStack().Push(unitOfWork);
+            var unitOfWorkStack = GetStack();
+            unitOfWorkStack.Push(unitOfWork);
         }
 
         /// <summary>
@@ -27,10 +29,15 @@ namespace Riganti.Utils.Infrastructure.Core
         /// </summary>
         public void UnregisterUnitOfWork(IUnitOfWork unitOfWork)
         {
-            if (GetStack().Pop() != unitOfWork)
+            var unitOfWorkStack = GetStack();
+            if (unitOfWorkStack.Any())
             {
-                throw new InvalidOperationException("Some of the unit of works was not disposed correctly!");
+                if (unitOfWorkStack.Pop() == unitOfWork)
+                {
+                    return;
+                }
             }
+            throw new InvalidOperationException("Some of the unit of works was not disposed correctly!");
         }
 
         /// <summary>
@@ -38,15 +45,15 @@ namespace Riganti.Utils.Infrastructure.Core
         /// </summary>
         public IUnitOfWork GetCurrent()
         {
-            if (GetStack().Count == 0)
+            var unitOfWorkStack = GetStack();
+            if (unitOfWorkStack.Count == 0)
             {
                 return null;
             }
             else
             {
-                return GetStack().Peek();
+                return unitOfWorkStack.Peek();
             }
         }
-
     }
 }
