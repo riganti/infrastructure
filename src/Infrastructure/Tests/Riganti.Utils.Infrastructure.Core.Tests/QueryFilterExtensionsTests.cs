@@ -4,38 +4,8 @@ using Xunit;
 
 namespace Riganti.Utils.Infrastructure.Core.Tests
 {
-    public class QueryFilterExtensionsTests
+    public class QueryFilterExtensionsTests : QueryTestsBase
     {
-        private IQueryable<CustomerTestData> customers;
-
-        public QueryFilterExtensionsTests()
-        {
-            customers = new[]
-            {
-                new CustomerTestData()
-                {
-                    FirstName = "Humphrey",
-                    LastName = "Appleby",
-                    CategoryId = 2,
-                    Truthful = false
-                },
-                new CustomerTestData()
-                {
-                    FirstName = "Jim",
-                    LastName = "Hacker",
-                    CategoryId = 1,
-                    Truthful = false
-                },
-                new CustomerTestData()
-                {
-                    FirstName = "Bernard",
-                    LastName = "Woolley",
-                    CategoryId = 2,
-                    Truthful = true
-                }
-            }.AsQueryable();
-        }
-
         [Fact]
         public void StringFilterTest_Equality_EmptyFilter()
         {
@@ -69,7 +39,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests
             var filtered = customers.FilterOptionalString(c => c.FirstName + " " + c.LastName, "e", StringFilterMode.Contains).ToList();
             Assert.Equal(3, filtered.Count);
         }
-        
+
         [Fact]
         public void OptionalFilterTest_Empty()
         {
@@ -92,7 +62,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests
             var filtered = customers.FilterOptional(c => c.CategoryId, 1).ToList();
             Assert.Equal(1, filtered.Count);
         }
-        
+
         [Fact]
         public void OptionalFilterTestNullableParameter_Empty()
         {
