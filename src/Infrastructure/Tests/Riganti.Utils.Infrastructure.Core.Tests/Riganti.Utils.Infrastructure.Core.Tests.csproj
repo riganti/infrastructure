@@ -80,6 +80,7 @@
     <Compile Include="CoreNamespacesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\QueryTestsBase.cs" />
+    <Compile Include="RigantiHelpersTests.cs" />
     <Compile Include="UnitOfWork\Provider\UnitOfWorkProviderBaseTests.cs" />
     <Compile Include="UnitOfWork\Registry\UnitOfWorkRegistryBaseTests.cs" />
     <Compile Include="UnitOfWork\UnitOfWorkTestsBase.cs" />
