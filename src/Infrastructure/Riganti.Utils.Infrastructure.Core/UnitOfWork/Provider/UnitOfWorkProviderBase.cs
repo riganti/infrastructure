@@ -12,7 +12,7 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="UnitOfWorkProviderBase"/> class.
         /// </summary>
-        public UnitOfWorkProviderBase(IUnitOfWorkRegistry registry)
+        protected UnitOfWorkProviderBase(IUnitOfWorkRegistry registry)
         {
             this.registry = registry;
         }
