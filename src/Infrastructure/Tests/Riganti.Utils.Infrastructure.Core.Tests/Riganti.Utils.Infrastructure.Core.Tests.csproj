@@ -80,7 +80,9 @@
     <Compile Include="CoreNamespacesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryTestsBase.cs" />
+    <Compile Include="UnitOfWorkProviderBaseTests.cs" />
     <Compile Include="UnitOfWorkRegistryBaseTests.cs" />
+    <Compile Include="UnitOfWorkTestsBase.cs" />
     <Compile Include="UtcDateTimeNowProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>

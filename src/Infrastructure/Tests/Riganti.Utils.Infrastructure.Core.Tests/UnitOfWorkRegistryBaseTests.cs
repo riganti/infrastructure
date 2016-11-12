@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Riganti.Utils.Infrastructure.Core.Tests
 {
-    public class UnitOfWorkRegistryBaseTests
+    public class UnitOfWorkRegistryBaseTests : UnitOfWorkTestsBase
     {
         [Fact]
         public void GetCurrent_EmptyStack_ReturnsNull()
@@ -71,21 +71,6 @@ namespace Riganti.Utils.Infrastructure.Core.Tests
             unitOfWorkRegistrySUT.UnregisterUnitOfWork(secondUnitOfWorkMock.Object);
 
             Assert.Same(firstUnitOfWorkMock.Object, unitOfWorkRegistrySUT.GetCurrent());
-        }
-
-        private static UnitOfWorkRegistryStub CreateUnitOfWorkRegistry()
-        {
-            return new UnitOfWorkRegistryStub();
-        }
-
-        class UnitOfWorkRegistryStub : UnitOfWorkRegistryBase
-        {
-            readonly Stack<IUnitOfWork> stack = new Stack<IUnitOfWork>();
-
-            protected override Stack<IUnitOfWork> GetStack()
-            {
-                return stack;
-            }
         }
     }
 }
