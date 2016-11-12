@@ -68,7 +68,7 @@ namespace Riganti.Utils.Infrastructure.Core
 
         public static IQueryable<T> FilterRequired<T, TValue>(this IQueryable<T> data, Expression<Func<T, TValue>> fieldSelector, TValue valueToFilter)
         {
-            var body = Expression.Equal(fieldSelector.Body, Expression.Constant(valueToFilter));
+            var body = Expression.Equal(fieldSelector.Body, Expression.Constant(valueToFilter, typeof(TValue)));
             return data.Where(Expression.Lambda<Func<T, bool>>(body, fieldSelector.Parameters));
         }
 

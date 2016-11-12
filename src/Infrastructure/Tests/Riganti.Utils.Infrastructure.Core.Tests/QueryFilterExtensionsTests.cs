@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Xunit;
 
 namespace Riganti.Utils.Infrastructure.Core.Tests
@@ -15,19 +16,22 @@ namespace Riganti.Utils.Infrastructure.Core.Tests
                 {
                     FirstName = "Humphrey",
                     LastName = "Appleby",
-                    CategoryId = 2
+                    CategoryId = 2,
+                    Truthful = false
                 },
                 new CustomerTestData()
                 {
                     FirstName = "Jim",
                     LastName = "Hacker",
-                    CategoryId = 1
+                    CategoryId = 1,
+                    Truthful = false
                 },
                 new CustomerTestData()
                 {
                     FirstName = "Bernard",
                     LastName = "Woolley",
-                    CategoryId = 2
+                    CategoryId = 2,
+                    Truthful = true
                 }
             }.AsQueryable();
         }
@@ -87,6 +91,36 @@ namespace Riganti.Utils.Infrastructure.Core.Tests
         {
             var filtered = customers.FilterOptional(c => c.CategoryId, 1).ToList();
             Assert.Equal(1, filtered.Count);
+        }
+        
+        [Fact]
+        public void OptionalFilterTestNullableParameter_Empty()
+        {
+            bool? truthful = null;
+            var filtered = customers.FilterOptional(c => c.Truthful, truthful).ToList();
+            Assert.Equal(3, filtered.Count);
+        }
+
+        [Fact]
+        public void OptionalFilterTestNullableParameter_NonEmpty()
+        {
+            bool? truthful = true;
+            var filtered = customers.FilterOptional(c => c.Truthful, truthful).ToList();
+            Assert.Equal(1, filtered.Count);
+        }
+
+        [Fact]
+        public void RequiredFilterTestNullableParameter_NonEmpty()
+        {
+            bool? truthful = false;
+            var filtered = customers.FilterOptional(c => c.Truthful, truthful).ToList();
+            Assert.Equal(2, filtered.Count);
+        }
+
+        [Fact]
+        public void FilterOptionalString_SetNonExistsStringFilterMode_ThrowArgumentOutOfRangeException()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => customers.FilterOptionalString(c => c.FirstName, "Jim", (StringFilterMode)(-1)));
         }
     }
 }
