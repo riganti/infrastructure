@@ -75,12 +75,13 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CustomerTestData.cs" />
+    <Compile Include="Helpers\RigantiCastHelpersTests.cs" />
     <Compile Include="Query\QueryBaseTests.cs" />
     <Compile Include="Query\QueryFilterExtensionsTests.cs" />
     <Compile Include="CoreNamespacesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\QueryTestsBase.cs" />
-    <Compile Include="RigantiHelpersTests.cs" />
+    <Compile Include="Helpers\RigantiNullableHelpersTests.cs" />
     <Compile Include="UnitOfWork\Provider\UnitOfWorkProviderBaseTests.cs" />
     <Compile Include="UnitOfWork\Registry\UnitOfWorkRegistryBaseTests.cs" />
     <Compile Include="UnitOfWork\UnitOfWorkTestsBase.cs" />

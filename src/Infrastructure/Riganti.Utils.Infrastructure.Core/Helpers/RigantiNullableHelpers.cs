@@ -6,7 +6,7 @@ namespace Riganti.Utils.Infrastructure.Core
     /// <summary>
     /// Contains various helper methods.
     /// </summary>
-    public static class RigantiHelpers
+    public static class RigantiNullableHelpers
     {
 
         /// <summary>
