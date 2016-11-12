@@ -57,7 +57,7 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <summary>
         ///     Adds a specified sort criteria to the query.
         /// </summary>
-        public void AddSortCriteria<TKey>(Expression<Func<TResult, TKey>> field, SortDirection direction)
+        public void AddSortCriteria<TKey>(Expression<Func<TResult, TKey>> field, SortDirection direction = SortDirection.Ascending)
         {
             AddSortCriteriaCore(field, direction);
         }
