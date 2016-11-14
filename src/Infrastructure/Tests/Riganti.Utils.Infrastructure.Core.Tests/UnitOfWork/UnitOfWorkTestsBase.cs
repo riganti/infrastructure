@@ -8,15 +8,15 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork
     public class UnitOfWorkTestsBase
     {
         
-        protected static UnitOfWorkRegistryBase CreateUnitOfWorkRegistry()
+        protected static UnitOfWorkRegistryBase CreateUnitOfWorkRegistryStub()
         {
             return new UnitOfWorkRegistryStub();
         }
-        protected static UnitOfWorkProviderBase CreateUnitOfWorkProviderBaseStub(IUnitOfWorkRegistry unitOfWorkRegistry, IUnitOfWork newUnitOfWork = null)
+        protected static UnitOfWorkProviderBase CreateUnitOfWorkProviderStub(IUnitOfWorkRegistry unitOfWorkRegistry, IUnitOfWork newUnitOfWork = null)
         {
             return new UnitOfWorkProviderBaseStub(unitOfWorkRegistry, newUnitOfWork ?? new Mock<IUnitOfWork>().Object);
         }
-        protected static UnitOfWorkBase CreateUnitOfWorkBaseStub()
+        protected static UnitOfWorkBase CreateUnitOfWorkStub()
         {
             return new UnitOfWorkBaseStub();
         }

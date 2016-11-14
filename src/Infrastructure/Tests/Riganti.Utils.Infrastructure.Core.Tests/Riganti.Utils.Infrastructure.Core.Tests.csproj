@@ -83,6 +83,7 @@
     <Compile Include="RigantiHelpersTests.cs" />
     <Compile Include="UnitOfWork\Provider\UnitOfWorkProviderBaseTests.cs" />
     <Compile Include="UnitOfWork\Registry\UnitOfWorkRegistryBaseTests.cs" />
+    <Compile Include="UnitOfWork\UnitOfWorkBaseTests.cs" />
     <Compile Include="UnitOfWork\UnitOfWorkTestsBase.cs" />
     <Compile Include="DateTimeNowProvider\UtcDateTimeNowProviderTests.cs" />
   </ItemGroup>

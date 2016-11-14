@@ -89,8 +89,7 @@ namespace Riganti.Utils.Infrastructure.Core
         /// </summary>
         protected virtual void OnDisposing()
         {
-            var handler = Disposing;
-            handler?.Invoke(this, EventArgs.Empty);
+            Disposing?.Invoke(this, EventArgs.Empty);
         }
     }
 }

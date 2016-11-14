@@ -9,7 +9,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork.Registry
         [Fact]
         public void GetCurrent_EmptyStack_ReturnsNull()
         {
-            var unitOfWorkRegistrySUT = CreateUnitOfWorkRegistry();
+            var unitOfWorkRegistrySUT = CreateUnitOfWorkRegistryStub();
 
             var unitOfWork = unitOfWorkRegistrySUT.GetCurrent();
 
@@ -19,7 +19,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork.Registry
         [Fact]
         public void GetCurrent_StackWithOneUOW_ReturnsUOW()
         {
-            var unitOfWorkRegistrySUT = CreateUnitOfWorkRegistry();
+            var unitOfWorkRegistrySUT = CreateUnitOfWorkRegistryStub();
             var unitOfWorkMock = new Mock<IUnitOfWork>();
 
             unitOfWorkRegistrySUT.RegisterUnitOfWork(unitOfWorkMock.Object);
@@ -32,7 +32,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork.Registry
         [Fact]
         public void UnregisterUnitOfWork_EmptyStack_ThrowsInvalidOperationException()
         {
-            var unitOfWorkRegistrySUT = CreateUnitOfWorkRegistry();
+            var unitOfWorkRegistrySUT = CreateUnitOfWorkRegistryStub();
             var unitOfWorkMock = new Mock<IUnitOfWork>();
 
             Action sut = () => unitOfWorkRegistrySUT.UnregisterUnitOfWork(unitOfWorkMock.Object);
@@ -44,7 +44,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork.Registry
         [Fact]
         public void UnregisterUnitOfWork_UnregisterFirstUOWFromStack_ThrowsInvalidOperationException()
         {
-            var unitOfWorkRegistrySUT = CreateUnitOfWorkRegistry();
+            var unitOfWorkRegistrySUT = CreateUnitOfWorkRegistryStub();
             var firstUnitOfWorkMock = new Mock<IUnitOfWork>();
             var secondUnitOfWorkMock = new Mock<IUnitOfWork>();
             unitOfWorkRegistrySUT.RegisterUnitOfWork(firstUnitOfWorkMock.Object);
@@ -60,7 +60,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork.Registry
         [Fact]
         public void UnregisterUnitOfWork_UnregisterLastUOWFromStack_ThrowsInvalidOperationException()
         {
-            var unitOfWorkRegistrySUT = CreateUnitOfWorkRegistry();
+            var unitOfWorkRegistrySUT = CreateUnitOfWorkRegistryStub();
             var firstUnitOfWorkMock = new Mock<IUnitOfWork>();
             var secondUnitOfWorkMock = new Mock<IUnitOfWork>();
             unitOfWorkRegistrySUT.RegisterUnitOfWork(firstUnitOfWorkMock.Object);
