@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSettingsConfigurationBase.cs" />
+    <Compile Include="Helpers\RigantiCastHelpers.cs" />
     <Compile Include="UnitOfWork\Registry\HttpContextUnitOfWorkRegistry.cs" />
     <Compile Include="DateTimeNowProvider\IDateTimeNowProvider.cs" />
     <Compile Include="Entity\IEntity.cs" />
@@ -64,7 +65,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\QueryBase.cs" />
     <Compile Include="Query\QueryFilterExtensions.cs" />
-    <Compile Include="RigantiHelpers.cs" />
+    <Compile Include="Helpers\RigantiNullableHelpers.cs" />
     <Compile Include="Query\SortDirection.cs" />
     <Compile Include="Query\StringFilterMode.cs" />
     <Compile Include="UnitOfWork\Registry\ThreadLocalUnitOfWorkRegistry.cs" />

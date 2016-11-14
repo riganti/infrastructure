@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Riganti.Utils.Infrastructure.Core.Tests
 {
-    public class RigantiHelpersTests
+    public class RigantiNullableHelpersTests
     {
         [Fact]
         public void ToNullableInt_CorrectInput_ReturnsCorrectValue()
