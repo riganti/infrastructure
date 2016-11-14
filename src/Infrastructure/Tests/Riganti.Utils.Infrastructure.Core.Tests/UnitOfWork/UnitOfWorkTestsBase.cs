@@ -8,13 +8,26 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork
     public class UnitOfWorkTestsBase
     {
         
-        protected static UnitOfWorkRegistryStub CreateUnitOfWorkRegistry()
+        protected static UnitOfWorkRegistryBase CreateUnitOfWorkRegistry()
         {
             return new UnitOfWorkRegistryStub();
         }
-
-        protected class UnitOfWorkRegistryStub : UnitOfWorkRegistryBase
+        protected static UnitOfWorkProviderBase CreateUnitOfWorkProviderBaseStub(IUnitOfWorkRegistry unitOfWorkRegistry, IUnitOfWork newUnitOfWork = null)
         {
+            return new UnitOfWorkProviderBaseStub(unitOfWorkRegistry, newUnitOfWork ?? new Mock<IUnitOfWork>().Object);
+        }
+        protected static UnitOfWorkBase CreateUnitOfWorkBaseStub()
+        {
+            return new UnitOfWorkBaseStub();
+        }
+
+        private class UnitOfWorkRegistryStub : UnitOfWorkRegistryBase
+        {
+            public UnitOfWorkRegistryStub()
+            {
+                
+            }
+
             readonly Stack<IUnitOfWork> stack = new Stack<IUnitOfWork>();
 
             protected override Stack<IUnitOfWork> GetStack()
@@ -23,7 +36,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork
             }
         }
 
-        protected class UnitOfWorkProviderBaseStub : UnitOfWorkProviderBase
+        private class UnitOfWorkProviderBaseStub : UnitOfWorkProviderBase
         {
             private readonly IUnitOfWork newUnitOfWork;
 
@@ -38,7 +51,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork
             }
         }
 
-        protected class UnitOfWorkBaseStub : UnitOfWorkBase
+        private class UnitOfWorkBaseStub : UnitOfWorkBase
         {
             protected override void CommitCore()
             {

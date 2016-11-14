@@ -52,11 +52,13 @@ namespace Riganti.Utils.Infrastructure.Core
         /// </summary>
         public void Dispose()
         {
-            if (isDisposed) return;
-            isDisposed = true;
+            if (!isDisposed)
+            {
+                isDisposed = true;
 
-            OnDisposing();
-            DisposeCore();
+                OnDisposing();
+                DisposeCore();
+            }
         }
 
         private void RunAfterCommitActions()
@@ -88,7 +90,7 @@ namespace Riganti.Utils.Infrastructure.Core
         protected virtual void OnDisposing()
         {
             var handler = Disposing;
-            if (handler != null) handler(this, EventArgs.Empty);
+            handler?.Invoke(this, EventArgs.Empty);
         }
     }
 }

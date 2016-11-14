@@ -11,7 +11,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork.Provider
             var unitOfWorkRegistryMock = new Mock<IUnitOfWorkRegistry>();
             var unitOfWork = new Mock<IUnitOfWork>().Object;
             unitOfWorkRegistryMock.Setup(unitOfWorkRegistry => unitOfWorkRegistry.GetCurrent()).Returns(unitOfWork);
-            var unitOfWorkProviderSUT = new UnitOfWorkProviderBaseStub(unitOfWorkRegistryMock.Object);
+            var unitOfWorkProviderSUT = CreateUnitOfWorkProviderBaseStub(unitOfWorkRegistryMock.Object);
 
             var unitOfWorkProviderCurrentUnitOfWork = unitOfWorkProviderSUT.GetCurrent();
 
@@ -24,7 +24,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork.Provider
         {
             var unitOfWorkRegistryMock = new Mock<IUnitOfWorkRegistry>();
             var newUnitOfWork = new Mock<IUnitOfWork>().Object;
-            var unitOfWorkProviderSUT = new UnitOfWorkProviderBaseStub(unitOfWorkRegistryMock.Object, newUnitOfWork);
+            var unitOfWorkProviderSUT = CreateUnitOfWorkProviderBaseStub(unitOfWorkRegistryMock.Object, newUnitOfWork);
 
             Assert.Same(newUnitOfWork, unitOfWorkProviderSUT.Create());
             unitOfWorkRegistryMock.Verify(unitOfWorkRegistry => unitOfWorkRegistry.RegisterUnitOfWork(newUnitOfWork), Times.Once);
@@ -34,8 +34,8 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork.Provider
         public void Create_CallsUnitOfWorkRegistryUnregisterUnitOfWorkWhenIsDisposed()
         {
             var unitOfWorkRegistryMock = new Mock<IUnitOfWorkRegistry>();
-            var newUnitOfWork = new UnitOfWorkBaseStub();
-            var unitOfWorkProviderSUT = new UnitOfWorkProviderBaseStub(unitOfWorkRegistryMock.Object, newUnitOfWork);
+            var newUnitOfWork = CreateUnitOfWorkBaseStub();
+            var unitOfWorkProviderSUT = CreateUnitOfWorkProviderBaseStub(unitOfWorkRegistryMock.Object, newUnitOfWork);
 
             var unitOfWork = unitOfWorkProviderSUT.Create();
 
