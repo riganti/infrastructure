@@ -144,5 +144,35 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
             }
             unitOfWorkParentMock.Protected().Verify("CommitAsyncCore", Times.Once(), new CancellationToken());
         }
+        
+        [Fact]
+        public void TryGetDbContext_UOWHasNotParrent_CallCommitCore2()
+        {
+            var dbContext = new Mock<DbContext>().Object;
+            Func<DbContext> dbContextFactory = () => dbContext;
+            var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
+            var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub, dbContextFactory);
+            var unitOfWork = new EntityFrameworkUnitOfWork(unitOfWorkProvider, dbContextFactory, DbContextOptions.ReuseParentContext);
+            unitOfWorkRegistryStub.RegisterUnitOfWork(unitOfWork);
+
+            var uowDbContext = EntityFrameworkUnitOfWork.TryGetDbContext(unitOfWorkProvider);
+
+            Assert.NotNull(uowDbContext);
+            Assert.Same(dbContext, uowDbContext);
+        }
+
+        [Fact]
+        public void TryGetDbContext_UOWHasNotParrent_CallCommitCore()
+        {
+            var dbContext = new Mock<DbContext>().Object;
+            Func<DbContext> dbContextFactory = () => dbContext;
+            var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
+            var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub, dbContextFactory);
+            
+            Action sut = () => EntityFrameworkUnitOfWork.TryGetDbContext(unitOfWorkProvider);
+
+            var invalidOperationException = Assert.Throws<InvalidOperationException>(sut);
+            Assert.Contains("The EntityFrameworkRepository must be used in a unit of work of type EntityFrameworkUnitOfWork!", invalidOperationException.Message);
+        }
     }
 }
