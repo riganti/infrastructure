@@ -11,7 +11,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
     /// </summary>
     public class EntityFrameworkUnitOfWork : UnitOfWorkBase
     {
-        private bool hasOwnContext;
+        private readonly bool hasOwnContext;
 
         /// <summary>
         /// Gets the <see cref="DbContext"/>.
@@ -43,10 +43,22 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// </summary>
         public override void Commit()
         {
-            if (hasOwnContext)
+            if (HasOwnContext())
             {
                 base.Commit();
             }
+        }
+        
+        /// <summary>
+        /// Commits this instance when we have to.
+        /// </summary>
+        public override Task CommitAsync()
+        {
+            if (HasOwnContext())
+            {
+                return base.CommitAsync();
+            }
+            return Task.FromResult(true);
         }
 
         /// <summary>
@@ -67,10 +79,16 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// </summary>
         protected override void DisposeCore()
         {
-            if (hasOwnContext)
+            if (HasOwnContext())
             {
                 Context.Dispose();
             }
+        }
+
+
+        private bool HasOwnContext()
+        {
+            return hasOwnContext;
         }
 
         /// <summary>
