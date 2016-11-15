@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
@@ -12,10 +13,19 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork
         {
             return new UnitOfWorkRegistryStub();
         }
-        protected static UnitOfWorkProviderBase CreateUnitOfWorkProviderStub(IUnitOfWorkRegistry unitOfWorkRegistry, IUnitOfWork newUnitOfWork = null)
+
+        protected static UnitOfWorkProviderBase CreateUnitOfWorkProviderStub(IUnitOfWork newUnitOfWork, IUnitOfWorkRegistry unitOfWorkRegistry = null)
         {
-            return new UnitOfWorkProviderBaseStub(unitOfWorkRegistry, newUnitOfWork ?? new Mock<IUnitOfWork>().Object);
+            return CreateUnitOfWorkProviderStub(() => newUnitOfWork, unitOfWorkRegistry);
         }
+
+        protected static UnitOfWorkProviderBase CreateUnitOfWorkProviderStub(Func<IUnitOfWork> newUnitOfWorkFactory = null, IUnitOfWorkRegistry unitOfWorkRegistry = null)
+        {
+            unitOfWorkRegistry = unitOfWorkRegistry ?? CreateUnitOfWorkRegistryStub();
+            newUnitOfWorkFactory = newUnitOfWorkFactory ?? (() => new Mock<IUnitOfWork>().Object);
+            return new UnitOfWorkProviderBaseStub(unitOfWorkRegistry, newUnitOfWorkFactory);
+        }
+
         protected static UnitOfWorkBase CreateUnitOfWorkStub()
         {
             return new UnitOfWorkBaseStub();
@@ -38,16 +48,16 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork
 
         private class UnitOfWorkProviderBaseStub : UnitOfWorkProviderBase
         {
-            private readonly IUnitOfWork newUnitOfWork;
+            private readonly Func<IUnitOfWork> newUnitOfWorkFactory;
 
-            public UnitOfWorkProviderBaseStub(IUnitOfWorkRegistry registry, IUnitOfWork newUnitOfWork = null) : base(registry)
+            public UnitOfWorkProviderBaseStub(IUnitOfWorkRegistry registry, Func<IUnitOfWork> newUnitOfWorkFactory) : base(registry)
             {
-                this.newUnitOfWork = newUnitOfWork;
+                this.newUnitOfWorkFactory = newUnitOfWorkFactory;
             }
 
             protected override IUnitOfWork CreateUnitOfWork(object parameter)
             {
-                return newUnitOfWork ?? new Mock<IUnitOfWork>().Object;
+                return newUnitOfWorkFactory();
             }
         }
 
