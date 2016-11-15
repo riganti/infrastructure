@@ -2,7 +2,7 @@
 using System.Globalization;
 using Xunit;
 
-namespace Riganti.Utils.Infrastructure.Core.Tests
+namespace Riganti.Utils.Infrastructure.Core.Tests.Helpers
 {
     public class RigantiNullableHelpersTests
     {
