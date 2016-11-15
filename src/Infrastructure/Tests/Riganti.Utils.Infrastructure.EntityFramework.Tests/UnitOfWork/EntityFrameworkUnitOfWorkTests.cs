@@ -146,7 +146,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
         }
         
         [Fact]
-        public void TryGetDbContext_UOWHasNotParrent_CallCommitCore2()
+        public void TryGetDbContext_UnitOfWorkRegistryHasUnitOfWork_ReturnCorrectDbContext()
         {
             var dbContext = new Mock<DbContext>().Object;
             Func<DbContext> dbContextFactory = () => dbContext;
@@ -162,7 +162,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
         }
 
         [Fact]
-        public void TryGetDbContext_UOWHasNotParrent_CallCommitCore()
+        public void TryGetDbContext_UnitOfWorkRegistryHasNotUnitOfWork_ThrowsException()
         {
             var dbContext = new Mock<DbContext>().Object;
             Func<DbContext> dbContextFactory = () => dbContext;
