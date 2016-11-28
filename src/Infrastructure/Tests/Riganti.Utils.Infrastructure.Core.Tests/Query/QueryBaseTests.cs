@@ -106,6 +106,28 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
         }
 
         [Fact]
+        public async Task GetTotalRowCountAsync_ReturnsDataCount()
+        {
+            var querySUT = CreateQueryBaseStub();
+
+            var rowCount = await querySUT.GetTotalRowCountAsync();
+
+            Assert.Equal(customers.Count(), rowCount);
+        }
+
+        [Fact]
+        public async Task GetTotalRowCountAsync_SkipAndTakeIsSet_ReturnsDataCount()
+        {
+            var querySUT = CreateQueryBaseStub();
+            querySUT.Skip = 1;
+            querySUT.Take = 2;
+
+            var rowCount = await querySUT.GetTotalRowCountAsync();
+
+            Assert.Equal(customers.Count(), rowCount);
+        }
+
+        [Fact]
         public void Execute_ReturnsWholeData()
         {
             var querySUT = CreateQueryBaseStub();
@@ -148,6 +170,11 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
             protected override IQueryable<CustomerTestData> GetQueryable()
             {
                 return customers;
+            }
+            
+            public override Task<int> GetTotalRowCountAsync(CancellationToken cancellationToken)
+            {
+                return Task.FromResult(GetQueryable().Count());
             }
         }
     }

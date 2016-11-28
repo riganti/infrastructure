@@ -59,5 +59,15 @@ namespace Riganti.Utils.Infrastructure.Core
         /// </summary>
         int GetTotalRowCount();
 
+        /// <summary>
+        /// Gets the total row count without respect to paging.
+        /// </summary>
+        Task<int> GetTotalRowCountAsync();
+
+        /// <summary>
+        /// Gets the total row count without respect to paging.
+        /// </summary>
+        Task<int> GetTotalRowCountAsync(CancellationToken cancellationToken);
+
     }
 }

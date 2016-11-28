@@ -99,6 +99,12 @@ namespace Riganti.Utils.Infrastructure.Core
         {
             return GetQueryable().Count();
         }
+        public Task<int> GetTotalRowCountAsync()
+        {
+           return GetTotalRowCountAsync(CancellationToken.None);
+        }
+
+        public abstract Task<int> GetTotalRowCountAsync(CancellationToken cancellationToken);
 
         private void AddSortCriteriaCore<TKey>(Expression<Func<TResult, TKey>> sortExpression, SortDirection direction)
         {

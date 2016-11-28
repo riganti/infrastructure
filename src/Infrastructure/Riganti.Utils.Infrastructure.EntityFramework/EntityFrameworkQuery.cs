@@ -34,5 +34,10 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         {
             return await query.ToListAsync(cancellationToken);
         }
+
+        public override async Task<int> GetTotalRowCountAsync(CancellationToken cancellationToken)
+        {
+            return await GetQueryable().CountAsync(cancellationToken);
+        }
     }
 }
