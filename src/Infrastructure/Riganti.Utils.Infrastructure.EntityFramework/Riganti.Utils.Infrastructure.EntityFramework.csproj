@@ -53,7 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbContextOptions.cs" />
-    <Compile Include="EntityFrameworkFilteredQuery.cs" />
     <Compile Include="EntityFrameworkQuery.cs" />
     <Compile Include="EntityFrameworkRepository.cs" />
     <Compile Include="EntityFrameworkUnitOfWork.cs" />
