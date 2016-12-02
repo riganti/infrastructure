@@ -1,8 +1,8 @@
 param([String]$version, [String]$apiKey, [String]$server)
 
-del ..\Riganti.Utils.Infrastructure.Core\bin\debug\*.nupkg
-del ..\Riganti.Utils.Infrastructure.EntityFrameworkCore\bin\debug\*.nupkg
-del ..\Riganti.Utils.Infrastructure.Services\bin\debug\*.nupkg
+del ..\Riganti.Utils.Infrastructure.Core\bin\debug\*.nupkg -ErrorAction SilentlyContinue
+del ..\Riganti.Utils.Infrastructure.EntityFrameworkCore\bin\debug\*.nupkg -ErrorAction SilentlyContinue
+del ..\Riganti.Utils.Infrastructure.Services\bin\debug\*.nupkg -ErrorAction SilentlyContinue
 
 $filePath = "..\Riganti.Utils.Infrastructure.Core\project.json"
 $file = [System.IO.File]::ReadAllText($filePath, [System.Text.Encoding]::UTF8)
