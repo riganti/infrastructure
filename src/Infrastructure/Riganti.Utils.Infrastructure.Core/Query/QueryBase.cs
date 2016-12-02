@@ -44,12 +44,12 @@ namespace Riganti.Utils.Infrastructure.Core
         public void AddSortCriteria(string fieldName, SortDirection direction = SortDirection.Ascending)
         {
             // create the expression
-            var prop = typeof(TResult).GetProperty(fieldName);
+            var prop = typeof(TResult).GetTypeInfo().GetProperty(fieldName);
             var param = Expression.Parameter(typeof(TResult), "i");
             var expr = Expression.Lambda(Expression.Property(param, prop), param);
 
             // call the method
-            typeof(QueryBase<TResult>).GetMethod(nameof(AddSortCriteriaCore),
+            typeof(QueryBase<TResult>).GetTypeInfo().GetMethod(nameof(AddSortCriteriaCore),
                     BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(prop.PropertyType)
                 .Invoke(this, new object[] {expr, direction});
         }

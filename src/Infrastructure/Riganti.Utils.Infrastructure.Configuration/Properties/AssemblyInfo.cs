@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Riganti.Utils.Infrastructure.Services.Azure")]
+[assembly: AssemblyProduct("Riganti.Utils.Infrastructure.Configuration")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -16,4 +16,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("3f402d39-8f19-4fba-b168-d33fb6102598")]
+[assembly: Guid("bd3db4d8-eb71-4e5a-9e0f-cf8494893e4d")]

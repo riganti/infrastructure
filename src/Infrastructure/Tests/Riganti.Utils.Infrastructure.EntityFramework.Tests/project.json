@@ -1,0 +1,30 @@
+﻿{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+
+  "testRunner": "xunit",
+
+  "frameworks": {
+    "net461": {
+      "dependencies": {
+        "xunit": "2.2.0-beta4-build3444",
+        "dotnet-test-xunit": "2.2.0-preview2-build1029",
+        "EntityFramework": "6.1.3",
+        "moq": "4.5.28",
+        "Riganti.Utils.Infrastructure.Core": {
+          "target": "project"
+        },
+        "Riganti.Utils.Infrastructure.EntityFramework": {
+          "target": "project"
+        },
+        "Riganti.Utils.Infrastructure.Services": {
+          "target": "project"
+        }
+      },
+      "frameworkAssemblies": {
+      }
+    }
+  }
+}

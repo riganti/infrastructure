@@ -13,8 +13,8 @@ namespace Riganti.Utils.Infrastructure.Core
 
         static QueryFilterExtensions()
         {
-            containsMethod = typeof(string).GetMethod("Contains", new [] { typeof(string) });
-            startsWithMethod = typeof(string).GetMethod("StartsWith", new [] { typeof(string) });
+            containsMethod = typeof(string).GetTypeInfo().GetMethod("Contains", new [] { typeof(string) });
+            startsWithMethod = typeof(string).GetTypeInfo().GetMethod("StartsWith", new [] { typeof(string) });
         }
 
 

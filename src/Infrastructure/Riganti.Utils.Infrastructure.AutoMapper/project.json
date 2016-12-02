@@ -1,0 +1,23 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "frameworks": {
+    "net461": {
+      "dependencies": {
+        "AutoMapper": "5.0.2",
+        "EntityFramework": "6.1.3",
+        "Riganti.Utils.Infrastructure.Core": {
+          "target": "project"
+        },
+        "Riganti.Utils.Infrastructure.EntityFramework": {
+          "target": "project"
+        },
+        "Riganti.Utils.Infrastructure.Services": {
+          "target": "project"
+        }
+      },
+      "frameworkAssemblies": {
+      }
+    }
+  }
+}

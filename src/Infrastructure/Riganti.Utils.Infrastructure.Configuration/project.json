@@ -1,0 +1,16 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "frameworks": {
+    "net461": {
+      "dependencies": {
+        "Riganti.Utils.Infrastructure.Core": {
+          "target": "project"
+        }
+      },
+      "frameworkAssemblies": {
+        "System.Configuration": ""
+      }
+    }
+  }
+}

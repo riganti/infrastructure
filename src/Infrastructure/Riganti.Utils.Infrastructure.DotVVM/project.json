@@ -1,0 +1,19 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "frameworks": {
+    "net461": {
+      "dependencies": {
+        "DotVVM": "1.0.5", 
+        "Riganti.Utils.Infrastructure.Core": {
+          "target": "project"
+        },
+        "Riganti.Utils.Infrastructure.Services": {
+          "target": "project"
+        }
+      },
+      "frameworkAssemblies": {
+      }
+    }
+  }
+}

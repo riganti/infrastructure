@@ -1,0 +1,20 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "System.Linq.Queryable": "4.3.0",
+        "System.Linq.Expressions": "4.3.0",
+        "System.Threading.Tasks": "4.3.0",
+        "System.Reflection": "4.3.0"
+      }
+    },
+    "net461": {
+    } 
+  }
+}

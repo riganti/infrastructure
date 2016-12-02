@@ -3,23 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.Core", "Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj", "{EBA57E7A-0552-4B0A-BF69-BD27CCE9F608}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.EntityFramework", "Riganti.Utils.Infrastructure.EntityFramework\Riganti.Utils.Infrastructure.EntityFramework.csproj", "{DA0AB05C-4934-43CE-BC53-3BEB9FD8BFE3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.Services", "Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj", "{30199304-A0F2-491A-BF56-0476336BE444}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.DotVVM", "Riganti.Utils.Infrastructure.DotVVM\Riganti.Utils.Infrastructure.DotVVM.csproj", "{046C4C4A-E0AB-4EA3-BE75-9914DD581678}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.AutoMapper", "Riganti.Utils.Infrastructure.AutoMapper\Riganti.Utils.Infrastructure.AutoMapper.csproj", "{712E6C09-26C1-40EE-A6C0-F3F63EE89BBB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.Services.Azure", "Riganti.Utils.Infrastructure.Services.Azure\Riganti.Utils.Infrastructure.Services.Azure.csproj", "{D7288BE0-CD42-43AE-AD4E-AFC2106FD74A}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.Core.Tests", "Tests\Riganti.Utils.Infrastructure.Core.Tests\Riganti.Utils.Infrastructure.Core.Tests.csproj", "{E785FC50-B552-455D-9AF7-3199E6C3F2C2}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.Core", "Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.xproj", "{4D05D923-BFE1-45F6-804B-9A820678EE23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.EntityFramework.Tests", "Tests\Riganti.Utils.Infrastructure.EntityFramework.Tests\Riganti.Utils.Infrastructure.EntityFramework.Tests.csproj", "{8BCEE5ED-FF3B-41E0-ADB4-D25C161EA94F}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.Configuration", "Riganti.Utils.Infrastructure.Configuration\Riganti.Utils.Infrastructure.Configuration.xproj", "{BD3DB4D8-EB71-4E5A-9E0F-CF8494893E4D}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.Web", "Riganti.Utils.Infrastructure.Web\Riganti.Utils.Infrastructure.Web.xproj", "{51A10483-6667-47B1-B16C-E4E4E1E27097}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.EntityFramework", "Riganti.Utils.Infrastructure.EntityFramework\Riganti.Utils.Infrastructure.EntityFramework.xproj", "{DD81B607-01D5-46B6-839D-2E068BB6AFCC}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.Services", "Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.xproj", "{4480D5CB-3FED-46B7-B640-25C1B5315A28}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.Services.Azure", "Riganti.Utils.Infrastructure.Services.Azure\Riganti.Utils.Infrastructure.Services.Azure.xproj", "{3F402D39-8F19-4FBA-B168-D33FB6102598}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.AutoMapper", "Riganti.Utils.Infrastructure.AutoMapper\Riganti.Utils.Infrastructure.AutoMapper.xproj", "{65CC1CEA-E110-40CE-A42A-2B5B2E2D5058}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.DotVVM", "Riganti.Utils.Infrastructure.DotVVM\Riganti.Utils.Infrastructure.DotVVM.xproj", "{9292CE0D-254D-4E6E-842F-160AF103EA43}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.Core.Tests", "Tests\Riganti.Utils.Infrastructure.Core.Tests\Riganti.Utils.Infrastructure.Core.Tests.xproj", "{BFC74F73-FA8A-4D61-BA7D-E3D5476F6E87}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.EntityFramework.Tests", "Tests\Riganti.Utils.Infrastructure.EntityFramework.Tests\Riganti.Utils.Infrastructure.EntityFramework.Tests.xproj", "{08A731F6-DC7F-427E-9CBB-007D33CB4491}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,44 +31,52 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EBA57E7A-0552-4B0A-BF69-BD27CCE9F608}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EBA57E7A-0552-4B0A-BF69-BD27CCE9F608}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EBA57E7A-0552-4B0A-BF69-BD27CCE9F608}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EBA57E7A-0552-4B0A-BF69-BD27CCE9F608}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DA0AB05C-4934-43CE-BC53-3BEB9FD8BFE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DA0AB05C-4934-43CE-BC53-3BEB9FD8BFE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DA0AB05C-4934-43CE-BC53-3BEB9FD8BFE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DA0AB05C-4934-43CE-BC53-3BEB9FD8BFE3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{30199304-A0F2-491A-BF56-0476336BE444}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{30199304-A0F2-491A-BF56-0476336BE444}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{30199304-A0F2-491A-BF56-0476336BE444}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{30199304-A0F2-491A-BF56-0476336BE444}.Release|Any CPU.Build.0 = Release|Any CPU
-		{046C4C4A-E0AB-4EA3-BE75-9914DD581678}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{046C4C4A-E0AB-4EA3-BE75-9914DD581678}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{046C4C4A-E0AB-4EA3-BE75-9914DD581678}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{046C4C4A-E0AB-4EA3-BE75-9914DD581678}.Release|Any CPU.Build.0 = Release|Any CPU
-		{712E6C09-26C1-40EE-A6C0-F3F63EE89BBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{712E6C09-26C1-40EE-A6C0-F3F63EE89BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{712E6C09-26C1-40EE-A6C0-F3F63EE89BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{712E6C09-26C1-40EE-A6C0-F3F63EE89BBB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7288BE0-CD42-43AE-AD4E-AFC2106FD74A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7288BE0-CD42-43AE-AD4E-AFC2106FD74A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7288BE0-CD42-43AE-AD4E-AFC2106FD74A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7288BE0-CD42-43AE-AD4E-AFC2106FD74A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E785FC50-B552-455D-9AF7-3199E6C3F2C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E785FC50-B552-455D-9AF7-3199E6C3F2C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E785FC50-B552-455D-9AF7-3199E6C3F2C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E785FC50-B552-455D-9AF7-3199E6C3F2C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8BCEE5ED-FF3B-41E0-ADB4-D25C161EA94F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8BCEE5ED-FF3B-41E0-ADB4-D25C161EA94F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8BCEE5ED-FF3B-41E0-ADB4-D25C161EA94F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8BCEE5ED-FF3B-41E0-ADB4-D25C161EA94F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D05D923-BFE1-45F6-804B-9A820678EE23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D05D923-BFE1-45F6-804B-9A820678EE23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D05D923-BFE1-45F6-804B-9A820678EE23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D05D923-BFE1-45F6-804B-9A820678EE23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD3DB4D8-EB71-4E5A-9E0F-CF8494893E4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD3DB4D8-EB71-4E5A-9E0F-CF8494893E4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD3DB4D8-EB71-4E5A-9E0F-CF8494893E4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD3DB4D8-EB71-4E5A-9E0F-CF8494893E4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51A10483-6667-47B1-B16C-E4E4E1E27097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51A10483-6667-47B1-B16C-E4E4E1E27097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51A10483-6667-47B1-B16C-E4E4E1E27097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51A10483-6667-47B1-B16C-E4E4E1E27097}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD81B607-01D5-46B6-839D-2E068BB6AFCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD81B607-01D5-46B6-839D-2E068BB6AFCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD81B607-01D5-46B6-839D-2E068BB6AFCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD81B607-01D5-46B6-839D-2E068BB6AFCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4480D5CB-3FED-46B7-B640-25C1B5315A28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4480D5CB-3FED-46B7-B640-25C1B5315A28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4480D5CB-3FED-46B7-B640-25C1B5315A28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4480D5CB-3FED-46B7-B640-25C1B5315A28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65CC1CEA-E110-40CE-A42A-2B5B2E2D5058}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65CC1CEA-E110-40CE-A42A-2B5B2E2D5058}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65CC1CEA-E110-40CE-A42A-2B5B2E2D5058}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65CC1CEA-E110-40CE-A42A-2B5B2E2D5058}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9292CE0D-254D-4E6E-842F-160AF103EA43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9292CE0D-254D-4E6E-842F-160AF103EA43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9292CE0D-254D-4E6E-842F-160AF103EA43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9292CE0D-254D-4E6E-842F-160AF103EA43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFC74F73-FA8A-4D61-BA7D-E3D5476F6E87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFC74F73-FA8A-4D61-BA7D-E3D5476F6E87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFC74F73-FA8A-4D61-BA7D-E3D5476F6E87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFC74F73-FA8A-4D61-BA7D-E3D5476F6E87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08A731F6-DC7F-427E-9CBB-007D33CB4491}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08A731F6-DC7F-427E-9CBB-007D33CB4491}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08A731F6-DC7F-427E-9CBB-007D33CB4491}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08A731F6-DC7F-427E-9CBB-007D33CB4491}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{E785FC50-B552-455D-9AF7-3199E6C3F2C2} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
-		{8BCEE5ED-FF3B-41E0-ADB4-D25C161EA94F} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
+		{BFC74F73-FA8A-4D61-BA7D-E3D5476F6E87} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
+		{08A731F6-DC7F-427E-9CBB-007D33CB4491} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 	EndGlobalSection
 EndGlobal
