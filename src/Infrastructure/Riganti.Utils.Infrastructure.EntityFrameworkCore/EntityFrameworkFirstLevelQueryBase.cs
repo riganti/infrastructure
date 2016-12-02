@@ -5,11 +5,11 @@ using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
 {
-    public class FirstLevelQueryBase<TEntity> : IFirstLevelQuery<TEntity> where TEntity : class
+    public class EntityFrameworkFirstLevelQueryBase<TEntity> : IFirstLevelQuery<TEntity> where TEntity : class
     {
         private readonly IUnitOfWorkProvider unitOfWorkProvider;
 
-        public FirstLevelQueryBase(IUnitOfWorkProvider unitOfWorkProvider)
+        public EntityFrameworkFirstLevelQueryBase(IUnitOfWorkProvider unitOfWorkProvider)
         {
             this.unitOfWorkProvider = unitOfWorkProvider;
         }

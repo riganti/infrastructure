@@ -9,11 +9,35 @@ namespace Riganti.Utils.Infrastructure.Core
     /// </summary>
     public abstract class UnitOfWorkRegistryBase : IUnitOfWorkRegistry
     {
+        private readonly IUnitOfWorkRegistry alternateRegistry;
+
+        /// <summary>
+        /// Gets the alternate registry and throws an exception when there is no such registry configured.
+        /// </summary>
+        protected IUnitOfWorkRegistry AlternateRegistry
+        {
+            get
+            {
+                if (alternateRegistry == null)
+                {
+                    throw new InvalidOperationException($"The {GetType()} was not able to provide current unit of work and there is no alternate registry configured!");
+                }
+                return alternateRegistry;
+            }
+        }
+
+        public UnitOfWorkRegistryBase(IUnitOfWorkRegistry alternateRegistry = null)
+        {
+            this.alternateRegistry = alternateRegistry;
+        }
+
 
         /// <summary>
         /// Gets the stack of currently active unit of work objects.
+        /// If the registry is unable to provide such stack, it should return null to let the caller to use alternate registry.
         /// </summary>
-        protected internal abstract Stack<IUnitOfWork> GetStack();
+        protected abstract Stack<IUnitOfWork> GetStack();
+
 
         /// <summary>
         /// Registers a new unit of work.
@@ -21,7 +45,14 @@ namespace Riganti.Utils.Infrastructure.Core
         public void RegisterUnitOfWork(IUnitOfWork unitOfWork)
         {
             var unitOfWorkStack = GetStack();
-            unitOfWorkStack.Push(unitOfWork);
+            if (unitOfWorkStack == null)
+            {
+                AlternateRegistry.RegisterUnitOfWork(unitOfWork);
+            }
+            else
+            {
+                unitOfWorkStack.Push(unitOfWork);
+            }
         }
 
         /// <summary>
@@ -30,14 +61,21 @@ namespace Riganti.Utils.Infrastructure.Core
         public void UnregisterUnitOfWork(IUnitOfWork unitOfWork)
         {
             var unitOfWorkStack = GetStack();
-            if (unitOfWorkStack.Any())
+            if (unitOfWorkStack == null)
             {
-                if (unitOfWorkStack.Pop() == unitOfWork)
-                {
-                    return;
-                }
+                AlternateRegistry.UnregisterUnitOfWork(unitOfWork);
             }
-            throw new InvalidOperationException("Some of the unit of works was not disposed correctly!");
+            else
+            {
+                if (unitOfWorkStack.Any())
+                {
+                    if (unitOfWorkStack.Pop() == unitOfWork)
+                    {
+                        return;
+                    }
+                }
+                throw new InvalidOperationException("Some of the unit of works was not disposed correctly!");
+            }
         }
 
         /// <summary>
@@ -46,6 +84,11 @@ namespace Riganti.Utils.Infrastructure.Core
         public IUnitOfWork GetCurrent()
         {
             var unitOfWorkStack = GetStack();
+            if (unitOfWorkStack == null)
+            {
+                return AlternateRegistry.GetCurrent();
+            }
+
             if (unitOfWorkStack.Count == 0)
             {
                 return null;

@@ -9,8 +9,6 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructur
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.Configuration", "Riganti.Utils.Infrastructure.Configuration\Riganti.Utils.Infrastructure.Configuration.xproj", "{BD3DB4D8-EB71-4E5A-9E0F-CF8494893E4D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.Web", "Riganti.Utils.Infrastructure.Web\Riganti.Utils.Infrastructure.Web.xproj", "{51A10483-6667-47B1-B16C-E4E4E1E27097}"
-EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.EntityFramework", "Riganti.Utils.Infrastructure.EntityFramework\Riganti.Utils.Infrastructure.EntityFramework.xproj", "{DD81B607-01D5-46B6-839D-2E068BB6AFCC}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.Services", "Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.xproj", "{4480D5CB-3FED-46B7-B640-25C1B5315A28}"
@@ -27,6 +25,10 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructur
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.EntityFrameworkCore", "Riganti.Utils.Infrastructure.EntityFrameworkCore\Riganti.Utils.Infrastructure.EntityFrameworkCore.xproj", "{4C3C2489-F54A-4F0C-96E9-41E8809CCFB7}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.SystemWeb", "Riganti.Utils.Infrastructure.SystemWeb\Riganti.Utils.Infrastructure.SystemWeb.xproj", "{51A10483-6667-47B1-B16C-E4E4E1E27097}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Riganti.Utils.Infrastructure.AspNetCore", "Riganti.Utils.Infrastructure.AspNetCore\Riganti.Utils.Infrastructure.AspNetCore.xproj", "{5B65C8A0-D2EA-49B9-9EC8-71FB3EA490FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,10 +43,6 @@ Global
 		{BD3DB4D8-EB71-4E5A-9E0F-CF8494893E4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD3DB4D8-EB71-4E5A-9E0F-CF8494893E4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD3DB4D8-EB71-4E5A-9E0F-CF8494893E4D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{51A10483-6667-47B1-B16C-E4E4E1E27097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{51A10483-6667-47B1-B16C-E4E4E1E27097}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{51A10483-6667-47B1-B16C-E4E4E1E27097}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{51A10483-6667-47B1-B16C-E4E4E1E27097}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DD81B607-01D5-46B6-839D-2E068BB6AFCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DD81B607-01D5-46B6-839D-2E068BB6AFCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD81B607-01D5-46B6-839D-2E068BB6AFCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -77,6 +75,14 @@ Global
 		{4C3C2489-F54A-4F0C-96E9-41E8809CCFB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C3C2489-F54A-4F0C-96E9-41E8809CCFB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C3C2489-F54A-4F0C-96E9-41E8809CCFB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51A10483-6667-47B1-B16C-E4E4E1E27097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51A10483-6667-47B1-B16C-E4E4E1E27097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51A10483-6667-47B1-B16C-E4E4E1E27097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51A10483-6667-47B1-B16C-E4E4E1E27097}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B65C8A0-D2EA-49B9-9EC8-71FB3EA490FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B65C8A0-D2EA-49B9-9EC8-71FB3EA490FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B65C8A0-D2EA-49B9-9EC8-71FB3EA490FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B65C8A0-D2EA-49B9-9EC8-71FB3EA490FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
