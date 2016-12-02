@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 
 namespace Riganti.Utils.Infrastructure.Services.Logging
@@ -7,8 +8,8 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
     {
         public void ExtractAdditinalData(IDictionary<string, string> additionalData)
         {
-            additionalData["CurrentCulture"] = Thread.CurrentThread.CurrentCulture.DisplayName;
-            additionalData["CurrentUICulture"] = Thread.CurrentThread.CurrentUICulture.DisplayName;
+            additionalData["CurrentCulture"] = CultureInfo.CurrentCulture.DisplayName;
+            additionalData["CurrentUICulture"] = CultureInfo.CurrentUICulture.DisplayName;
         }
     }
 }

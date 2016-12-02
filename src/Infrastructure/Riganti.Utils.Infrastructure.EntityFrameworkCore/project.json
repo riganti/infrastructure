@@ -2,18 +2,16 @@
   "version": "2.0.0-*",
 
   "dependencies": {
+    "NETStandard.Library": "1.6.1",
+    "Microsoft.EntityFrameworkCore": "1.1.0",
     "Riganti.Utils.Infrastructure.Core": {
       "target": "project"
     }
   },
 
   "frameworks": {
-    "net461": {
-    },
     "netstandard1.6": {
-      "dependencies": {
-        "Microsoft.CSharp": "4.3.0" 
-      }
+      "imports": "dnxcore50"
     }
   }
 }

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Riganti.Utils.Infrastructure.Core;
 
-namespace Riganti.Utils.Infrastructure.EntityFramework
+namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
 {
     /// <summary>
     /// A base implementation of a repository in Entity Framework.

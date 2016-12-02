@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Mail;
 
 namespace Riganti.Utils.Infrastructure.Services.Mailing
 {
@@ -14,7 +13,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
         /// <summary>
         /// Gets or sets the From address.
         /// </summary>
-        public string FromAddress { get; set; }
+        public MailAddressDTO From { get; set; }
 
         /// <summary>
         /// Gets or sets the format string with the {0} placeholder. If this property is set, the message subject will be placed in this placeholder.
@@ -31,7 +30,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
         /// Gets or sets the e-mail address (or comma-separated addresses) where all e-mails will be sent, instead of the real message recipients.
         /// This property is used in the test environments to redirect all e-mails to one common test mailbox.
         /// </summary>
-        public string OverrideToAddresses { get; set; }
+        public ICollection<MailAddressDTO> OverrideToAddresses { get; set; }
         
 
 
@@ -48,7 +47,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
             IEnumerable<string> ccAddresses = null, 
             IEnumerable<string> bccAddresses = null,
             IEnumerable<string> replyToAddresses = null,
-            IEnumerable<Attachment> attachments = null  
+            IEnumerable<AttachmentDTO> attachments = null  
         )
         {
             SendMail(new [] { to }, subject, body, ccAddresses, bccAddresses, replyToAddresses, attachments);
@@ -61,60 +60,58 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
             IEnumerable<string> ccAddresses = null,
             IEnumerable<string> bccAddresses = null,
             IEnumerable<string> replyToAddresses = null,
-            IEnumerable<Attachment> attachments = null
+            IEnumerable<AttachmentDTO> attachments = null
         )
         {
-            using (var message = new MailMessage())
+            var message = new MailMessageDTO();
+            foreach (var recipient in to)
             {
-                foreach (var recipient in to)
-                {
-                    message.To.Add(recipient);
-                }
-                message.Subject = subject;
-                message.Body = body;
-                message.IsBodyHtml = true;
-
-                if (ccAddresses != null)
-                {
-                    foreach (var address in ccAddresses)
-                    {
-                        message.CC.Add(address);
-                    }
-                }
-                if (bccAddresses != null)
-                {
-                    foreach (var address in bccAddresses)
-                    {
-                        message.Bcc.Add(address);
-                    }
-                }
-                if (replyToAddresses != null)
-                {
-                    foreach (var address in replyToAddresses)
-                    {
-                        message.ReplyToList.Add(address);
-                    }
-                }
-                if (attachments != null)
-                {
-                    foreach (var attachment in attachments)
-                    {
-                        message.Attachments.Add(attachment);
-                    }
-                }
-
-                SendMail(message);
+                message.To.Add(new MailAddressDTO(recipient));
             }
+            message.Subject = subject;
+            message.Body = body;
+            message.IsBodyHtml = true;
+
+            if (ccAddresses != null)
+            {
+                foreach (var address in ccAddresses)
+                {
+                    message.Cc.Add(new MailAddressDTO(address));
+                }
+            }
+            if (bccAddresses != null)
+            {
+                foreach (var address in bccAddresses)
+                {
+                    message.Bcc.Add(new MailAddressDTO(address));
+                }
+            }
+            if (replyToAddresses != null)
+            {
+                foreach (var address in replyToAddresses)
+                {
+                    message.ReplyTo.Add(new MailAddressDTO(address));
+                }
+            }
+            if (attachments != null)
+            {
+                foreach (var attachment in attachments)
+                {
+                    message.Attachments.Add(attachment);
+                }
+            }
+
+            SendMail(message);
         }
 
         /// <summary>
         /// Sends a specified e-mail message.
         /// </summary>
-        public void SendMail(MailMessage message)
+        public void SendMail(MailMessageDTO message)
         {
-            if (!string.IsNullOrEmpty(FromAddress))
+            if (From != null)
             {
-                message.From = new MailAddress(FromAddress);
+                message.From = From;
             }
             if (!string.IsNullOrEmpty(SubjectFormatString))
             {
@@ -125,13 +122,13 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
                 message.Body = string.Format(GlobalTemplateFormatString, message.Body);
             }
 
-            if (!string.IsNullOrEmpty(OverrideToAddresses))
+            if (OverrideToAddresses != null)
             {
                 message.To.Clear();
-                message.CC.Clear();
+                message.Cc.Clear();
                 message.Bcc.Clear();
 
-                foreach (var address in OverrideToAddresses.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var address in OverrideToAddresses)
                 {
                     message.To.Add(address);
                 }
