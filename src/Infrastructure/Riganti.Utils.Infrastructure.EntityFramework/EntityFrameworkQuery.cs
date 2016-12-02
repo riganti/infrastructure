@@ -17,7 +17,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkQuery{TResult}"/> class.
         /// </summary>
-        public EntityFrameworkQuery(IUnitOfWorkProvider provider)
+        protected EntityFrameworkQuery(IUnitOfWorkProvider provider)
         {
             this.provider = provider;
         }
@@ -25,10 +25,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// <summary>
         /// Gets the <see cref="DbContext"/>.
         /// </summary>
-        protected DbContext Context
-        {
-            get { return EntityFrameworkUnitOfWork.TryGetDbContext(provider); }
-        }
+        protected virtual DbContext Context => EntityFrameworkUnitOfWork.TryGetDbContext(provider);
 
         protected override async Task<IList<TResult>> ExecuteQueryAsync(IQueryable<TResult> query, CancellationToken cancellationToken)
         {
