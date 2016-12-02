@@ -20,10 +20,13 @@ $file = [System.Text.RegularExpressions.Regex]::Replace($file, """version"": ""(
 [System.IO.File]::WriteAllText($filePath, $file, [System.Text.Encoding]::UTF8)
 
 cd ..\Riganti.Utils.Infrastructure.Core
+& dotnet restore
 & dotnet pack
 cd ..\Riganti.Utils.Infrastructure.EntityFrameworkCore
+& dotnet restore
 & dotnet pack
 cd ..\Riganti.Utils.Infrastructure.Services
+& dotnet restore
 & dotnet pack
 cd ..\_nuget
 
