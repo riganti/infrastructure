@@ -37,6 +37,9 @@ $file = [System.IO.File]::ReadAllText($filePath, [System.Text.Encoding]::UTF8)
 $file = [System.Text.RegularExpressions.Regex]::Replace($file, """version"": ""([^""]+)""", """version"": """ + $version + """")
 [System.IO.File]::WriteAllText($filePath, $file, [System.Text.Encoding]::UTF8)
 
+cd ..\Riganti.Utils.Infrastructure.EntityFramework
+& dotnet restore
+
 cd ..\Riganti.Utils.Infrastructure.Core
 & dotnet restore
 & dotnet pack
