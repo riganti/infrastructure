@@ -1,18 +1,23 @@
 ﻿{
   "version": "2.0.0-*",
+  "dependencies": {
+    "Riganti.Utils.Infrastructure.Core": {
+      "target": "project"
+    },
+    "Riganti.Utils.Infrastructure.Services": {
+      "target": "project"
+    }
+  },
 
   "frameworks": {
+    "netstandard1.6": {
+      "dependencies": {
+        "DotVVM.Core": "1.1-alpha" 
+      } 
+    },
     "net461": {
       "dependencies": {
-        "DotVVM": "1.0.5", 
-        "Riganti.Utils.Infrastructure.Core": {
-          "target": "project"
-        },
-        "Riganti.Utils.Infrastructure.Services": {
-          "target": "project"
-        }
-      },
-      "frameworkAssemblies": {
+        "DotVVM.Core": "1.0.5"
       }
     }
   }

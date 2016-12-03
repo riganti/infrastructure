@@ -1,22 +1,36 @@
 ﻿{
   "version": "2.0.0-*",
 
+  "dependencies": {
+    "AutoMapper": "5.0.2",
+    "Riganti.Utils.Infrastructure.Core": {
+      "target": "project"
+    },
+    "Riganti.Utils.Infrastructure.Services": {
+      "target": "project"
+    }
+  },
+
   "frameworks": {
-    "net461": {
+    "netstandard1.6": {
       "dependencies": {
-        "AutoMapper": "5.0.2",
-        "EntityFramework": "6.1.3",
-        "Riganti.Utils.Infrastructure.Core": {
-          "target": "project"
-        },
-        "Riganti.Utils.Infrastructure.EntityFramework": {
-          "target": "project"
-        },
-        "Riganti.Utils.Infrastructure.Services": {
+        "NETStandard.Library": "1.6.1",
+        "Microsoft.EntityFrameworkCore": "1.1.0",
+        "System.Reflection": "4.3.0", 
+        "Riganti.Utils.Infrastructure.EntityFrameworkCore": {
           "target": "project"
         }
       },
-      "frameworkAssemblies": {
+      "buildOptions": {
+        "define": [ "EntityFrameworkCore" ]
+      }
+    },
+    "net461": {
+      "dependencies": {
+        "EntityFramework": "6.1.3",
+        "Riganti.Utils.Infrastructure.EntityFramework": {
+          "target": "project"
+        }
       }
     }
   }

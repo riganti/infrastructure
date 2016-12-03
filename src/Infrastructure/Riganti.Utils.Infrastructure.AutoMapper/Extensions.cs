@@ -5,7 +5,12 @@ using System.Linq.Expressions;
 using System.Reflection;
 using AutoMapper;
 using Riganti.Utils.Infrastructure.Core;
+
+#if EntityFrameworkCore
+using Riganti.Utils.Infrastructure.EntityFrameworkCore;
+#else
 using Riganti.Utils.Infrastructure.EntityFramework;
+#endif
 
 namespace Riganti.Utils.Infrastructure.AutoMapper
 {
@@ -107,10 +112,16 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 };
             }
 
-            var sourceKeyEntityType = typeof(TSourceItem).GetInterfaces().SingleOrDefault(s => s.IsGenericType && s.GetGenericTypeDefinition() == typeof(IEntity<>));
+            var sourceKeyEntityType = typeof(TSourceItem).GetTypeInfo()
+                .GetInterfaces()
+                .Select(s => s.GetTypeInfo())
+                .SingleOrDefault(s => s.IsGenericType && s.GetGenericTypeDefinition() == typeof(IEntity<>));
             var sourceKeyType = sourceKeyEntityType?.GetGenericArguments()[0];
 
-            var destinationKeyEntityType = typeof(TDestinationItem).GetInterfaces().SingleOrDefault(s => s.IsGenericType && s.GetGenericTypeDefinition() == typeof(IEntity<>));
+            var destinationKeyEntityType = typeof(TDestinationItem).GetTypeInfo()
+                .GetInterfaces()
+                .Select(s => s.GetTypeInfo())
+                .SingleOrDefault(s => s.IsGenericType && s.GetGenericTypeDefinition() == typeof(IEntity<>));
             var destinationKeyType = destinationKeyEntityType?.GetGenericArguments()[0];
 
             if (sourceKeyType == null || destinationKeyType == null || sourceKeyType != destinationKeyType)
@@ -123,7 +134,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
             var destinationParam = Expression.Parameter(typeof(TDestinationItem), "i");
             var destinationKeySelector = Expression.Lambda(Expression.Property(destinationParam, nameof(IEntity<int>.Id)), destinationParam);
 
-            var method = typeof(Extensions).GetMethod("SyncCollectionByKeyReflectionOnly", BindingFlags.NonPublic | BindingFlags.Static);
+            var method = typeof(Extensions).GetTypeInfo().GetMethod("SyncCollectionByKeyReflectionOnly", BindingFlags.NonPublic | BindingFlags.Static);
             method.MakeGenericMethod(typeof(TSource), typeof(TSourceItem), typeof(TDestination), typeof(TDestinationItem), sourceKeyType)
                 .Invoke(null, new object[] { config, sourceCollectionSelector, sourceKeySelector, destinationKeySelector, createFunction, updateFunction, removeFunction, true });
         }
