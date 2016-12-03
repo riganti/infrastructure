@@ -2,7 +2,6 @@
 using Riganti.Utils.Infrastructure.Core;
 using Riganti.Utils.Infrastructure.Services.Facades;
 
-// ReSharper disable once CheckNamespace
 namespace Riganti.Utils.Infrastructure
 {
     public static class DotvvmFacadeExtensions
@@ -16,17 +15,8 @@ namespace Riganti.Utils.Infrastructure
         {
             using (facade.UnitOfWorkProvider.Create())
             {
-                facade.Query.Skip = dataSet.PageIndex * dataSet.PageSize;
-                facade.Query.Take = dataSet.PageSize;
-                facade.Query.SortCriteria.Clear();
-
-                if (!string.IsNullOrEmpty(dataSet.SortExpression))
-                {
-                    facade.Query.AddSortCriteria(dataSet.SortExpression, dataSet.SortDescending ? SortDirection.Descending : SortDirection.Ascending);
-                }
-
-                dataSet.TotalItemsCount = facade.Query.GetTotalRowCount();
-                dataSet.Items = facade.Query.Execute();
+                var query = facade.QueryFactory();
+                dataSet.LoadFromQuery(query);
             }    
         }
 
@@ -38,19 +28,28 @@ namespace Riganti.Utils.Infrastructure
         {
             using (facade.UnitOfWorkProvider.Create())
             {
-                facade.Query.Filter = filter;
-                facade.Query.Skip = dataSet.PageIndex * dataSet.PageSize;
-                facade.Query.Take = dataSet.PageSize;
-                facade.Query.SortCriteria.Clear();
-
-                if (!string.IsNullOrEmpty(dataSet.SortExpression))
-                {
-                    facade.Query.AddSortCriteria(dataSet.SortExpression, dataSet.SortDescending ? SortDirection.Descending : SortDirection.Ascending);
-                }
-
-                dataSet.TotalItemsCount = facade.Query.GetTotalRowCount();
-                dataSet.Items = facade.Query.Execute();
+                var query = facade.QueryFactory();
+                query.Filter = filter;
+                dataSet.LoadFromQuery(query);
             }
+        }
+
+        /// <summary>
+        /// Fills the GridViewDataSet from the specified query object.
+        /// </summary>
+        public static void LoadFromQuery<T>(this GridViewDataSet<T> dataSet, IQuery<T> query)
+        {
+            query.Skip = dataSet.PageIndex * dataSet.PageSize;
+            query.Take = dataSet.PageSize;
+            query.SortCriteria.Clear();
+
+            if (!string.IsNullOrEmpty(dataSet.SortExpression))
+            {
+                query.AddSortCriteria(dataSet.SortExpression, dataSet.SortDescending ? SortDirection.Descending : SortDirection.Ascending);
+            }
+
+            dataSet.TotalItemsCount = query.GetTotalRowCount();
+            dataSet.Items = query.Execute();
         }
 
     }

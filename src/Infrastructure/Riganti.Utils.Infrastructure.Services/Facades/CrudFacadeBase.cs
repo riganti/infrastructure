@@ -17,7 +17,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Gets the query object used to populate the list or records.
         /// </summary>
-        public IQuery<TListDTO> Query { get; private set; }
+        public Func<IQuery<TListDTO>> QueryFactory { get; private set; }
 
         /// <summary>
         /// Gets the repository used to perform database operations with the entity.
@@ -33,9 +33,9 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Initializes a new instance of the <see cref="CrudFacadeBase{TEntity, TKey, TListDTO, TDetailDTO}"/> class.
         /// </summary>
-        public CrudFacadeBase(IQuery<TListDTO> query, IRepository<TEntity, TKey> repository, IEntityDTOMapper<TEntity, TDetailDTO> mapper)
+        public CrudFacadeBase(Func<IQuery<TListDTO>> queryFactory, IRepository<TEntity, TKey> repository, IEntityDTOMapper<TEntity, TDetailDTO> mapper)
         {
-            this.Query = query;
+            this.QueryFactory = queryFactory;
             this.Repository = repository;
             this.Mapper = mapper;
         }
@@ -113,10 +113,12 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         {
             using (UnitOfWorkProvider.Create())
             {
-                return Query.Execute();
+                var query = QueryFactory();
+                return query.Execute();
             }
         }
-
+        
+        
         /// <summary>
         /// Transfers the changes on DTO made by the user to the corresponding database entity.
         /// </summary>

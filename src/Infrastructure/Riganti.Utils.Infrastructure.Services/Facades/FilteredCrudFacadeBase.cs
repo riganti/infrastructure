@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.Services.Facades
@@ -16,17 +17,25 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         where TDetailDTO : IEntity<TKey>
     {
 
-        public new IFilteredQuery<TListDTO, TFilterDTO> Query => (IFilteredQuery<TListDTO, TFilterDTO>) base.Query;
+        public new Func<IFilteredQuery<TListDTO, TFilterDTO>> QueryFactory => (Func<IFilteredQuery<TListDTO, TFilterDTO>>) base.QueryFactory;
 
-        public FilteredCrudFacadeBase(IFilteredQuery<TListDTO, TFilterDTO> query, IRepository<TEntity, TKey> repository, IEntityDTOMapper<TEntity, TDetailDTO> mapper) 
-            : base(query, repository, mapper)
+        public FilteredCrudFacadeBase(Func<IFilteredQuery<TListDTO, TFilterDTO>> queryFactory, IRepository<TEntity, TKey> repository, IEntityDTOMapper<TEntity, TDetailDTO> mapper) 
+            : base(queryFactory, repository, mapper)
         {
         }
-        
-        public IEnumerable<TListDTO> GetList(TFilterDTO filter)
+
+        /// <summary>
+        /// Gets the list of the DTOs using the Query object and filter.
+        /// </summary>
+        public virtual IEnumerable<TListDTO> GetList(TFilterDTO filter)
         {
-            Query.Filter = filter;
-            return base.GetList();
+            using (UnitOfWorkProvider.Create())
+            {
+                var query = QueryFactory();
+                query.Filter = filter;
+                return query.Execute();
+            }
         }
+
     }
 }
