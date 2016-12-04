@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Riganti.Utils.Infrastructure.Amazon.SES")]
+[assembly: AssemblyProduct("Riganti.Utils.Infrastructure.Services.Amazon.SES")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
