@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 using Riganti.Utils.Infrastructure.Core;
 using Riganti.Utils.Infrastructure.Services.Mailing;
 
@@ -20,9 +21,9 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
         protected override void LogMessageCore(string message, IDictionary<string, string> additionalData, Severity severity)
         {
             var output = WebUtility.HtmlEncode(message).Replace("\r\n", "<br />").Replace("\r", "<br />").Replace("\n", "<br />");
-            output = $"{dateTimeNowProvider.Now:yyyy-MM-dd HH:mm:ss}<br />" + output; 
+            output = $"{dateTimeNowProvider.Now:yyyy-MM-dd HH:mm:ss}<br />" + output;
 
-            mailerService.SendMail(recipientAddress, "Error Report", output);
+            Task.Run(async () => await mailerService.SendMailAsync(recipientAddress, "Error Report", output));
         }
     }
 }

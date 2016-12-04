@@ -1,22 +1,23 @@
 using System.Net.Mail;
+using System.Threading.Tasks;
 
 namespace Riganti.Utils.Infrastructure.Services.Mailing
 {
-    public class SmtpMailSender : IMailSender
+    public class SmtpClientMailSender : IMailSender
     {
         private readonly SmtpClient client;
 
-        public SmtpMailSender()
+        public SmtpClientMailSender()
         {
             client = new SmtpClient();
         }
 
-        public SmtpMailSender(SmtpClient client)
+        public SmtpClientMailSender(SmtpClient client)
         {
             this.client = client;
         }
 
-        public void Send(MailMessageDTO message)
+        public async Task SendAsync(MailMessageDTO message)
         {
             using (var smtpMessage = new MailMessage())
             {
@@ -46,7 +47,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
                     smtpMessage.Attachments.Add(ConvertAttachment(attachment));
                 }
 
-                client.Send(smtpMessage);
+                await client.SendMailAsync(smtpMessage);
             }
         }
 

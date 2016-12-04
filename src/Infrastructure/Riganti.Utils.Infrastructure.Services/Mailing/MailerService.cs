@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Riganti.Utils.Infrastructure.Services.Mailing
 {
@@ -43,20 +44,20 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
         /// <summary>
         /// Sends an e-mail message to a specified recipient.
         /// </summary>
-        public void SendMail(string to, string subject, string body, 
+        public Task SendMailAsync(string to, string subject, string body, 
             IEnumerable<string> ccAddresses = null, 
             IEnumerable<string> bccAddresses = null,
             IEnumerable<string> replyToAddresses = null,
             IEnumerable<AttachmentDTO> attachments = null  
         )
         {
-            SendMail(new [] { to }, subject, body, ccAddresses, bccAddresses, replyToAddresses, attachments);
+            return SendMailAsync(new [] { to }, subject, body, ccAddresses, bccAddresses, replyToAddresses, attachments);
         }
 
         /// <summary>
         /// Sends an e-mail message to a specified recipients.
         /// </summary>
-        public void SendMail(string[] to, string subject, string body,
+        public Task SendMailAsync(string[] to, string subject, string body,
             IEnumerable<string> ccAddresses = null,
             IEnumerable<string> bccAddresses = null,
             IEnumerable<string> replyToAddresses = null,
@@ -101,13 +102,13 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
                 }
             }
 
-            SendMail(message);
+            return SendMailAsync(message);
         }
 
         /// <summary>
         /// Sends a specified e-mail message.
         /// </summary>
-        public void SendMail(MailMessageDTO message)
+        public async Task SendMailAsync(MailMessageDTO message)
         {
             if (From != null)
             {
@@ -139,7 +140,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
 
             if (!sendingArgs.Cancel)
             {
-                sender.Send(sendingArgs.Message);
+                await sender.SendAsync(sendingArgs.Message);
             }
         }
 
