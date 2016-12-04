@@ -1,25 +1,21 @@
 ﻿{
   "version": "2.0.0-*",
 
+  "dependencies": {
+    "WindowsAzure.Storage": "7.2.0",
+    "Riganti.Utils.Infrastructure.Core": {
+      "target": "project"
+    },
+    "Riganti.Utils.Infrastructure.Services": {
+      "target": "project"
+    }
+  },
+
   "frameworks": {
+    "netstandard1.6": {
+      "imports": [ "dnxcore50", "portable-net45+win8" ]
+    },
     "net461": {
-      "dependencies": {
-        "Microsoft.Azure.KeyVault.Core": "1.0.0",
-        "Microsoft.Data.Edm": "5.6.4",
-        "Microsoft.Data.OData": "5.6.4",
-        "Microsoft.Data.Services.Client": "5.6.4",
-        "Newtonsoft.Json": "6.0.8",
-        "System.Spatial": "5.6.4",
-        "WindowsAzure.Storage": "7.2.0",
-        "Riganti.Utils.Infrastructure.Core": {
-          "target": "project"
-        },
-        "Riganti.Utils.Infrastructure.Services": {
-          "target": "project"
-        }
-      },
-      "frameworkAssemblies": {
-      }
     }
   }
 }

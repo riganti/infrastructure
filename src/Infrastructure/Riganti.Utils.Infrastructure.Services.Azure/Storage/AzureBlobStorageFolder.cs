@@ -29,7 +29,7 @@ namespace Riganti.Utils.Infrastructure.Services.Azure.Storage
 
         public static AzureBlobStorageFolder CreateContainerIfNotExists(CloudBlobContainer containerReference, BlobContainerPublicAccessType blobContainerPublicAccessType)
         {
-            containerReference.CreateIfNotExists(blobContainerPublicAccessType);
+            containerReference.CreateIfNotExistsAsync(blobContainerPublicAccessType, new BlobRequestOptions(), new OperationContext()).Wait();
             return new AzureBlobStorageFolder(containerReference);
         }
 
