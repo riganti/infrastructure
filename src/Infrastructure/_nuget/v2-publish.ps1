@@ -8,6 +8,7 @@ del ..\Riganti.Utils.Infrastructure.DotVVM\bin\debug\*.nupkg -ErrorAction Silent
 del ..\Riganti.Utils.Infrastructure.AutoMapper\bin\debug\*.nupkg -ErrorAction SilentlyContinue
 del ..\Riganti.Utils.Infrastructure.Services.Azure\bin\debug\*.nupkg -ErrorAction SilentlyContinue
 del ..\Riganti.Utils.Infrastructure.Services.SendGrid\bin\debug\*.nupkg -ErrorAction SilentlyContinue
+del ..\Riganti.Utils.Infrastructure.Services.Amazon.SES\bin\debug\*.nupkg -ErrorAction SilentlyContinue
 
 $filePath = "..\Riganti.Utils.Infrastructure.Core\project.json"
 $file = [System.IO.File]::ReadAllText($filePath, [System.Text.Encoding]::UTF8)
@@ -49,6 +50,11 @@ $file = [System.IO.File]::ReadAllText($filePath, [System.Text.Encoding]::UTF8)
 $file = [System.Text.RegularExpressions.Regex]::Replace($file, """version"": ""([^""]+)""", """version"": """ + $version + """")
 [System.IO.File]::WriteAllText($filePath, $file, [System.Text.Encoding]::UTF8)
 
+$filePath = "..\Riganti.Utils.Infrastructure.Services.Amazon.SES\project.json"
+$file = [System.IO.File]::ReadAllText($filePath, [System.Text.Encoding]::UTF8)
+$file = [System.Text.RegularExpressions.Regex]::Replace($file, """version"": ""([^""]+)""", """version"": """ + $version + """")
+[System.IO.File]::WriteAllText($filePath, $file, [System.Text.Encoding]::UTF8)
+
 cd ..\Riganti.Utils.Infrastructure.EntityFramework
 & dotnet restore
 
@@ -76,6 +82,9 @@ cd ..\Riganti.Utils.Infrastructure.Services.Azure
 cd ..\Riganti.Utils.Infrastructure.Services.SendGrid
 & dotnet restore
 & dotnet pack
+cd ..\Riganti.Utils.Infrastructure.Services.Amazon.SES
+& dotnet restore
+& dotnet pack
 cd ..\_nuget
 
 & .\nuget.exe push ..\Riganti.Utils.Infrastructure.Core\bin\debug\Riganti.Utils.Infrastructure.Core.$version.nupkg -source $server -apiKey $apiKey
@@ -86,3 +95,4 @@ cd ..\_nuget
 & .\nuget.exe push ..\Riganti.Utils.Infrastructure.AutoMapper\bin\debug\Riganti.Utils.Infrastructure.AutoMapper.$version.nupkg -source $server -apiKey $apiKey
 & .\nuget.exe push ..\Riganti.Utils.Infrastructure.Services.Azure\bin\debug\Riganti.Utils.Infrastructure.Services.Azure.$version.nupkg -source $server -apiKey $apiKey
 & .\nuget.exe push ..\Riganti.Utils.Infrastructure.Services.SendGrid\bin\debug\Riganti.Utils.Infrastructure.Services.SendGrid.$version.nupkg -source $server -apiKey $apiKey
+& .\nuget.exe push ..\Riganti.Utils.Infrastructure.Services.Amazon.SES\bin\debug\Riganti.Utils.Infrastructure.Services.Amazon.SES.$version.nupkg -source $server -apiKey $apiKey

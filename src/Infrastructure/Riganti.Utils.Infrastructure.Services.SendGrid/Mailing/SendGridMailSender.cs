@@ -30,8 +30,8 @@ namespace Riganti.Utils.Infrastructure.Services.SendGrid.Mailing
                 Bcc = message.To.Select(ConvertMailAddress).ToArray(),
                 ReplyTo = message.To.Select(ConvertMailAddress).ToArray(),
                 Subject = message.Subject,
-                Html = message.IsBodyHtml ? message.Body : "",
-                Text = message.IsBodyHtml ? "" : message.Body,
+                Html = message.BodyHtml,
+                Text = message.BodyText,
                 StreamedAttachments = message.Attachments.ToDictionary(a => a.Name, a => GetMemoryStream(a.Stream))
             };
 

@@ -39,9 +39,17 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
                     smtpMessage.ReplyToList.Add(ConvertAddress(replyTo));
                 }
                 smtpMessage.Subject = message.Subject;
-                smtpMessage.Body = message.Body;
-                smtpMessage.IsBodyHtml = message.IsBodyHtml;
-                
+                if (!string.IsNullOrEmpty(message.BodyHtml))
+                {
+                    smtpMessage.Body = message.BodyHtml;
+                    smtpMessage.IsBodyHtml = true;
+                }
+                else
+                {
+                    smtpMessage.Body = message.BodyText;
+                    smtpMessage.IsBodyHtml = false;
+                }
+
                 foreach (var attachment in message.Attachments)
                 {
                     smtpMessage.Attachments.Add(ConvertAttachment(attachment));

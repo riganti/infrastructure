@@ -17,11 +17,10 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
 
         public string Subject { get; set; }
 
-        public string Body { get; set; }
+        public string BodyText { get; set; }
 
-        public bool IsBodyHtml { get; set; }
+        public string BodyHtml { get; set; }
 
         public ICollection<AttachmentDTO> Attachments { get; } = new List<AttachmentDTO>();
-
     }
 }

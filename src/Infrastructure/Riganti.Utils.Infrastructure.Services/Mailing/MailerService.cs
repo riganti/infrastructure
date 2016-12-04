@@ -23,11 +23,6 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
         public string SubjectFormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets the HTML with the {0} placeholder. If this property is set, the e-mail body will be placed in this placeholder.
-        /// </summary>
-        public string GlobalTemplateFormatString { get; set; }
-
-        /// <summary>
         /// Gets or sets the e-mail address (or comma-separated addresses) where all e-mails will be sent, instead of the real message recipients.
         /// This property is used in the test environments to redirect all e-mails to one common test mailbox.
         /// </summary>
@@ -70,8 +65,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
                 message.To.Add(new MailAddressDTO(recipient));
             }
             message.Subject = subject;
-            message.Body = body;
-            message.IsBodyHtml = true;
+            message.BodyHtml = body;
 
             if (ccAddresses != null)
             {
@@ -117,10 +111,6 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
             if (!string.IsNullOrEmpty(SubjectFormatString))
             {
                 message.Subject = string.Format(SubjectFormatString, message.Subject);
-            }
-            if (!string.IsNullOrEmpty(GlobalTemplateFormatString))
-            {
-                message.Body = string.Format(GlobalTemplateFormatString, message.Body);
             }
 
             if (OverrideToAddresses != null)
