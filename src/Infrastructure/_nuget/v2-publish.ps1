@@ -35,6 +35,7 @@ function PushPackages() {
 $packages = @("Core",
 	"EntityFramework",
 	"EntityFrameworkCore",
+	"Configuration",
 	"Services",
 	"Services.Azure",
 	"Services.SendGrid",
