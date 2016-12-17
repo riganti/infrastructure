@@ -94,7 +94,7 @@ cd ..\Riganti.Utils.Infrastructure.Services.Amazon.SES
 cd ..\_nuget
 
 & .\nuget.exe push ..\Riganti.Utils.Infrastructure.Core\bin\debug\Riganti.Utils.Infrastructure.Core.$version.nupkg -source $server -apiKey $apiKey
-& .\nuget.exe push ..\Riganti.Utils.Infrastructure.EntityFramework\bin\debug\Riganti.Utils.Infrastructure.EntityFrameworkCore.$version.nupkg -source $server -apiKey $apiKey
+& .\nuget.exe push ..\Riganti.Utils.Infrastructure.EntityFramework\bin\debug\Riganti.Utils.Infrastructure.EntityFramework.$version.nupkg -source $server -apiKey $apiKey
 & .\nuget.exe push ..\Riganti.Utils.Infrastructure.EntityFrameworkCore\bin\debug\Riganti.Utils.Infrastructure.EntityFrameworkCore.$version.nupkg -source $server -apiKey $apiKey
 & .\nuget.exe push ..\Riganti.Utils.Infrastructure.Services\bin\debug\Riganti.Utils.Infrastructure.Services.$version.nupkg -source $server -apiKey $apiKey
 & .\nuget.exe push ..\Riganti.Utils.Infrastructure.AspNetCore\bin\debug\Riganti.Utils.Infrastructure.AspNetCore.$version.nupkg -source $server -apiKey $apiKey
