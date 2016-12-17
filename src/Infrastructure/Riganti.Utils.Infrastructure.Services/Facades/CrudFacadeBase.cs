@@ -109,11 +109,12 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Gets the list of the DTOs using the Query object.
         /// </summary>
-        public virtual IEnumerable<TListDTO> GetList()
+        public virtual IEnumerable<TListDTO> GetList(Action<IQuery<TListDTO>> queryConfiguration = null)
         {
             using (UnitOfWorkProvider.Create())
             {
                 var query = QueryFactory();
+                queryConfiguration?.Invoke(query);
                 return query.Execute();
             }
         }

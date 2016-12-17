@@ -27,12 +27,13 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Gets the list of the DTOs using the Query object and filter.
         /// </summary>
-        public virtual IEnumerable<TListDTO> GetList(TFilterDTO filter)
+        public virtual IEnumerable<TListDTO> GetList(TFilterDTO filter, Action<IFilteredQuery<TListDTO, TFilterDTO>> queryConfiguration = null)
         {
             using (UnitOfWorkProvider.Create())
             {
                 var query = QueryFactory();
                 query.Filter = filter;
+                queryConfiguration?.Invoke(query);
                 return query.Execute();
             }
         }
