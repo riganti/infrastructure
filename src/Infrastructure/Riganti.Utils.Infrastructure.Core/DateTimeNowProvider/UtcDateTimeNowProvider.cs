@@ -4,6 +4,6 @@ namespace Riganti.Utils.Infrastructure.Core
 {
     public class UtcDateTimeNowProvider : IDateTimeNowProvider
     {
-        public DateTime Now=> DateTime.UtcNow;
+        public DateTime Now => DateTime.UtcNow;
     }
 }
