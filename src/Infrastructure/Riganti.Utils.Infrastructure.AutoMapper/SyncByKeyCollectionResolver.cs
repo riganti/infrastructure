@@ -22,11 +22,13 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
 
         public bool KeepRemovedItemsInDestinationCollection { get; set; }
 
+        public Func<TDestinationItem, bool> DestinationFilter { get; set; }
+
 
         public ICollection<TDestinationItem> Resolve(TSource source, TDestination destination, ICollection<TSourceItem> sourceMember, ICollection<TDestinationItem> destMember, ResolutionContext context)
         {
             var sourceKeys = sourceMember.Select(SourceKeySelector).ToList();
-            var destinationKeys = destMember.Select(DestinationKeySelector).ToList();
+            var destinationKeys = destMember.Where(DestinationFilter).Select(DestinationKeySelector).ToList();
 
             foreach (var sourceItem in sourceMember)
             {
@@ -47,7 +49,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 }
             }
 
-            foreach (var destItem in new List<TDestinationItem>(destMember))
+            foreach (var destItem in new List<TDestinationItem>(destMember.Where(DestinationFilter)))
             {
                 var key = DestinationKeySelector(destItem);
 
