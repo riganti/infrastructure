@@ -11,7 +11,7 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
         private readonly string recipientAddress;
         private readonly MailerService mailerService;
 
-        public EmailLogger(string recipientAddress, MailerService mailerService, IDateTimeNowProvider dateTimeNowProvider, IEnumerable<IAdditionalDataProvider> additionalDataProviders = null) : base(dateTimeNowProvider, additionalDataProviders)
+        public EmailLogger(string recipientAddress, MailerService mailerService, IDateTimeProvider dateTimeProvider, IEnumerable<IAdditionalDataProvider> additionalDataProviders = null) : base(dateTimeProvider, additionalDataProviders)
         {
             this.recipientAddress = recipientAddress;
             this.mailerService = mailerService;
@@ -21,7 +21,7 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
         protected override void LogMessageCore(string message, IDictionary<string, string> additionalData, Severity severity)
         {
             var output = WebUtility.HtmlEncode(message).Replace("\r\n", "<br />").Replace("\r", "<br />").Replace("\n", "<br />");
-            output = $"{dateTimeNowProvider.Now:yyyy-MM-dd HH:mm:ss}<br />" + output;
+            output = $"{dateTimeProvider.Now:yyyy-MM-dd HH:mm:ss}<br />" + output;
 
             Task.Run(async () => await mailerService.SendMailAsync(recipientAddress, "Error Report", output));
         }

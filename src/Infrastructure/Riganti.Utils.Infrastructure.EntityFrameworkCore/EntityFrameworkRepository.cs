@@ -16,7 +16,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
     public class EntityFrameworkRepository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>, new()
     {
         private readonly IUnitOfWorkProvider provider;
-        private readonly IDateTimeNowProvider dateTimeNowProvider;
+        private readonly IDateTimeProvider dateTimeProvider;
 
         /// <summary>
         /// Gets the <see cref="DbContext"/>.
@@ -27,10 +27,10 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkRepository{TEntity, TKey}"/> class.
         /// </summary>
-        public EntityFrameworkRepository(IUnitOfWorkProvider provider, IDateTimeNowProvider dateTimeNowProvider)
+        public EntityFrameworkRepository(IUnitOfWorkProvider provider, IDateTimeProvider dateTimeProvider)
         {
             this.provider = provider;
-            this.dateTimeNowProvider = dateTimeNowProvider;
+            this.dateTimeProvider = dateTimeProvider;
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         /// </summary>
         protected virtual DateTime? GetSoftDeleteEntityDeletedDateValue()
         {
-            return dateTimeNowProvider.Now;
+            return dateTimeProvider.Now;
         }
 
         /// <summary>

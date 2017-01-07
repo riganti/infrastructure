@@ -12,7 +12,7 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
     {
         private readonly List<IAdditionalDataProvider> additionalDataProviders = new List<IAdditionalDataProvider>();
 
-        protected readonly IDateTimeNowProvider dateTimeNowProvider;
+        protected readonly IDateTimeProvider dateTimeProvider;
 
         /// <summary>
         /// Gets or sets the minimum severity of messages that are not ignored.
@@ -25,9 +25,9 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
         public IExceptionFormatter ExceptionFormatter { get; set; } = new DefaultExceptionFormatter();
 
 
-        public LoggerBase(IDateTimeNowProvider dateTimeNowProvider, IEnumerable<IAdditionalDataProvider> additionalDataProviders = null)
+        public LoggerBase(IDateTimeProvider dateTimeProvider, IEnumerable<IAdditionalDataProvider> additionalDataProviders = null)
         {
-            this.dateTimeNowProvider = dateTimeNowProvider;
+            this.dateTimeProvider = dateTimeProvider;
             if (additionalDataProviders != null)
             {
                 this.additionalDataProviders.AddRange(additionalDataProviders);

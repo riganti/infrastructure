@@ -5,7 +5,7 @@ namespace Riganti.Utils.Infrastructure.Core
     /// <summary>
     /// Custom provide of current time.
     /// </summary>
-    public interface IDateTimeNowProvider
+    public interface IDateTimeProvider
     {
         /// <summary>
         /// Gets current time

@@ -2,7 +2,7 @@
 
 namespace Riganti.Utils.Infrastructure.Core
 {
-    public class LocalDateTimeNowProvider : IDateTimeNowProvider
+    public class LocalDateTimeProvider : IDateTimeProvider
     {
         public DateTime Now => DateTime.Now;
     }

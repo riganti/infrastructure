@@ -231,13 +231,13 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.Repository
       var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
       var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub,
           CreateYesMinisterDbContext);
-      IDateTimeNowProvider dateTimeNowProvider = new UtcDateTimeNowProvider();
+      IDateTimeProvider dateTimeProvider = new UtcDateTimeProvider();
 
       var unitOfWork = new EntityFrameworkUnitOfWork(unitOfWorkProvider, CreateYesMinisterDbContext,
           DbContextOptions.ReuseParentContext);
       unitOfWorkRegistryStub.RegisterUnitOfWork(unitOfWork);
 
-      return new EntityFrameworkRepository<TEntity, int>(unitOfWorkProvider, dateTimeNowProvider);
+      return new EntityFrameworkRepository<TEntity, int>(unitOfWorkProvider, dateTimeProvider);
     }
 
     private YesMinisterDbContext CreateYesMinisterDbContext()

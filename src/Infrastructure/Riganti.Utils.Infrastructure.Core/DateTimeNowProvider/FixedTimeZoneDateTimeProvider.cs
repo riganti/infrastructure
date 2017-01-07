@@ -2,11 +2,11 @@
 
 namespace Riganti.Utils.Infrastructure.Core
 {
-    public class FixedTimeZoneDateTimeNowProvider : IDateTimeNowProvider
+    public class FixedTimeZoneDateTimeProvider : IDateTimeProvider
     {
         private TimeZoneInfo timezone;
 
-        public FixedTimeZoneDateTimeNowProvider(string timezoneId)
+        public FixedTimeZoneDateTimeProvider(string timezoneId)
         {
             this.timezone = TimeZoneInfo.FindSystemTimeZoneById(timezoneId);
         }

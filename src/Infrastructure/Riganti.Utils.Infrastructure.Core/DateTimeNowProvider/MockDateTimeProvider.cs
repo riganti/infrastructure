@@ -2,13 +2,13 @@
 
 namespace Riganti.Utils.Infrastructure.Core
 {
-    public class MockDateTimeNowProvider : IDateTimeNowProvider
+    public class MockDateTimeProvider : IDateTimeProvider
     {
         private readonly DateTime desiredDate;
 
         public DateTime Now => desiredDate;
 
-        public MockDateTimeNowProvider(DateTime desiredDate)
+        public MockDateTimeProvider(DateTime desiredDate)
         {
             this.desiredDate = desiredDate;
         }
