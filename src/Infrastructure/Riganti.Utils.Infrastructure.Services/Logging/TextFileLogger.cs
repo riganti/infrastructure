@@ -27,8 +27,20 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
 
         protected override void LogMessageCore(string message, IDictionary<string, string> additionalData, Severity severity)
         {
-            var output = $"{dateTimeProvider.Now:yyyy-MM-dd HH:mm:ss}\t{message}\r\n\r\n";
-            File.AppendAllText(GetLogFileName(), output, Encoding.UTF8);
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"{dateTimeProvider.Now:yyyy-MM-dd HH:mm:ss}\t{message}");
+            if (additionalData.Count > 0)
+            {
+                sb.AppendLine("Additional data:");
+                foreach (var data in additionalData)
+                {
+                    sb.AppendLine($"{data.Key,20}{data.Value}");
+                }
+            }
+            sb.AppendLine();
+            
+            File.AppendAllText(GetLogFileName(), sb.ToString(), Encoding.UTF8);
         }
     }
 }
