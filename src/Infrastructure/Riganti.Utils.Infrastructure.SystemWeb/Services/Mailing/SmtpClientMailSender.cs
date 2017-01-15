@@ -21,7 +21,10 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
         {
             using (var smtpMessage = new MailMessage())
             {
-                smtpMessage.From = ConvertAddress(message.From);
+                if (message.From != null)
+                {
+                    smtpMessage.From = ConvertAddress(message.From);
+                }
                 foreach (var to in message.To)
                 {
                     smtpMessage.To.Add(ConvertAddress(to));
