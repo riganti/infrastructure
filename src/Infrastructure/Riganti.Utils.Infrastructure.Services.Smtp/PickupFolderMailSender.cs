@@ -10,12 +10,14 @@ namespace Riganti.Utils.Infrastructure.Services.Smtp {
         public string FolderName { get; }
 
         public PickupFolderMailSender(string folderName) {
+            if (folderName == null) throw new ArgumentNullException(nameof(folderName));
+            if (string.IsNullOrWhiteSpace(folderName)) throw new ArgumentException("Value cannot be empty or whitespace only string.", nameof(folderName));
+
             this.FolderName = folderName;
         }
 
         public async Task SendAsync(MailMessageDTO message) {
             if (message == null) throw new ArgumentNullException(nameof(message));
-            if (string.IsNullOrWhiteSpace(this.FolderName)) throw new InvalidOperationException("FolderName property value cannot be empty or whitespace only string.");
 
             // Convert to message
             var msg = message.ToMimeMessage();
