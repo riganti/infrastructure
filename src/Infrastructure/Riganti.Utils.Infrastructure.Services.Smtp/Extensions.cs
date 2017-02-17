@@ -1,38 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using MimeKit;
 using Riganti.Utils.Infrastructure.Services.Mailing;
 
 namespace Riganti.Utils.Infrastructure.Services.Smtp {
     internal static class Extensions {
 
-        public static MimeMessage ToMimeMessage(this MailMessageDTO m) {
+        public static MimeMessage ToMimeMessage(this MailMessageDTO dto) {
             var msg = new MimeMessage();
 
             // Add standard header fields
-            msg.From.Add(m.From.ToMailboxAddress());
-            msg.To.AddRange(m.To.ToMailboxAddress());
-            msg.Cc.AddRange(m.Cc.ToMailboxAddress());
-            msg.Bcc.AddRange(m.Bcc.ToMailboxAddress());
-            msg.Sender = m.Sender.ToMailboxAddress();
-            msg.ReplyTo.AddRange(m.ReplyTo.ToMailboxAddress());
-            msg.Subject = m.Subject;
+            msg.From.Add(dto.From.ToMailboxAddress());
+            msg.To.AddRange(dto.To.ToMailboxAddress());
+            msg.Cc.AddRange(dto.Cc.ToMailboxAddress());
+            msg.Bcc.AddRange(dto.Bcc.ToMailboxAddress());
+            msg.Sender = dto.Sender.ToMailboxAddress();
+            msg.ReplyTo.AddRange(dto.ReplyTo.ToMailboxAddress());
+            msg.Subject = dto.Subject;
 
             // Add custom header fields
-            foreach (var item in m.CustomHeaders) {
+            foreach (var item in dto.CustomHeaders) {
                 msg.Headers.Add(item.Key, item.Value);
             }
 
             // Construct body
             var bb = new BodyBuilder {
-                TextBody = m.BodyText,
-                HtmlBody = m.BodyHtml
+                TextBody = dto.BodyText,
+                HtmlBody = dto.BodyHtml
             };
 
             // Add attachments
-            foreach (var item in m.Attachments) {
+            foreach (var item in dto.Attachments) {
                 ContentType ct;
                 var r = ContentType.TryParse(item.MimeType, out ct);
                 if (!r) ct = new ContentType("application", "octet-stream");
@@ -40,17 +38,16 @@ namespace Riganti.Utils.Infrastructure.Services.Smtp {
             }
 
             msg.Body = bb.ToMessageBody();
-
             return msg;
         }
 
-        internal static IEnumerable<MailboxAddress> ToMailboxAddress(this IEnumerable<MailAddressDTO> a) {
-            return a.Select(x => x.ToMailboxAddress());
+        internal static IEnumerable<MailboxAddress> ToMailboxAddress(this IEnumerable<MailAddressDTO> dto) {
+            return dto.Select(x => x.ToMailboxAddress());
         }
 
-        internal static MailboxAddress ToMailboxAddress(this MailAddressDTO a) {
-            if (a == null) return null;
-            return new MailboxAddress(a.DisplayName, a.Address);
+        internal static MailboxAddress ToMailboxAddress(this MailAddressDTO dto) {
+            if (dto == null) return null;
+            return new MailboxAddress(dto.DisplayName, dto.Address);
         }
 
     }

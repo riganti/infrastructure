@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using MimeKit;
 using Riganti.Utils.Infrastructure.Services.Mailing;
 
 namespace Riganti.Utils.Infrastructure.Services.Smtp {
