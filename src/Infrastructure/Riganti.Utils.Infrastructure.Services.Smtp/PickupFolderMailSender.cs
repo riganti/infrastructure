@@ -35,7 +35,8 @@ namespace Riganti.Utils.Infrastructure.Services.Smtp {
                     await sw.WriteLineAsync($"X-Receiver: <{item}>");
                 }
 
-                // Write rest of message
+                // Flush data and write rest of message
+                await sw.FlushAsync();
                 msg.WriteTo(sw.BaseStream);
             }
 
