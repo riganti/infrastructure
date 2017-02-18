@@ -18,15 +18,15 @@ function SetVersion() {
 function BuildPackages() {
 	foreach ($package in $packages) {
 		cd ..\Riganti.Utils.Infrastructure.$package
-		& dotnet restore
-		& dotnet pack
+		& dotnet restore | Write-Host
+		& dotnet pack | Write-Host
 	}
 	cd ..\_nuget
 }
 
 function PushPackages() {
 	foreach ($package in $packages) {
-		& .\nuget.exe push ..\Riganti.Utils.Infrastructure.$package\bin\debug\Riganti.Utils.Infrastructure.$package.$version.nupkg -source $server -apiKey $apiKey
+		& .\nuget.exe push ..\Riganti.Utils.Infrastructure.$package\bin\debug\Riganti.Utils.Infrastructure.$package.$version.nupkg -source $server -apiKey $apiKey | Write-Host
 	}
 }
 
@@ -40,6 +40,7 @@ $packages = @("Core",
 	"Services.Azure",
 	"Services.SendGrid",
 	"Services.Amazon.SES",
+	"Services.Smtp",
 	"DotVVM",
 	"AutoMapper",
 	"AspNetCore",
