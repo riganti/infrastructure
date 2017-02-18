@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Security;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Riganti.Utils.Infrastructure.Services.Mailing;
 
-namespace Riganti.Utils.Infrastructure.Services.Smtp {
-    public class SmtpMailSender : IMailSender {
+namespace Riganti.Utils.Infrastructure.Services.Smtp.Mailing
+{
+    public class SmtpMailSender : IMailSender
+    {
 
         public string HostName { get; }
 
@@ -22,7 +22,8 @@ namespace Riganti.Utils.Infrastructure.Services.Smtp {
 
         public RemoteCertificateValidationCallback ServerCertificateValidationCallback { get; }
 
-        public SmtpMailSender(string hostName, int port, string userName, string password, bool allowSsl, RemoteCertificateValidationCallback sslCallback) {
+        public SmtpMailSender(string hostName, int port, string userName, string password, bool allowSsl, RemoteCertificateValidationCallback sslCallback)
+        {
             this.HostName = hostName;
             this.Port = port;
             this.UserName = userName;
@@ -31,14 +32,16 @@ namespace Riganti.Utils.Infrastructure.Services.Smtp {
             this.ServerCertificateValidationCallback = sslCallback;
         }
 
-        public async Task SendAsync(MailMessageDTO message) {
+        public async Task SendAsync(MailMessageDTO message)
+        {
             if (message == null) throw new ArgumentNullException(nameof(message));
 
             // Get MIME message
             var msg = message.ToMimeMessage();
 
             // Send message
-            using (var mx = new SmtpClient()) {
+            using (var mx = new SmtpClient())
+            {
                 await mx.ConnectAsync(this.HostName, this.Port, AllowSsl ? SecureSocketOptions.Auto : SecureSocketOptions.None);
                 if (AllowSsl) mx.ServerCertificateValidationCallback = this.ServerCertificateValidationCallback;
                 if (!string.IsNullOrEmpty(this.UserName) && !string.IsNullOrEmpty(this.Password)) await mx.AuthenticateAsync(this.UserName, this.Password);

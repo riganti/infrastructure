@@ -4,19 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Riganti.Utils.Infrastructure.Services.Mailing;
 
-namespace Riganti.Utils.Infrastructure.Services.Smtp {
-    public class PickupFolderMailSender : IMailSender {
+namespace Riganti.Utils.Infrastructure.Services.Smtp.Mailing
+{
+    public class PickupFolderMailSender : IMailSender
+    {
 
         public string FolderName { get; }
 
-        public PickupFolderMailSender(string folderName) {
+        public PickupFolderMailSender(string folderName)
+        {
             if (folderName == null) throw new ArgumentNullException(nameof(folderName));
             if (string.IsNullOrWhiteSpace(folderName)) throw new ArgumentException("Value cannot be empty or whitespace only string.", nameof(folderName));
 
             this.FolderName = folderName;
         }
 
-        public async Task SendAsync(MailMessageDTO message) {
+        public async Task SendAsync(MailMessageDTO message)
+        {
             if (message == null) throw new ArgumentNullException(nameof(message));
 
             // Convert to message
@@ -24,7 +28,8 @@ namespace Riganti.Utils.Infrastructure.Services.Smtp {
 
             // Write to temp file to avoid pickup of incomplete message
             var tempFileName = Path.GetTempFileName();
-            using (var sw = File.CreateText(tempFileName)) {
+            using (var sw = File.CreateText(tempFileName))
+            {
                 // Write envelope sender
                 await sw.WriteLineAsync($"X-Sender: <{message.From.Address}>");
 
@@ -32,7 +37,8 @@ namespace Riganti.Utils.Infrastructure.Services.Smtp {
                 var receivers = message.To
                     .Union(message.Cc)
                     .Union(message.Bcc);
-                foreach (var item in receivers.Select(x => x.Address)) {
+                foreach (var item in receivers.Select(x => x.Address))
+                {
                     await sw.WriteLineAsync($"X-Receiver: <{item}>");
                 }
 

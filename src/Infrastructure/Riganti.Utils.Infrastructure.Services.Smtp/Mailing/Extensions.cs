@@ -3,10 +3,13 @@ using System.Linq;
 using MimeKit;
 using Riganti.Utils.Infrastructure.Services.Mailing;
 
-namespace Riganti.Utils.Infrastructure.Services.Smtp {
-    internal static class Extensions {
+namespace Riganti.Utils.Infrastructure.Services.Smtp.Mailing
+{
+    public static class Extensions
+    {
 
-        public static MimeMessage ToMimeMessage(this MailMessageDTO dto) {
+        public static MimeMessage ToMimeMessage(this MailMessageDTO dto)
+        {
             var msg = new MimeMessage();
 
             // Add standard header fields
@@ -19,18 +22,21 @@ namespace Riganti.Utils.Infrastructure.Services.Smtp {
             msg.Subject = dto.Subject;
 
             // Add custom header fields
-            foreach (var item in dto.CustomHeaders) {
+            foreach (var item in dto.CustomHeaders)
+            {
                 msg.Headers.Add(item.Key, item.Value);
             }
 
             // Construct body
-            var bb = new BodyBuilder {
+            var bb = new BodyBuilder
+            {
                 TextBody = dto.BodyText,
                 HtmlBody = dto.BodyHtml
             };
 
             // Add attachments
-            foreach (var item in dto.Attachments) {
+            foreach (var item in dto.Attachments)
+            {
                 ContentType ct;
                 var r = ContentType.TryParse(item.MimeType, out ct);
                 if (!r) ct = new ContentType("application", "octet-stream");
@@ -41,11 +47,13 @@ namespace Riganti.Utils.Infrastructure.Services.Smtp {
             return msg;
         }
 
-        internal static IEnumerable<MailboxAddress> ToMailboxAddress(this IEnumerable<MailAddressDTO> dto) {
-            return dto.Select(x => x.ToMailboxAddress());
+        public static IEnumerable<MailboxAddress> ToMailboxAddress(this IEnumerable<MailAddressDTO> dto)
+        {
+            return dto.Select(x => ToMailboxAddress((MailAddressDTO) x));
         }
 
-        internal static MailboxAddress ToMailboxAddress(this MailAddressDTO dto) {
+        public static MailboxAddress ToMailboxAddress(this MailAddressDTO dto)
+        {
             if (dto == null) return null;
             return new MailboxAddress(dto.DisplayName, dto.Address);
         }
