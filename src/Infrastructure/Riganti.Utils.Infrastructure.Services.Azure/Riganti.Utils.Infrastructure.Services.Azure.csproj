@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>2.0.0-alpha-11</VersionPrefix>
+    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
+    <AssemblyName>Riganti.Utils.Infrastructure.Services.Azure</AssemblyName>
+    <PackageId>Riganti.Utils.Infrastructure.Services.Azure</PackageId>
+    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj" />
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WindowsAzure.Storage" Version="7.2.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>

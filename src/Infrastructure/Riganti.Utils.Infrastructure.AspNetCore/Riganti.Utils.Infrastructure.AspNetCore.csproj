@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>2.0.0-alpha-11</VersionPrefix>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <AssemblyName>Riganti.Utils.Infrastructure.AspNetCore</AssemblyName>
+    <PackageId>Riganti.Utils.Infrastructure.AspNetCore</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj" />
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="1.1.0" />
+  </ItemGroup>
+
+</Project>

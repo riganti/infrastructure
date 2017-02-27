@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>2.0.0-alpha-11</VersionPrefix>
+    <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
+    <AssemblyName>Riganti.Utils.Infrastructure.Services</AssemblyName>
+    <PackageId>Riganti.Utils.Infrastructure.Services</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
+    <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>2.0.0-alpha-11</VersionPrefix>
+    <TargetFramework>net461</TargetFramework>
+    <AssemblyName>Riganti.Utils.Infrastructure.SystemWeb</AssemblyName>
+    <PackageId>Riganti.Utils.Infrastructure.SystemWeb</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj" />
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj" />
+    <Reference Include="System.Web" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>

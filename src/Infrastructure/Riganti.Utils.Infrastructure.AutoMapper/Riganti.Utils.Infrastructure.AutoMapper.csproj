@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>2.0.0-alpha-11</VersionPrefix>
+    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
+    <AssemblyName>Riganti.Utils.Infrastructure.AutoMapper</AssemblyName>
+    <PackageId>Riganti.Utils.Infrastructure.AutoMapper</PackageId>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj" />
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.EntityFrameworkCore\Riganti.Utils.Infrastructure.EntityFrameworkCore.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.0" />
+    <PackageReference Include="System.Reflection" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.EntityFramework\Riganti.Utils.Infrastructure.EntityFramework.csproj" />
+    <PackageReference Include="EntityFramework" Version="6.1.3" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
+    <DefineConstants>$(DefineConstants);EntityFrameworkCore</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="5.0.2" />
+  </ItemGroup>
+
+</Project>

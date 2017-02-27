@@ -53,8 +53,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj">
-      <Project>{EBA57E7A-0552-4B0A-BF69-BD27CCE9F608}</Project>
+    <ProjectReference Include="..\..\Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj">
+      <Project>{4d05d923-bfe1-45f6-804b-9a820678ee23}</Project>
       <Name>Riganti.Utils.Infrastructure.Core</Name>
     </ProjectReference>
   </ItemGroup>

@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <AssemblyName>Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests</PackageId>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
+    <PackageTargetFallback>$(PackageTargetFallback);netcoreapp1.0</PackageTargetFallback>
+    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj" />
+    <ProjectReference Include="..\..\Riganti.Utils.Infrastructure.EntityFrameworkCore\Riganti.Utils.Infrastructure.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20170106-08" />
+    <PackageReference Include="xunit" Version="2.2.0-beta5-build3474" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0-beta5-build1225" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.0" />
+    <PackageReference Include="Castle.Core" Version="4.0.0" />
+    <PackageReference Include="moq" Version="4.6.39-alpha" />
+  </ItemGroup>
+
+</Project>
