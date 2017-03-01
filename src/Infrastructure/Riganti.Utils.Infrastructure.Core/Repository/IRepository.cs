@@ -69,35 +69,35 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <summary>
         ///     Gets the entity with specified ID.
         /// </summary>
-        TEntity GetById(TKey id, params IIncludeDefinition<TEntity>[] includes);
+        TEntity GetById(TKey id, IIncludeDefinition<TEntity>[] includes);
 
         /// <summary>
         ///     Asynchronously gets the entity with specified ID.
         /// </summary>
-        Task<TEntity> GetByIdAsync(TKey id, params IIncludeDefinition<TEntity>[] includes);
+        Task<TEntity> GetByIdAsync(TKey id, IIncludeDefinition<TEntity>[] includes);
 
         /// <summary>
         ///     Asynchronously gets the entity with specified ID.
         /// </summary>
-        Task<TEntity> GetByIdAsync(CancellationToken cancellationToken, TKey id, params IIncludeDefinition<TEntity>[] includes);
+        Task<TEntity> GetByIdAsync(CancellationToken cancellationToken, TKey id, IIncludeDefinition<TEntity>[] includes);
 
         /// <summary>
         ///     Gets a list of entities with specified IDs.
         /// </summary>
         /// <remarks>This method is not suitable for large amounts of entities - the reasonable limit of number of IDs is 30.</remarks>
-        IList<TEntity> GetByIds(IEnumerable<TKey> ids, params IIncludeDefinition<TEntity>[] includes);
+        IList<TEntity> GetByIds(IEnumerable<TKey> ids, IIncludeDefinition<TEntity>[] includes);
 
         /// <summary>
         ///     Asynchronously gets a list of entities with specified IDs.
         /// </summary>
         /// <remarks>This method is not suitable for large amounts of entities - the reasonable limit of number of IDs is 30.</remarks>
-        Task<IList<TEntity>> GetByIdsAsync(IEnumerable<TKey> ids, params IIncludeDefinition<TEntity>[] includes);
+        Task<IList<TEntity>> GetByIdsAsync(IEnumerable<TKey> ids, IIncludeDefinition<TEntity>[] includes);
 
         /// <summary>
         ///     Asynchronously gets a list of entities with specified IDs.
         /// </summary>
         /// <remarks>This method is not suitable for large amounts of entities - the reasonable limit of number of IDs is 30.</remarks>
-        Task<IList<TEntity>> GetByIdsAsync(CancellationToken cancellationToken, IEnumerable<TKey> ids, params IIncludeDefinition<TEntity>[] includes);
+        Task<IList<TEntity>> GetByIdsAsync(CancellationToken cancellationToken, IEnumerable<TKey> ids, IIncludeDefinition<TEntity>[] includes);
 
         /// <summary>
         ///     Initializes a new entity with appropriate default values.
