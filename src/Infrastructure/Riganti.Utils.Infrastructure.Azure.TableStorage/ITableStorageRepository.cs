@@ -6,66 +6,70 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 {
-    public interface ITableStorageRepository<TEntity> where TEntity : TableEntity, new()
+    /// <summary>
+    /// Provides a global interface for table storage.
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    public interface ITableStorageRepository<TEntity> where TEntity : ITableEntity, new()
     {
         /// <summary>
         /// Deletes the specified entity.
         /// </summary>
-        void Delete(string table, TEntity entity);
+        void Delete(TEntity entity);
 
         /// <summary>
         /// Deletes the specified entities.
         /// </summary>
-        void Delete(string table, IEnumerable<TEntity> entities);
+        void Delete(IEnumerable<TEntity> entities);
 
         /// <summary>
         /// Deletes an entity with the specified ID.
         /// </summary>
-        void Delete(string table, Tuple<string, string> keys);
+        void DeleteAsync(string partitionKey, string rowKey, CancellationToken cancellationToken);
 
         /// <summary>
         /// Asynchronously gets the entity with the specified partition and row keys.
         /// </summary>
-        Task<TEntity> GetByKeyAsync(string table, Tuple<string, string> keys, CancellationToken cancellationToken);
+        Task<TEntity> GetByKeyAsync(string partitionKey, string rowKey, CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets all entities from the specified table.
         /// </summary>
-        Task<IEnumerable<TEntity>> GetAllAsync(string table, string partitionKey);
+        Task<IEnumerable<TEntity>> GetAllAsync(string partitionKey);
+
+        /// <summary>
+        /// Finds entities by executing the query.
+        /// </summary>
+        Task<IEnumerable<TEntity>> FindAsync(TableQuery<TEntity> query);
 
         /// <summary>
         /// Initializes a new entity with appropriate default values.
         /// </summary>
-        TEntity InitializeNew(Tuple<string, string> keys);
+        TEntity InitializeNew(string partitionKey, string rowKey);
 
         /// <summary>
-        /// Initializes a new query for the specified <typeparamref name="TEntity"/>.
+        /// Initializes a new query for the specified entity.
         /// </summary>
         TableQuery<TEntity> InitializeNewQuery();
 
         /// <summary>
         /// Inserts the specified entity into the table.
         /// </summary>
-        void Insert(string table, TEntity entity);
+        void Insert(TEntity entity);
 
         /// <summary>
         /// Inserts the specified entities into the table.
         /// </summary>
-        void Insert(string table, IEnumerable<TEntity> entities);
+        void Insert(IEnumerable<TEntity> entities);
 
         /// <summary>
         /// Updates the specified entity.
         /// </summary>
-        void Update(string table, TEntity entity);
+        void Update(TEntity entity);
 
         /// <summary>
         /// Updates the specified entities in a batch.
         /// </summary>
-        void Update(string table, IEnumerable<TEntity> entities);
-
-        /// <summary>
-        /// Finds entities by executing the query.
-        /// </summary>
-        Task<IEnumerable<TEntity>> FindAsync(string table, TableQuery<TEntity> query);
+        void Update(IEnumerable<TEntity> entities);
     }
 }

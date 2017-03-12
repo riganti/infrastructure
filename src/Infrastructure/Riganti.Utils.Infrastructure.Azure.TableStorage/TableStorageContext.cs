@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
@@ -13,11 +14,19 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
     /// </summary>
     public class TableStorageContext
     {
-        private readonly ITableStorageOptions options;
-        private readonly ConcurrentDictionary<Tuple<string, string>, TableEntity> objectCache = new ConcurrentDictionary<Tuple<string, string>, TableEntity>(new TableEntityEqualityComparer());
-        private readonly ConcurrentDictionary<string, ConcurrentQueue<TableOperation>> operationsBuffer = new ConcurrentDictionary<string, ConcurrentQueue<TableOperation>>();
-        private readonly ConcurrentDictionary<string, CloudTable> tableCache = new ConcurrentDictionary<string, CloudTable>();
+        private readonly Dictionary<ITableEntity, string> newEntities = new Dictionary<ITableEntity, string>(new TableEntityEqualityComparer());
+        private readonly Dictionary<ITableEntity, string> dirtyEntities = new Dictionary<ITableEntity, string>(new TableEntityEqualityComparer());
+        private readonly Dictionary<ITableEntity, string> removedEntities = new Dictionary<ITableEntity, string>(new TableEntityEqualityComparer());
+        private readonly Dictionary<ITableEntity, string> cleanEntities = new Dictionary<ITableEntity, string>(new TableEntityEqualityComparer());
+        private readonly Dictionary<string, CloudTable> tables = new Dictionary<string, CloudTable>();
         private readonly CloudTableClient client;
+        private readonly ITableStorageOptions options;
+        private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
+
+        public IEnumerable<ITableEntity> Entities => cleanEntities.Keys
+                                                        .Union(newEntities.Keys)
+                                                        .Union(dirtyEntities.Keys)
+                                                        .Union(removedEntities.Keys);
 
         // keeps the connection to table storage
         private CloudStorageAccount StorageAccount => new Lazy<CloudStorageAccount>(
@@ -34,195 +43,241 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         }
 
         /// <summary>
-        /// Creates the table if not exists.
-        /// </summary>
-        public async void CreateTableIfNotExistsAsync(string tableName)
-        {
-            await GetTableAsync(tableName, true);
-        }
-
-        /// <summary>
-        /// Gets the entity stored in local cache.
-        /// </summary>
-        /// <param name="keys">PartitionKey, RowKey</param>
-        /// <returns>Entity object</returns>
-        public TEntity GetLocal<TEntity>(Tuple<string, string> keys) where TEntity : TableEntity, new()
-        {
-            return (TEntity)objectCache[keys];
-        }
-
-        /// <summary>
         /// Gets the entity from local, if exists, or loads it from table storage.
         /// </summary>
-        public async Task<TEntity> GetAsync<TEntity>(string table, Tuple<string, string> keys, CancellationToken cancellationToken, Func<TableRequestOptions> requestOptions = null, Func<OperationContext> operationContext = null) where TEntity : TableEntity, new()
+        public async Task<TEntity> GetAsync<TEntity>(string partitionKey, string rowKey, string table, 
+                                        CancellationToken cancellationToken, 
+                                        Func<TableRequestOptions> requestOptions = null, 
+                                        Func<OperationContext> operationContext = null) where TEntity : ITableEntity
         {
-            var entity = GetLocal<TEntity>(keys);
+            var entity = GetLocal<TEntity>(partitionKey, rowKey);
             if (entity != null) return entity;
 
-            var retrieveOperation = TableOperation.Retrieve(keys.Item1, keys.Item2);
-            var cloudTable = await GetTableAsync(table);
+            var retrieveOperation = TableOperation.Retrieve(partitionKey, rowKey);
+            var cloudTable = await GetOrCreateTableAsync(table, cancellationToken, requestOptions, operationContext);
             entity = (TEntity) (await cloudTable.ExecuteAsync(retrieveOperation, requestOptions?.Invoke(), operationContext?.Invoke(), cancellationToken)).Result;
 
-            AddEntityToLocalCache(entity);
+            RegisterClean(entity, table);
 
             return entity;
         }
 
         /// <summary>
-        /// Inserts a new entity to the specified table.
+        /// Runs the segmented query on the cloud table to load all entities for the specified PartitionKey.
         /// </summary>
-        public void Insert<TEntity>(string table, TEntity entity) where TEntity : TableEntity, new()
+        public async Task<TableQuerySegment<TEntity>> GetAllAsync<TEntity>(string partitionKey, string table, TableContinuationToken continuationToken) where TEntity : ITableEntity, new()
         {
-            var insertOperation = TableOperation.Insert(entity);
-            var queue = operationsBuffer.GetOrAdd(table, new ConcurrentQueue<TableOperation>());
-            queue.Enqueue(insertOperation);
-
-            AddEntityToLocalCache(entity);
-        }
-
-        /// <summary>
-        /// Inserts new entities to the specified table.
-        /// </summary>
-        public void Insert<TEntity>(string table, IEnumerable<TEntity> entities) where TEntity : TableEntity, new()
-        {
-            foreach (var entity in entities)
-                Insert(table, entity);
-        }
-
-        /// <summary>
-        /// Updates the entity in the specified table.
-        /// </summary>
-        public void Update<TEntity>(string table, TEntity entity) where TEntity : TableEntity, new()
-        {
-            var updateOperation = TableOperation.Replace(entity);
-            var queue = operationsBuffer.GetOrAdd(table, new ConcurrentQueue<TableOperation>());
-            queue.Enqueue(updateOperation);
-
-            AddEntityToLocalCache(entity);
-        }
-
-        /// <summary>
-        /// Updates the entities in the specified table.
-        /// </summary>
-        public void Update<TEntity>(string table, IEnumerable<TEntity> entities) where TEntity : TableEntity, new()
-        {
-            foreach (var entity in entities)
-                Update(table, entity);
-        }
-
-        /// <summary>
-        /// Deletes the entity from the specified table.
-        /// </summary>
-        public void Delete<TEntity>(string table, TEntity entity) where TEntity : TableEntity, new()
-        {
-            var deleteOperation = TableOperation.Delete(entity);
-            var queue = operationsBuffer.GetOrAdd(table, new ConcurrentQueue<TableOperation>());
-            queue.Enqueue(deleteOperation);
-
-            AddEntityToLocalCache(entity);
-        }
-
-        /// <summary>
-        /// Deletes the entity in the table.
-        /// </summary>
-        /// <param name="table">The table name</param>
-        /// <param name="keys">PartitionKey, RowKey</param>
-        public void Delete<TEntity>(string table, Tuple<string, string> keys) where TEntity : TableEntity, new()
-        {
-            var entity = GetLocal<TEntity>(keys) ?? GetAsync<TEntity>(table, keys, CancellationToken.None).Result;
-            Delete(table, entity);
-        }
-
-        /// <summary>
-        /// Deletes the entities from the specified table.
-        /// </summary>
-        public void Delete<TEntity>(string table, IEnumerable<TEntity> entities) where TEntity : TableEntity, new()
-        {
-            foreach (var entity in entities)
-                Delete(table, entity);
+            var cloudTable = await GetOrCreateTableAsync(table);
+            var query = new TableQuery<TEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
+            var result = await cloudTable.ExecuteQuerySegmentedAsync(query, continuationToken);
+            return result;
         }
 
         /// <summary>
         /// Runs the query on the cloud table.
         /// </summary>
-        public async Task<TableQuerySegment<TEntity>> FindAsync<TEntity>(string table, TableQuery<TEntity> query, TableContinuationToken continuationToken) where TEntity : TableEntity, new()
+        public async Task<TableQuerySegment<TEntity>> FindAsync<TEntity>(TableQuery<TEntity> query, string table, TableContinuationToken continuationToken) where TEntity : ITableEntity, new()
         {
-            var cloudTable = await GetTableAsync(table);
+            var cloudTable = await GetOrCreateTableAsync(table);
             return await cloudTable.ExecuteQuerySegmentedAsync(query, continuationToken);
         }
 
         /// <summary>
-        /// Runs the segmented query on the cloud table to load all entities.
-        /// Filter usually contains PartitionKey.
+        /// Triggers execution of operations stored in the local queue asynchronously.
         /// </summary>
-        public async Task<TableQuerySegment<TEntity>> GetAllAsync<TEntity>(string table, string filter, TableContinuationToken continuationToken) where TEntity : TableEntity, new()
+        /// <returns>Number of records affected.</returns>
+        public async Task<int> SaveChangesAsync(Func<TableRequestOptions> requestOptions = null, Func<OperationContext> operationContext = null)
         {
-            var cloudTable = await GetTableAsync(table);
-            var tableQuery = new TableQuery<TEntity>();
-            if (filter != null)
-            {
-                tableQuery = tableQuery.Where(filter);
-            }
-            return await cloudTable.ExecuteQuerySegmentedAsync(tableQuery, continuationToken);
+            return await SaveChangesAsync(CancellationToken.None, requestOptions, operationContext);
         }
 
         /// <summary>
-        /// Triggers execution of operations stored in the local buffer asynchronously.
+        /// Triggers execution of operations stored in the local queue asynchronously.
         /// </summary>
-        public async Task SaveChangesAsync(CancellationToken cancellationToken, Func<TableRequestOptions> requestOptions = null, Func<OperationContext> operationContext = null)
+        /// <returns>Number of records affected.</returns>
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken, Func<TableRequestOptions> requestOptions = null, Func<OperationContext> operationContext = null)
         {
-            foreach (var table in operationsBuffer.Keys)
+            //await Test(cancellationToken);
+            await semaphore.WaitAsync(cancellationToken);
+            var affectedRecordsCount = 0;
+            try
             {
-                var cloudTable = await GetTableAsync(table);
-                TableOperation operation;
-                while (operationsBuffer[table].TryDequeue(out operation))
-                {
-                    await cloudTable.ExecuteAsync(operation, requestOptions?.Invoke(), operationContext?.Invoke(), cancellationToken);
-                }
+                affectedRecordsCount += await InsertNewEntitiesAsync(cancellationToken, requestOptions, operationContext);
+                affectedRecordsCount += await UpdateDirtyEntitiesAsync(cancellationToken, requestOptions, operationContext);
+                affectedRecordsCount += await DeleteRemovedEntitiesAsync(cancellationToken, requestOptions, operationContext);
             }
-            ClearLocalCaches();
+            finally
+            {
+                semaphore.Release();
+            }
+            return affectedRecordsCount;
         }
 
         /// <summary>
         /// Gets the CloudTable instance. 
         /// </summary>
         /// <param name="tableName">Gets existing or creates a new instance of CloudTable</param>
-        /// <param name="createIfNotExists">Creates a new table if not exists</param>
-        /// <returns></returns>
-        internal async Task<CloudTable> GetTableAsync(string tableName, bool createIfNotExists = false)
+        public async Task<CloudTable> GetOrCreateTableAsync(string tableName)
         {
-            var table = client.GetTableReference(tableName);
-            if (createIfNotExists)
+            return await GetOrCreateTableAsync(tableName, CancellationToken.None, null, null);
+        }
+
+        /// <summary>
+        /// Gets the CloudTable instance. 
+        /// </summary>
+        /// <param name="tableName">Gets existing or creates a new instance of CloudTable</param>
+        /// <param name="cancellationToken"></param>
+        /// <param name="requestOptions"></param>
+        /// <param name="operationContext"></param>
+        public async Task<CloudTable> GetOrCreateTableAsync(string tableName, CancellationToken cancellationToken, Func<TableRequestOptions> requestOptions, Func<OperationContext> operationContext)
+        {
+            CloudTable table;
+            if (tables.TryGetValue(tableName, out table))
             {
-                await table.CreateIfNotExistsAsync();
+                return table;
             }
 
-            return tableCache.GetOrAdd(tableName, table);
+            table = client.GetTableReference(tableName);
+            await table.CreateIfNotExistsAsync(requestOptions?.Invoke(), operationContext?.Invoke(), cancellationToken);
+            tables.Add(tableName, table);
+            return table;
         }
 
         /// <summary>
-        /// Adds an entity to local cache.
+        /// Triggers queries to insert new entities.
         /// </summary>
-        private void AddEntityToLocalCache(TableEntity entity)
+        /// <returns>Number of records processed.</returns>
+        protected virtual async Task<int> InsertNewEntitiesAsync(CancellationToken cancellationToken, Func<TableRequestOptions> requestOptions = null, Func<OperationContext> operationContext = null)
         {
-            if (entity == null)
+            // todo: improve logic to use batches; there are few conditions to be met though, so leaving it for future improvement
+            var processedRecords = 0;
+            var tableNames = newEntities.Select(x => x.Value).Distinct();
+            foreach (var tableName in tableNames)
+            {
+                var table = await GetOrCreateTableAsync(tableName, cancellationToken, requestOptions, operationContext);
+                foreach (var entity in newEntities.Keys)
+                {
+                    var operation = TableOperation.Insert(entity);
+                    await table.ExecuteAsync(operation, requestOptions?.Invoke(), operationContext?.Invoke(), cancellationToken);
+                    
+                    processedRecords++;
+                }
+            }
+            newEntities.Clear();
+            return processedRecords;
+        }
+
+        /// <summary>
+        /// Triggers queries to update entities.
+        /// </summary>
+        /// <returns>Number of records processed.</returns>
+        protected virtual async Task<int> UpdateDirtyEntitiesAsync(CancellationToken cancellationToken, Func<TableRequestOptions> requestOptions = null, Func<OperationContext> operationContext = null)
+        {
+            // todo: improve logic to use batches; there are few conditions to be met though, so leaving it for future improvement
+            var processedRecords = 0;
+            var tableNames = dirtyEntities.Select(x => x.Value).Distinct();
+            foreach (var tableName in tableNames)
+            {
+                var table = await GetOrCreateTableAsync(tableName, cancellationToken, requestOptions, operationContext);
+                foreach (var entity in dirtyEntities.Keys)
+                {
+                    var operation = TableOperation.Replace(entity);
+                    await table.ExecuteAsync(operation, requestOptions?.Invoke(), operationContext?.Invoke(), cancellationToken);
+                    processedRecords++;
+                }
+            }
+            dirtyEntities.Clear();
+            return processedRecords;
+        }
+
+        /// <summary>
+        /// Triggers queries to delete entities.
+        /// </summary>
+        /// <returns>Number of records processed.</returns>
+        protected virtual async Task<int> DeleteRemovedEntitiesAsync(CancellationToken cancellationToken, Func<TableRequestOptions> requestOptions = null, Func<OperationContext> operationContext = null)
+        {
+            // todo: improve logic to use batches; there are few conditions to be met though, so leaving it for future improvement
+            var processedRecords = 0;
+            var tableNames = dirtyEntities.Select(x => x.Value).Distinct();
+            foreach (var tableName in tableNames)
+            {
+                var table = await GetOrCreateTableAsync(tableName, cancellationToken, requestOptions, operationContext);
+                foreach (var entity in removedEntities.Keys)
+                {
+                    var operation = TableOperation.Delete(entity);
+                    await table.ExecuteAsync(operation, requestOptions?.Invoke(), operationContext?.Invoke(), cancellationToken);
+                    processedRecords++;
+                }
+            }
+            removedEntities.Clear();
+            return processedRecords;
+        }
+
+        /// <summary>
+        /// Registers an entity to collection of clean objects.
+        /// </summary>
+        public void RegisterClean(ITableEntity entity, string table)
+        {
+            if (cleanEntities.ContainsKey(entity))
                 return;
 
-            var key = new Tuple<string, string>(entity.PartitionKey, entity.RowKey);
-            if (objectCache.ContainsKey(key))
-                objectCache[key] = entity;
-            else
-                objectCache.TryAdd(key, entity);
+            GuardObjectIsNotAlreadyIn(entity, newEntities);
+            GuardObjectIsNotAlreadyIn(entity, dirtyEntities);
+            GuardObjectIsNotAlreadyIn(entity, removedEntities);
+
+            cleanEntities.Add(entity, table);
         }
 
         /// <summary>
-        /// Clears the local cache.
+        /// Registers an entity to collection of new objects.
         /// </summary>
-        private void ClearLocalCaches()
+        public void RegisterNew(ITableEntity entity, string table)
         {
-            objectCache.Clear();
-            tableCache.Clear();
-            operationsBuffer.Clear();
+            GuardObjectIsNotAlreadyIn(entity, cleanEntities);
+            GuardObjectIsNotAlreadyIn(entity, dirtyEntities);
+            GuardObjectIsNotAlreadyIn(entity, removedEntities);
+
+            newEntities.Add(entity, table);
+        }
+
+        /// <summary>
+        /// Registers an entity to collection of dirty objects.
+        /// </summary>
+        public void RegisterDirty(ITableEntity entity, string table)
+        {
+            GuardObjectIsNotAlreadyIn(entity, removedEntities);
+
+            cleanEntities.Remove(entity);
+            if (!dirtyEntities.ContainsKey(entity) && !newEntities.ContainsKey(entity))
+                dirtyEntities.Add(entity, table);
+        }
+
+        /// <summary>
+        /// Registers an entity to collection of removed objects.
+        /// </summary>
+        public void RegisterRemoved(ITableEntity entity, string table)
+        {
+            cleanEntities.Remove(entity);
+            if (newEntities.Remove(entity))
+                return;
+            dirtyEntities.Remove(entity);
+            if (!removedEntities.ContainsKey(entity))
+                removedEntities.Add(entity, table);
+
+        }
+
+        /// <summary>
+        /// Gets the entity stored in local identity map.
+        /// </summary>
+        private TEntity GetLocal<TEntity>(string partitionKey, string rowKey) where TEntity: ITableEntity
+        {
+            return (TEntity) Entities.SingleOrDefault(x => x.PartitionKey == partitionKey && x.RowKey == rowKey);
+        }
+
+        private static void GuardObjectIsNotAlreadyIn(ITableEntity entity, IDictionary<ITableEntity, string> dictionary)
+        {
+            if (dictionary.ContainsKey(entity))
+                throw new InvalidOperationException("The entity is already in another dictionary.");
         }
     }
 }
