@@ -151,17 +151,13 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         {
             // todo: improve logic to use batches; there are few conditions to be met though, so leaving it for future improvement
             var processedRecords = 0;
-            var tableNames = newEntities.Select(x => x.Value).Distinct();
-            foreach (var tableName in tableNames)
+            foreach (var entity in newEntities)
             {
-                var table = await GetOrCreateTableAsync(tableName, cancellationToken, requestOptions, operationContext);
-                foreach (var entity in newEntities.Keys)
-                {
-                    var operation = TableOperation.Insert(entity);
-                    await table.ExecuteAsync(operation, requestOptions?.Invoke(), operationContext?.Invoke(), cancellationToken);
+                var table = await GetOrCreateTableAsync(entity.Value, cancellationToken, requestOptions, operationContext);
+                var operation = TableOperation.Insert(entity.Key);
+                await table.ExecuteAsync(operation, requestOptions?.Invoke(), operationContext?.Invoke(), cancellationToken);
                     
-                    processedRecords++;
-                }
+                processedRecords++;
             }
             newEntities.Clear();
             return processedRecords;
@@ -175,16 +171,12 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         {
             // todo: improve logic to use batches; there are few conditions to be met though, so leaving it for future improvement
             var processedRecords = 0;
-            var tableNames = dirtyEntities.Select(x => x.Value).Distinct();
-            foreach (var tableName in tableNames)
+            foreach (var entity in dirtyEntities)
             {
-                var table = await GetOrCreateTableAsync(tableName, cancellationToken, requestOptions, operationContext);
-                foreach (var entity in dirtyEntities.Keys)
-                {
-                    var operation = TableOperation.Replace(entity);
-                    await table.ExecuteAsync(operation, requestOptions?.Invoke(), operationContext?.Invoke(), cancellationToken);
-                    processedRecords++;
-                }
+                var table = await GetOrCreateTableAsync(entity.Value, cancellationToken, requestOptions, operationContext);
+                var operation = TableOperation.Replace(entity.Key);
+                await table.ExecuteAsync(operation, requestOptions?.Invoke(), operationContext?.Invoke(), cancellationToken);
+                processedRecords++;
             }
             dirtyEntities.Clear();
             return processedRecords;
@@ -198,16 +190,12 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         {
             // todo: improve logic to use batches; there are few conditions to be met though, so leaving it for future improvement
             var processedRecords = 0;
-            var tableNames = dirtyEntities.Select(x => x.Value).Distinct();
-            foreach (var tableName in tableNames)
+            foreach (var entity in removedEntities)
             {
-                var table = await GetOrCreateTableAsync(tableName, cancellationToken, requestOptions, operationContext);
-                foreach (var entity in removedEntities.Keys)
-                {
-                    var operation = TableOperation.Delete(entity);
-                    await table.ExecuteAsync(operation, requestOptions?.Invoke(), operationContext?.Invoke(), cancellationToken);
-                    processedRecords++;
-                }
+                var table = await GetOrCreateTableAsync(entity.Value, cancellationToken, requestOptions, operationContext);
+                var operation = TableOperation.Delete(entity.Key);
+                await table.ExecuteAsync(operation, requestOptions?.Invoke(), operationContext?.Invoke(), cancellationToken);
+                processedRecords++;
             }
             removedEntities.Clear();
             return processedRecords;
