@@ -8,11 +8,9 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
     /// <summary>
     /// The comparer for TableEntity which uniqueness within table is represented by both PartitionKey and RowKey.
     /// </summary>
-    public class TableEntityEqualityComparer : IEqualityComparer, IEqualityComparer<ITableEntity>
+    public class TableEntityEqualityComparer<TEntity> : IEqualityComparer, IEqualityComparer<TEntity> where TEntity: class, ITableEntity
     {
-        public static TableEntityEqualityComparer Default => new TableEntityEqualityComparer();
-        
-        public bool Equals(ITableEntity entity1, ITableEntity entity2)
+        public bool Equals(TEntity entity1, TEntity entity2)
         {
             if (entity1 == null && entity2 == null)
                 return true;
@@ -25,7 +23,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
                 && entity1.RowKey.Equals(entity2.RowKey);
         }
 
-        public int GetHashCode(ITableEntity entity)
+        public int GetHashCode(TEntity entity)
         {
             unchecked
             {
@@ -36,10 +34,10 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 
         public new bool Equals(object x, object y)
         {
-            var entity1 = x as ITableEntity;
+            var entity1 = x as TEntity;
             if (entity1 == null) return false;
 
-            var entity2 = y as ITableEntity;
+            var entity2 = y as TEntity;
             if (entity2 == null) return false;
 
             return
@@ -51,7 +49,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         {
             unchecked
             {
-                var entity = (ITableEntity) obj;
+                var entity = (TEntity) obj;
                 return (entity.PartitionKey?.GetHashCode() ?? 0)
                     ^ (entity.RowKey?.GetHashCode() ?? 0);
             }

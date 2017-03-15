@@ -5,6 +5,12 @@
     <TargetFramework>net461</TargetFramework>
     <AssemblyName>Riganti.Utils.Infrastructure.EntityFramework</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.EntityFramework</PackageId>
+	<PackageVersion>2.0.0</PackageVersion>
+    <Authors>RIGANTI</Authors>
+    <Description>Infrastructure project setup for building modern enterprise applications using EntityFramework or Azure Table Storage.</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>infrastructure;entityframework;dotnetcore;</PackageTags>
+    <PackageLicenseUrl>https://github.com/riganti/infrastructure/blob/master/LICENSE</PackageLicenseUrl>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>

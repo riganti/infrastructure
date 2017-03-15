@@ -9,21 +9,21 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
     {
         private readonly bool hasOwnContext;
 
-        public TableStorageContext Context { get; }
+        public ITableStorageContext Context { get; }
 
-        public TableStorageUnitOfWork(IUnitOfWorkProvider provider, Func<TableStorageContext> contextFactory, TableStorageContextOptions options)
+        public TableStorageUnitOfWork(IUnitOfWorkProvider provider, Func<ITableStorageContext> contextFactory, StorageContextOptions options)
         {
-            if (options == TableStorageContextOptions.ReuseParentContext)
+            if (options == StorageContextOptions.ReuseParentContext)
             {
                 var parentUow = provider.GetCurrent() as TableStorageUnitOfWork;
                 if (parentUow != null)
                 {
-                    this.Context = parentUow.Context;
+                    Context = parentUow.Context;
                     return;
                 }
             }
 
-            this.Context = contextFactory();
+            Context = contextFactory();
             hasOwnContext = true;
         }
 
@@ -41,18 +41,18 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// <summary>
         /// Commits this instance when we have to.
         /// </summary>
-        public override Task CommitAsync()
+        public override async Task CommitAsync()
         {
             if (HasOwnContext())
             {
-                return base.CommitAsync();
+                await base.CommitAsync();
             }
-            return Task.FromResult(true);
         }
 
         protected override void CommitCore()
         {
-            throw new NotSupportedException("This method isn't supported. Please use CommitAsyncCore instead.");
+            var task = Context.SaveChangesAsync(CancellationToken.None);
+            Task.WaitAll(task);
         }
 
         protected override Task CommitAsyncCore(CancellationToken cancellationToken)
@@ -70,9 +70,9 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         }
 
         /// <summary>
-        /// Tries to get the <see cref="TableStorageContext"/> in the current scope.
+        /// Tries to get the <see cref="ITableStorageContext"/> in the current scope.
         /// </summary>
-        public static TableStorageContext TryGetTableStorageContext(IUnitOfWorkProvider provider)
+        public static ITableStorageContext TryGetTableStorageContext(IUnitOfWorkProvider provider)
         {
             var uow = provider.GetCurrent() as TableStorageUnitOfWork;
             if (uow == null)

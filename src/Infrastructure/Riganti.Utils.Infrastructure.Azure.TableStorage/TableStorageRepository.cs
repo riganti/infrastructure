@@ -10,13 +10,12 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
     /// An implementation of repository in Azure Table Storage.
     /// </summary>
     /// <typeparam name="TEntity">A custom entity inherrited from TableEntity.</typeparam>
-    public class TableStorageRepository<TEntity> : ITableStorageRepository<TEntity> where TEntity : ITableEntity, new()
+    public class TableStorageRepository<TEntity> : ITableStorageRepository<TEntity> where TEntity : class, ITableEntity, new()
     {
         private readonly IDateTimeProvider dateTimeProvider;
         private readonly IUnitOfWorkProvider provider;
 
-        protected TableStorageContext Context => TableStorageUnitOfWork.TryGetTableStorageContext(provider);
-        protected string Table => TableEntityMapperRegistry.Instance.GetTable(typeof(TEntity));
+        public ITableStorageContext Context => TableStorageUnitOfWork.TryGetTableStorageContext(provider);
 
         public TableStorageRepository(IUnitOfWorkProvider provider, IDateTimeProvider dateTimeProvider)
         {
@@ -26,18 +25,18 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 
         public void Delete(TEntity entity)
         {
-            Context.RegisterRemoved(entity, Table);
+            Context.RegisterRemoved(entity);
         }
 
         public void Delete(IEnumerable<TEntity> entities)
         {
             foreach (var entity in entities) 
-                Context.RegisterRemoved(entity, Table);
+                Context.RegisterRemoved(entity);
         }
 
         public async void DeleteAsync(string partitionKey, string rowKey, CancellationToken cancellationToken)
         {
-            var entity = await Context.GetAsync<TEntity>(partitionKey, rowKey, Table, cancellationToken);
+            var entity = await Context.GetAsync<TEntity>(partitionKey, rowKey, cancellationToken);
             Delete(entity);
         }
 
@@ -48,7 +47,8 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 
         public async Task<TEntity> GetByKeyAsync(string partitionKey, string rowKey, CancellationToken cancellationToken)
         {
-            return await Context.GetAsync<TEntity>(partitionKey, rowKey, Table, cancellationToken);
+                        
+            return await Context.GetAsync<TEntity>(partitionKey, rowKey, cancellationToken);
         }
 
         public TEntity InitializeNew(string partitionKey, string rowKey)
@@ -68,7 +68,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 
         public void Insert(TEntity entity)
         {
-            Context.RegisterNew(entity, Table);
+            Context.RegisterNew(entity);
         }
 
         public void Insert(IEnumerable<TEntity> entities)
@@ -79,7 +79,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 
         public void Update(TEntity entity)
         {
-            Context.RegisterDirty(entity, Table);
+            Context.RegisterDirty(entity);
         }
 
         public void Update(IEnumerable<TEntity> entities)
@@ -94,7 +94,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             TableQuerySegment<TEntity> result;
             do
             {
-                result = await Context.GetAllAsync<TEntity>(partitionKey, Table, continuationToken);
+                result = await Context.GetAllAsync<TEntity>(partitionKey, continuationToken);
                 continuationToken = result.ContinuationToken;
             } while (continuationToken != null);
 
@@ -107,7 +107,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             TableQuerySegment<TEntity> result;
             do
             {
-                result = await Context.FindAsync(query, Table, continuationToken);
+                result = await Context.FindAsync(query, continuationToken);
                 continuationToken = result.ContinuationToken;
             } while (continuationToken != null);
 

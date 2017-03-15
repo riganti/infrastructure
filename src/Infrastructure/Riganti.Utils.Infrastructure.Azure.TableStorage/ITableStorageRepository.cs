@@ -13,6 +13,11 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
     public interface ITableStorageRepository<TEntity> where TEntity : ITableEntity, new()
     {
         /// <summary>
+        /// Gets the context associated with this repository.
+        /// </summary>
+        ITableStorageContext Context { get; }
+
+        /// <summary>
         /// Deletes the specified entity.
         /// </summary>
         void Delete(TEntity entity);

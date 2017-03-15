@@ -1,9 +1,9 @@
 ﻿namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 {
     /// <summary>
-    /// Options for table storage behavior in <see cref="TableStorageUnitOfWork"/> instance.
+    /// Options for Azure storage behavior in <see cref="StorageContext"/> instance.
     /// </summary>
-    public enum TableStorageContextOptions
+    public enum StorageContextOptions
     {
         /// <summary>
         /// If we are already in another unit of work, its TableStorageContext will be reused and the changes will be committed after the outer unit of work commits.

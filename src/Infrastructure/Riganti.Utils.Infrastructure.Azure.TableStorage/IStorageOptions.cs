@@ -1,9 +1,9 @@
 ﻿namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 {
-    public interface ITableStorageOptions
+    public interface IStorageOptions
     {
         string StorageConnectionString { get; }
 
-        TableStorageContextOptions ContextOptions { get; }
+        StorageContextOptions ContextOptions { get; }
     }
 }
