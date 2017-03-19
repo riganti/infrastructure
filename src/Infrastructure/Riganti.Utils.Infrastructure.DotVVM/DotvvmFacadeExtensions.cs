@@ -39,16 +39,16 @@ namespace Riganti.Utils.Infrastructure
         /// </summary>
         public static void LoadFromQuery<T>(this GridViewDataSet<T> dataSet, IQuery<T> query)
         {
-            query.Skip = dataSet.PageIndex * dataSet.PageSize;
-            query.Take = dataSet.PageSize;
+            query.Skip = dataSet.PagingOptions.PageIndex * dataSet.PagingOptions.PageSize;
+            query.Take = dataSet.PagingOptions.PageSize;
             query.SortCriteria.Clear();
 
-            if (!string.IsNullOrEmpty(dataSet.SortExpression))
+            if (!string.IsNullOrEmpty(dataSet.SortingOptions.SortExpression))
             {
-                query.AddSortCriteria(dataSet.SortExpression, dataSet.SortDescending ? SortDirection.Descending : SortDirection.Ascending);
+                query.AddSortCriteria(dataSet.SortingOptions.SortExpression, dataSet.SortingOptions.SortDescending ? SortDirection.Descending : SortDirection.Ascending);
             }
 
-            dataSet.TotalItemsCount = query.GetTotalRowCount();
+            dataSet.PagingOptions.TotalItemsCount = query.GetTotalRowCount();
             dataSet.Items = query.Execute();
         }
 
