@@ -1,9 +1,4 @@
-﻿using System.Threading;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
-using Moq;
-using Moq.Protected;
-using Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Entities;
+﻿using Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Entities;
 using Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.StorageContext;
 using Riganti.Utils.Infrastructure.Core;
 using Xunit;
