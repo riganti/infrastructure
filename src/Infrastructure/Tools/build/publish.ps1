@@ -90,20 +90,20 @@ function GitPush() {
 ### Configuration
 
 $packages = @(
-	[pscustomobject]@{ Package = "Core"; Directory = "Riganti.Utils.Infrastructure.Core" },
-	[pscustomobject]@{ Package = "EntityFramework"; Directory = "Riganti.Utils.Infrastructure.EntityFramework" },
-	[pscustomobject]@{ Package = "EntityFrameworkCore"; Directory = "Riganti.Utils.Infrastructure.EntityFrameworkCore" },
-	[pscustomobject]@{ Package = "Azure.TableStorage"; Directory = "Riganti.Utils.Infrastructure.Azure.TableStorage" },
-	[pscustomobject]@{ Package = "Configuration"; Directory = "Riganti.Utils.Infrastructure.Configuration" },
-	[pscustomobject]@{ Package = "Services"; Directory = "Riganti.Utils.Infrastructure.Services" },
-	[pscustomobject]@{ Package = "Services.Azure"; Directory = "Riganti.Utils.Infrastructure.Services.Azure" },
-	[pscustomobject]@{ Package = "Services.SendGrid"; Directory = "Riganti.Utils.Infrastructure.Services.SendGrid" },
-	[pscustomobject]@{ Package = "Services.Amazon.SES"; Directory = "Riganti.Utils.Infrastructure.Services.Amazon.SES" },
-	[pscustomobject]@{ Package = "Services.Smtp"; Directory = "Riganti.Utils.Infrastructure.Services.Smtp" },
-	[pscustomobject]@{ Package = "DotVVM"; Directory = "Riganti.Utils.Infrastructure.DotVVM" },
-	[pscustomobject]@{ Package = "AutoMapper"; Directory = "Riganti.Utils.Infrastructure.AutoMapper" },
-	[pscustomobject]@{ Package = "AspNetCore"; Directory = "Riganti.Utils.Infrastructure.AspNetCore" },
-	[pscustomobject]@{ Package = "SystemWeb"; Directory = "Riganti.Utils.Infrastructure.SystemWeb" }
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Core"; Directory = "Riganti.Utils.Infrastructure.Core" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.EntityFramework"; Directory = "Riganti.Utils.Infrastructure.EntityFramework" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.EntityFrameworkCore"; Directory = "Riganti.Utils.Infrastructure.EntityFrameworkCore" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Azure.TableStorage"; Directory = "Riganti.Utils.Infrastructure.Azure.TableStorage" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Configuration"; Directory = "Riganti.Utils.Infrastructure.Configuration" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services"; Directory = "Riganti.Utils.Infrastructure.Services" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Azure"; Directory = "Riganti.Utils.Infrastructure.Services.Azure" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.SendGrid"; Directory = "Riganti.Utils.Infrastructure.Services.SendGrid" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Amazon.SES"; Directory = "Riganti.Utils.Infrastructure.Services.Amazon.SES" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Smtp"; Directory = "Riganti.Utils.Infrastructure.Services.Smtp" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.DotVVM"; Directory = "Riganti.Utils.Infrastructure.DotVVM" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.AutoMapper"; Directory = "Riganti.Utils.Infrastructure.AutoMapper" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.AspNetCore"; Directory = "Riganti.Utils.Infrastructure.AspNetCore" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.SystemWeb"; Directory = "Riganti.Utils.Infrastructure.SystemWeb" }
 )
 
 
