@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.0.0</VersionPrefix>
     <TargetFramework>net461</TargetFramework>
     <RuntimeIdentifier>win7-x86</RuntimeIdentifier>
     <AssemblyName>Riganti.Utils.Infrastructure.Services.Smtp.Tests</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Riganti.Utils.Infrastructure.Services.Smtp.Tests</PackageId>
+    <PackageVersion>2.0.0</PackageVersion>
     <Company>RIGANTI</Company>
-    <Authors>RIGANTI</Authors>
+    <Authors>Riganti</Authors>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
