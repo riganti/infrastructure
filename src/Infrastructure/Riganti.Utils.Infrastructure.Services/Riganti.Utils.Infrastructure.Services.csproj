@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.0.0-alpha-11</VersionPrefix>
+    <VersionPrefix></VersionPrefix>
     <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Services</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Services</PackageId>
@@ -9,7 +9,7 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <PackageVersion>2.0.0</PackageVersion>
+    <PackageVersion></PackageVersion>
     <Company>RIGANTI</Company>
     <Authors>Riganti</Authors>
     <Description>Infrastructure project setup for building modern enterprise applications using EntityFramework or Azure Table Storage.</Description>
