@@ -1,5 +1,10 @@
-param([String]$version, [String]$apiKey, [String]$server, [String]$branchName, [String]$repoUrl, [String]$nugetRestoreAltSource = "", [bool]$pushTag)
+param([String]$versionPrefix, [string]$versionSuffix = "", [String]$apiKey, [String]$server, [String]$branchName, [String]$repoUrl, [String]$nugetRestoreAltSource = "")
 
+# prepare full version
+$version = $versionPrefix
+if ($versionSuffix -ne "") {
+    $version += "-" + $versionSuffix
+}
 
 ### Helper Functions
 
@@ -34,17 +39,15 @@ $LASTEXITCODE
 }
 
 function CleanOldGeneratedPackages() {
-	foreach ($package in $packages) {
-		del .\$($package.Directory)\bin\debug\*.nupkg -ErrorAction SilentlyContinue
-	}
+	del "./.nupkgs/*.nupkg"
 }
+
 
 function SetVersion() {
   	foreach ($package in $packages) {
 		$filePath = ".\$($package.Directory)\$($package.Directory).csproj"
 		$file = [System.IO.File]::ReadAllText($filePath, [System.Text.Encoding]::UTF8)
-		$file = [System.Text.RegularExpressions.Regex]::Replace($file, "\<VersionPrefix\>([^<]+)\</VersionPrefix\>", "<VersionPrefix>" + $version + "</VersionPrefix>")
-		$file = [System.Text.RegularExpressions.Regex]::Replace($file, "\<PackageVersion\>([^<]+)\</PackageVersion\>", "<PackageVersion>" + $version + "</PackageVersion>")
+		$file = [System.Text.RegularExpressions.Regex]::Replace($file, "\<VersionPrefix\>([^<]+)\</VersionPrefix\>", "<VersionPrefix>" + $versionPrefix + "</VersionPrefix>")
 		[System.IO.File]::WriteAllText($filePath, $file, [System.Text.Encoding]::UTF8)
 	}  
 }
@@ -60,15 +63,13 @@ function BuildPackages() {
 			& dotnet restore --source $nugetRestoreAltSource --source https://nuget.org/api/v2/ | Out-Host
 		}
 		
-		& dotnet pack | Out-Host
+		& dotnet pack --configuration Release --version-suffix "$versionSuffix" --output "..\.nupkgs" | Out-Host
 		cd ..
 	}
 }
 
 function PushPackages() {
-	foreach ($package in $packages) {
-		& .\Tools\nuget.exe push .\$($package.Directory)\bin\debug\$($package.Package).$version.nupkg -source $server -apiKey $apiKey | Out-Host
-	}
+    dotnet nuget push ".\.nupkgs\*.nupkg" --source $server --api-key $apiKey --verbosity detailed | Out-Host 
 }
 
 function GitCheckout() {
@@ -76,15 +77,11 @@ function GitCheckout() {
 	invoke-git -c http.sslVerify=false pull $repoUrl $branchName
 }
 
-function GitPush() {
-	if ($pushTag) {
-			invoke-git tag "v$($version)" HEAD
-	}
-	invoke-git commit -am "NuGet package version $version"
-	invoke-git rebase HEAD $branchName
-	invoke-git push --follow-tags $repoUrl $branchName
-}
 
+function GitTagVersion() {
+	invoke-git tag "v$($version)"
+    invoke-git push --follow-tags $repoUrl $branchName
+}
 
 
 ### Configuration
@@ -109,14 +106,9 @@ $packages = @(
 
 ### Publish Workflow
 
-$versionWithoutPre = $version
-if ($versionWithoutPre.Contains("-")) {
-	$versionWithoutPre = $versionWithoutPre.Substring(0, $versionWithoutPre.IndexOf("-"))
-}
-
 CleanOldGeneratedPackages;
 GitCheckout;
 SetVersion;
 BuildPackages;
 PushPackages;
-GitPush;
+GitTagVersion;
