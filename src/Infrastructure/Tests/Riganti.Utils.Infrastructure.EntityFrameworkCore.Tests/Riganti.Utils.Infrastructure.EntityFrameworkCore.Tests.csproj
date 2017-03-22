@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <VersionPrefix>2.0.0</VersionPrefix>
     <TargetFramework>netstandard1.6</TargetFramework>
     <AssemblyName>Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -12,9 +13,8 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <PackageVersion>2.0.0</PackageVersion>
     <Company>RIGANTI</Company>
-    <Authors>Riganti</Authors>
+    <Authors>RIGANTI</Authors>
     <Description>Infrastructure project setup for building modern enterprise applications using EntityFramework or Azure Table Storage.</Description>
     <Copyright>Copyright 2017 (c) Riganti s.r.o. - All rights reserved.</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
