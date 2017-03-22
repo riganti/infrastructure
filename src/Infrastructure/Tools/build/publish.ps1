@@ -1,9 +1,9 @@
-param([String]$versionPrefix, [string]$versionSuffix = "", [String]$apiKey, [String]$server, [String]$branchName, [String]$repoUrl, [String]$nugetRestoreAltSource = "")
+param([String]$version, [string]$versionSuffix = "", [String]$apiKey, [String]$server, [String]$branchName, [String]$repoUrl, [String]$nugetRestoreAltSource = "")
 
 # prepare full version
-$version = $versionPrefix
+$fullVersion = $version
 if ($versionSuffix -ne "") {
-    $version += "-" + $versionSuffix
+    $fullVersion += "-" + $versionSuffix
 }
 
 ### Helper Functions
@@ -45,9 +45,10 @@ function CleanOldGeneratedPackages() {
 
 function SetVersion() {
   	foreach ($package in $packages) {
-		$filePath = ".\$($package.Directory)\$($package.Directory).csproj"
-		$file = [System.IO.File]::ReadAllText($filePath, [System.Text.Encoding]::UTF8)
-		$file = [System.Text.RegularExpressions.Regex]::Replace($file, "\<VersionPrefix\>([^<]+)\</VersionPrefix\>", "<VersionPrefix>" + $versionPrefix + "</VersionPrefix>")
+        $filePath = ".\$($package.Directory)\$($package.Directory).csproj"
+        $file = [System.IO.File]::ReadAllText($filePath, [System.Text.Encoding]::UTF8)
+		$file = [System.Text.RegularExpressions.Regex]::Replace($file, "\<VersionPrefix\>([^<]+)\</VersionPrefix\>", "<VersionPrefix>" + $version + "</VersionPrefix>")
+		$file = [System.Text.RegularExpressions.Regex]::Replace($file, "\<PackageVersion\>([^<]+)\</PackageVersion\>", "<PackageVersion>" + $fullVersion + "</PackageVersion>")
 		[System.IO.File]::WriteAllText($filePath, $file, [System.Text.Encoding]::UTF8)
 	}  
 }
@@ -79,7 +80,9 @@ function GitCheckout() {
 
 
 function GitTagVersion() {
-	invoke-git tag "v$($version)"
+	invoke-git tag "v$($fullVersion)"
+    invoke-git commit -am "NuGet package version $fullVersion"
+	invoke-git rebase HEAD $branchName
     invoke-git push --follow-tags $repoUrl $branchName
 }
 
