@@ -1,10 +1,4 @@
-param([String]$version, [string]$versionSuffix = "", [String]$apiKey, [String]$server, [String]$branchName, [String]$repoUrl, [String]$nugetRestoreAltSource = "")
-
-# prepare full version
-$fullVersion = $version
-if ($versionSuffix -ne "") {
-    $fullVersion += "-" + $versionSuffix
-}
+param([String]$version, [String]$apiKey, [String]$server, [String]$branchName, [String]$repoUrl, [String]$nugetRestoreAltSource = "")
 
 ### Helper Functions
 
@@ -50,7 +44,7 @@ function SetVersion() {
         $filePath = ".\$($package.Directory)\$($package.Directory).csproj"
         $file = [System.IO.File]::ReadAllText($filePath, [System.Text.Encoding]::UTF8)
 		$file = [System.Text.RegularExpressions.Regex]::Replace($file, "\<VersionPrefix\>([^<]+)\</VersionPrefix\>", "<VersionPrefix>" + $version + "</VersionPrefix>")
-		$file = [System.Text.RegularExpressions.Regex]::Replace($file, "\<PackageVersion\>([^<]+)\</PackageVersion\>", "<PackageVersion>" + $fullVersion + "</PackageVersion>")
+		$file = [System.Text.RegularExpressions.Regex]::Replace($file, "\<PackageVersion\>([^<]+)\</PackageVersion\>", "<PackageVersion>" + $version + "</PackageVersion>")
 		[System.IO.File]::WriteAllText($filePath, $file, [System.Text.Encoding]::UTF8)
 	}  
 }
@@ -66,13 +60,13 @@ function BuildPackages() {
 			& dotnet restore --source $nugetRestoreAltSource --source https://nuget.org/api/v2/ | Out-Host
 		}
 		
-		& dotnet pack --configuration Release --version-suffix "$versionSuffix" --output "..\.nupkgs" | Out-Host
+		& dotnet pack --configuration Release --output "..\.nupkgs" | Out-Host
 		cd ..
 	}
 }
 
 function PushPackages() {
-    dotnet nuget push ".\.nupkgs\*.nupkg" --source $server --api-key $apiKey --verbosity detailed | Out-Host 
+    dotnet nuget push ".\.nupkgs\*.nupkg" --source $server --api-key $apiKey | Out-Host 
 }
 
 function GitCheckout() {
@@ -87,7 +81,6 @@ function GitTagVersion() {
 	invoke-git rebase HEAD $branchName
     invoke-git push --follow-tags $repoUrl $branchName
 }
-
 
 ### Configuration
 
