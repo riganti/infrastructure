@@ -76,8 +76,8 @@ function GitCheckout() {
 
 
 function GitTagVersion() {
-	invoke-git tag "v$($fullVersion)" HEAD
-    invoke-git commit -am "NuGet package version $fullVersion"
+	invoke-git tag "v$($version)" HEAD
+    invoke-git commit -am "NuGet package version $version"
 	invoke-git rebase HEAD $branchName
     invoke-git push --follow-tags $repoUrl $branchName
 }
