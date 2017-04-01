@@ -51,7 +51,7 @@ namespace Riganti.Utils.Infrastructure.Core
             // call the method
             typeof(QueryBase<TResult>).GetTypeInfo().GetMethod(nameof(AddSortCriteriaCore),
                     BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(prop.PropertyType)
-                .Invoke(this, new object[] {expr, direction});
+                .Invoke(this, new object[] { expr, direction });
         }
 
         /// <summary>
@@ -68,8 +68,8 @@ namespace Riganti.Utils.Infrastructure.Core
         public IList<TResult> Execute()
         {
             var query = PreProcessQuery();
-            var results = query.ToList();
-            PostProcessResults(results);
+            IList<TResult> results = query.ToList();
+            results = PostProcessResults(results);
             return results;
         }
 
@@ -88,7 +88,7 @@ namespace Riganti.Utils.Infrastructure.Core
         {
             var query = PreProcessQuery();
             var results = await ExecuteQueryAsync(query, cancellationToken);
-            PostProcessResults(results);
+            results = PostProcessResults(results);
             return results;
         }
 
@@ -101,7 +101,7 @@ namespace Riganti.Utils.Infrastructure.Core
         }
         public Task<int> GetTotalRowCountAsync()
         {
-           return GetTotalRowCountAsync(CancellationToken.None);
+            return GetTotalRowCountAsync(CancellationToken.None);
         }
 
         public abstract Task<int> GetTotalRowCountAsync(CancellationToken cancellationToken);
@@ -135,8 +135,9 @@ namespace Riganti.Utils.Infrastructure.Core
         ///     When overriden in derived class, it allows to modify the materialized results of the query before they are returned
         ///     to the caller.
         /// </summary>
-        protected virtual void PostProcessResults(IList<TResult> results)
+        protected virtual IList<TResult> PostProcessResults(IList<TResult> results)
         {
+            return results;
         }
 
         protected abstract IQueryable<TResult> GetQueryable();
