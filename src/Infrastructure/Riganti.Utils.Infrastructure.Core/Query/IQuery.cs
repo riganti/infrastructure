@@ -10,7 +10,15 @@ namespace Riganti.Utils.Infrastructure.Core
     /// <summary>
     /// A generic interface for query objects with support for paging and sorting.
     /// </summary>
-    public interface IQuery<TResult>
+    public interface IQuery<TResult> : IQuery<TResult, TResult>
+    {
+        
+    }
+
+    /// <summary>
+    /// A generic interface for query objects with support for paging and sorting.
+    /// </summary>
+    public interface IQuery<TQueryableResult, TResult>
     {
 
         /// <summary>
@@ -26,12 +34,12 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <summary>
         /// Gets a list of sort criteria applied on this query.
         /// </summary>
-        IList<Func<IQueryable<TResult>, IOrderedQueryable<TResult>>> SortCriteria { get; }
+        IList<Func<IQueryable<TQueryableResult>, IOrderedQueryable<TQueryableResult>>> SortCriteria { get; }
 
         /// <summary>
         /// Adds a specified sort criteria to the query.
         /// </summary>
-        void AddSortCriteria<TKey>(Expression<Func<TResult, TKey>> field, SortDirection direction = SortDirection.Ascending);
+        void AddSortCriteria<TKey>(Expression<Func<TQueryableResult, TKey>> field, SortDirection direction = SortDirection.Ascending);
 
         /// <summary>
         /// Adds a specified sort criteria to the query.

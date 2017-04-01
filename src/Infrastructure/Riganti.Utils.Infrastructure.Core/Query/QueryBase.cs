@@ -12,14 +12,31 @@ namespace Riganti.Utils.Infrastructure.Core
     ///     A base implementation of the query object pattern.
     /// </summary>
     /// <typeparam name="TResult">The type of the result that the query returns.</typeparam>
-    public abstract class QueryBase<TResult> : IQuery<TResult>
+    public abstract class QueryBase<TResult> : QueryBase<TResult, TResult>
+    {
+        /// <summary>
+        ///     When overriden in derived class, it allows to modify the materialized results of the query before they are returned
+        ///     to the caller.
+        /// </summary>
+        protected override IList<TResult> PostProcessResults(IList<TResult> results)
+        {
+            return results;
+        }
+    }
+
+    /// <summary>
+    ///     A base implementation of the query object pattern.
+    /// </summary>
+    /// <typeparam name="TResult">The type of the result that the query returns.</typeparam>
+    /// <typeparam name="TQueryableResult">The type of the result of GetQueryable method. Thats for cases when you need compose TResult in PostProcessResults.</typeparam>
+    public abstract class QueryBase<TQueryableResult, TResult> : IQuery<TQueryableResult, TResult>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="QueryBase{TResult}" /> class.
         /// </summary>
         protected QueryBase()
         {
-            SortCriteria = new List<Func<IQueryable<TResult>, IOrderedQueryable<TResult>>>();
+            SortCriteria = new List<Func<IQueryable<TQueryableResult>, IOrderedQueryable<TQueryableResult>>>();
         }
 
         /// <summary>
@@ -36,7 +53,7 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <summary>
         ///     Gets a list of sort criteria applied on this query.
         /// </summary>
-        public IList<Func<IQueryable<TResult>, IOrderedQueryable<TResult>>> SortCriteria { get; }
+        public IList<Func<IQueryable<TQueryableResult>, IOrderedQueryable<TQueryableResult>>> SortCriteria { get; }
 
         /// <summary>
         ///     Adds a specified sort criteria to the query.
@@ -44,12 +61,12 @@ namespace Riganti.Utils.Infrastructure.Core
         public void AddSortCriteria(string fieldName, SortDirection direction = SortDirection.Ascending)
         {
             // create the expression
-            var prop = typeof(TResult).GetTypeInfo().GetProperty(fieldName);
-            var param = Expression.Parameter(typeof(TResult), "i");
+            var prop = typeof(TQueryableResult).GetTypeInfo().GetProperty(fieldName);
+            var param = Expression.Parameter(typeof(TQueryableResult), "i");
             var expr = Expression.Lambda(Expression.Property(param, prop), param);
 
             // call the method
-            typeof(QueryBase<TResult>).GetTypeInfo().GetMethod(nameof(AddSortCriteriaCore),
+            typeof(QueryBase<TQueryableResult, TResult>).GetTypeInfo().GetMethod(nameof(AddSortCriteriaCore),
                     BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(prop.PropertyType)
                 .Invoke(this, new object[] { expr, direction });
         }
@@ -57,7 +74,7 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <summary>
         ///     Adds a specified sort criteria to the query.
         /// </summary>
-        public void AddSortCriteria<TKey>(Expression<Func<TResult, TKey>> field, SortDirection direction = SortDirection.Ascending)
+        public void AddSortCriteria<TKey>(Expression<Func<TQueryableResult, TKey>> field, SortDirection direction = SortDirection.Ascending)
         {
             AddSortCriteriaCore(field, direction);
         }
@@ -68,8 +85,8 @@ namespace Riganti.Utils.Infrastructure.Core
         public IList<TResult> Execute()
         {
             var query = PreProcessQuery();
-            IList<TResult> results = query.ToList();
-            results = PostProcessResults(results);
+            var queryResults = query.ToList();
+            var results = PostProcessResults(queryResults);
             return results;
         }
 
@@ -87,8 +104,8 @@ namespace Riganti.Utils.Infrastructure.Core
         public async Task<IList<TResult>> ExecuteAsync(CancellationToken cancellationToken)
         {
             var query = PreProcessQuery();
-            var results = await ExecuteQueryAsync(query, cancellationToken);
-            results = PostProcessResults(results);
+            var queryResults = await ExecuteQueryAsync(query, cancellationToken);
+            var results = PostProcessResults(queryResults);
             return results;
         }
 
@@ -106,7 +123,7 @@ namespace Riganti.Utils.Infrastructure.Core
 
         public abstract Task<int> GetTotalRowCountAsync(CancellationToken cancellationToken);
 
-        private void AddSortCriteriaCore<TKey>(Expression<Func<TResult, TKey>> sortExpression, SortDirection direction)
+        private void AddSortCriteriaCore<TKey>(Expression<Func<TQueryableResult, TKey>> sortExpression, SortDirection direction)
         {
             if (direction == SortDirection.Ascending)
                 SortCriteria.Add(x => x.OrderBy(sortExpression));
@@ -114,10 +131,10 @@ namespace Riganti.Utils.Infrastructure.Core
                 SortCriteria.Add(x => x.OrderByDescending(sortExpression));
         }
 
-        protected abstract Task<IList<TResult>> ExecuteQueryAsync(IQueryable<TResult> query,
+        protected abstract Task<IList<TQueryableResult>> ExecuteQueryAsync(IQueryable<TQueryableResult> query,
             CancellationToken cancellationToken);
 
-        private IQueryable<TResult> PreProcessQuery()
+        private IQueryable<TQueryableResult> PreProcessQuery()
         {
             var query = GetQueryable();
 
@@ -135,11 +152,8 @@ namespace Riganti.Utils.Infrastructure.Core
         ///     When overriden in derived class, it allows to modify the materialized results of the query before they are returned
         ///     to the caller.
         /// </summary>
-        protected virtual IList<TResult> PostProcessResults(IList<TResult> results)
-        {
-            return results;
-        }
+        protected abstract IList<TResult> PostProcessResults(IList<TQueryableResult> results);
 
-        protected abstract IQueryable<TResult> GetQueryable();
+        protected abstract IQueryable<TQueryableResult> GetQueryable();
     }
 }
