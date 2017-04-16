@@ -29,7 +29,7 @@ namespace Riganti.Utils.Infrastructure.Core
     /// </summary>
     /// <typeparam name="TResult">The type of the result that the query returns.</typeparam>
     /// <typeparam name="TQueryableResult">The type of the result of GetQueryable method. Thats for cases when you need compose TResult in PostProcessResults.</typeparam>
-    public abstract class QueryBase<TQueryableResult, TResult> : IQuery<TQueryableResult, TResult>
+    public abstract class QueryBase<TQueryableResult, TResult> : IQuery<TQueryableResult, TResult>, ISortableQuery<TQueryableResult>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="QueryBase{TResult}" /> class.
@@ -69,6 +69,11 @@ namespace Riganti.Utils.Infrastructure.Core
             typeof(QueryBase<TQueryableResult, TResult>).GetTypeInfo().GetMethod(nameof(AddSortCriteriaCore),
                     BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(prop.PropertyType)
                 .Invoke(this, new object[] { expr, direction });
+        }
+
+        public void ClearSortCriteria()
+        {
+            SortCriteria.Clear();
         }
 
         /// <summary>

@@ -41,7 +41,7 @@ namespace Riganti.Utils.Infrastructure
         {
             query.Skip = dataSet.PagingOptions.PageIndex * dataSet.PagingOptions.PageSize;
             query.Take = dataSet.PagingOptions.PageSize;
-            query.SortCriteria.Clear();
+            query.ClearSortCriteria();
 
             if (!string.IsNullOrEmpty(dataSet.SortingOptions.SortExpression))
             {

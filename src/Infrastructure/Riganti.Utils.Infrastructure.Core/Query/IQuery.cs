@@ -10,41 +10,8 @@ namespace Riganti.Utils.Infrastructure.Core
     /// <summary>
     /// A generic interface for query objects with support for paging and sorting.
     /// </summary>
-    public interface IQuery<TResult> : IQuery<TResult, TResult>
+    public interface IQuery<TResult> : IPageableQuery, ISortableQuery
     {
-        
-    }
-
-    /// <summary>
-    /// A generic interface for query objects with support for paging and sorting.
-    /// </summary>
-    public interface IQuery<TQueryableResult, TResult>
-    {
-
-        /// <summary>
-        /// Gets or sets a number of rows to be skipped. If this value is null, the paging will be applied.
-        /// </summary>
-        int? Skip { get; set; }
-
-        /// <summary>
-        /// Gets or sets the page size. If this value is null, the paging will not be applied.
-        /// </summary>
-        int? Take { get; set; }
-
-        /// <summary>
-        /// Gets a list of sort criteria applied on this query.
-        /// </summary>
-        IList<Func<IQueryable<TQueryableResult>, IOrderedQueryable<TQueryableResult>>> SortCriteria { get; }
-
-        /// <summary>
-        /// Adds a specified sort criteria to the query.
-        /// </summary>
-        void AddSortCriteria<TKey>(Expression<Func<TQueryableResult, TKey>> field, SortDirection direction = SortDirection.Ascending);
-
-        /// <summary>
-        /// Adds a specified sort criteria to the query.
-        /// </summary>
-        void AddSortCriteria(string fieldName, SortDirection direction = SortDirection.Ascending);
 
         /// <summary>
         /// Executes the query and returns the results.
@@ -62,20 +29,12 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <param name="cancellationToken"></param>
         Task<IList<TResult>> ExecuteAsync(CancellationToken cancellationToken);
 
-        /// <summary>
-        /// Gets the total row count without respect to paging.
-        /// </summary>
-        int GetTotalRowCount();
+    }
 
-        /// <summary>
-        /// Gets the total row count without respect to paging.
-        /// </summary>
-        Task<int> GetTotalRowCountAsync();
-
-        /// <summary>
-        /// Gets the total row count without respect to paging.
-        /// </summary>
-        Task<int> GetTotalRowCountAsync(CancellationToken cancellationToken);
-
+    /// <summary>
+    /// A generic interface for query objects with support for paging and sorting.
+    /// </summary>
+    public interface IQuery<TQueryableResult, TResult> : IQuery<TResult>
+    {
     }
 }
