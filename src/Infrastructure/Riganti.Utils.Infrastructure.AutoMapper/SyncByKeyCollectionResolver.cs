@@ -65,7 +65,8 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 }
             }
 
-            return destMember;
+            // we cannot return the original collection instance since AutoMapper erases it and then tries to map the results from this method
+            return new List<TDestinationItem>(destMember);
         }
     }
 }
