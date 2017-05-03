@@ -23,6 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj" />
     <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj" />
   </ItemGroup>
 

@@ -22,6 +22,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Logging\**" />
+    <Compile Remove="Mailing\**" />
+    <EmbeddedResource Remove="Logging\**" />
+    <EmbeddedResource Remove="Mailing\**" />
+    <None Remove="Logging\**" />
+    <None Remove="Mailing\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj" />
   </ItemGroup>
 

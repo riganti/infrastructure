@@ -21,7 +21,7 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
         protected override void LogMessageCore(string message, IDictionary<string, string> additionalData, Severity severity)
         {
             var output = WebUtility.HtmlEncode(message).Replace("\r\n", "<br />").Replace("\r", "<br />").Replace("\n", "<br />");
-            output = $"{dateTimeProvider.Now:yyyy-MM-dd HH:mm:ss}<br />" + output;
+            output = $"{DateTimeProvider.Now:yyyy-MM-dd HH:mm:ss}<br />" + output;
 
             Task.Run(async () => await mailerService.SendMailAsync(recipientAddress, "Error Report", output));
         }

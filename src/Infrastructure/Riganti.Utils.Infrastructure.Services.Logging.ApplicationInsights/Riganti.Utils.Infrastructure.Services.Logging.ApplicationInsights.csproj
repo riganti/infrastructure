@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.0.0</VersionPrefix>
-    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
-    <AssemblyName>Riganti.Utils.Infrastructure.Services.SendGrid</AssemblyName>
-    <PackageId>Riganti.Utils.Infrastructure.Services.SendGrid</PackageId>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
+    <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
+    <AssemblyName>Riganti.Utils.Infrastructure.Logging.ApplicationInsights</AssemblyName>
+    <PackageId>Riganti.Utils.Infrastructure.Logging.ApplicationInsights</PackageId>
+    <NetStandardImplicitPackageVersion Condition="'$(TargetFramework)' == 'netstandard1.6'">1.6.1</NetStandardImplicitPackageVersion>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -15,7 +14,7 @@
     <Description>Infrastructure project setup for building modern enterprise applications using EntityFramework or Azure Table Storage.</Description>
     <Copyright>Copyright 2017 (c) Riganti s.r.o. - All rights reserved.</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageTags>infrastructure utils enterprise services sendgrid</PackageTags>
+    <PackageTags>infrastructure utils enterprise logging logger application insights</PackageTags>
     <PackageLicenseUrl>https://github.com/riganti/infrastructure/blob/master/LICENSE</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/riganti/infrastructure</PackageProjectUrl>
@@ -23,20 +22,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj" />
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj" />
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services.Logging\Riganti.Utils.Infrastructure.Services.Logging.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SendGrid.NetCore" Version="1.0.0-rtm-00002" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.4.0-beta2" />
   </ItemGroup>
 
 </Project>

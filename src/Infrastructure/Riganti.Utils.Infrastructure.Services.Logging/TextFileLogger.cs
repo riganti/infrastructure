@@ -22,14 +22,14 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
 
         protected virtual string GetLogFileName()
         {
-            return Path.Combine(directory, dateTimeProvider.Now.ToString("yyyy-MM-dd") + ".txt");
+            return Path.Combine(directory, DateTimeProvider.Now.ToString("yyyy-MM-dd") + ".txt");
         }
 
         protected override void LogMessageCore(string message, IDictionary<string, string> additionalData, Severity severity)
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{dateTimeProvider.Now:yyyy-MM-dd HH:mm:ss}\t{message}");
+            sb.AppendLine($"{DateTimeProvider.Now:yyyy-MM-dd HH:mm:ss}\t{message}");
             if (additionalData.Count > 0)
             {
                 sb.AppendLine("Additional data:");
