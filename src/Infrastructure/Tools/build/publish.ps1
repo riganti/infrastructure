@@ -94,7 +94,7 @@ $packages = @(
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Logging"; Directory = "Riganti.Utils.Infrastructure.Services.Logging" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Logging.Email"; Directory = "Riganti.Utils.Infrastructure.Services.Logging.Email" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Logging.ApplicationInsights"; Directory = "Riganti.Utils.Infrastructure.Services.Logging.ApplicationInsights" },
-	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Mailing"; Directory = "Riganti.Utils.Infrastructure.Services.Mailing" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Mailing"; Directory = "Riganti.Utils.Infrastructure.Services.Mailing" }
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Azure"; Directory = "Riganti.Utils.Infrastructure.Services.Azure" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.SendGrid"; Directory = "Riganti.Utils.Infrastructure.Services.SendGrid" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Amazon.SES"; Directory = "Riganti.Utils.Infrastructure.Services.Amazon.SES" },
