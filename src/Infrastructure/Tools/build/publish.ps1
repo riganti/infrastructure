@@ -113,4 +113,4 @@ GitCheckout;
 SetVersion;
 BuildPackages;
 PushPackages;
-#GitTagVersion;
+GitTagVersion;
