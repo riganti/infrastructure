@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.0.0</VersionPrefix>
+    <VersionPrefix>2.0.1</VersionPrefix>
     <TargetFramework>net461</TargetFramework>
     <AssemblyName>Riganti.Utils.Infrastructure.EntityFramework</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.EntityFramework</PackageId>
