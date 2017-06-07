@@ -51,6 +51,7 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
                 case Severity.Critical: return SeverityLevel.Critical;
                 case Severity.Error: return SeverityLevel.Error;
                 case Severity.Warning: return SeverityLevel.Warning;
+                case Severity.Verbose: return SeverityLevel.Verbose;
                 default: return SeverityLevel.Information;
             }
         }
