@@ -41,11 +41,11 @@ namespace Riganti.Utils.Infrastructure.Services.Logging
             dynamic e = ex;
             foreach (var error in e.EntityValidationErrors)
             {
-                stringBuilder.AppendLine("  Entity " + error.Entry.GetType().FullName);
+                stringBuilder.AppendLine("  Entity: " + error.Entry?.Entity?.GetType().FullName);
 
                 foreach (var message in error.ValidationErrors)
                 {
-                    stringBuilder.Append("      ");
+                    stringBuilder.Append("      entity.");
                     stringBuilder.Append(message.PropertyName);
                     stringBuilder.Append(": ");
                     stringBuilder.AppendLine(message.ErrorMessage);
