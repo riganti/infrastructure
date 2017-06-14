@@ -69,7 +69,8 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Saves the changes on the specified DTO to the database.
         /// </summary>
-        public virtual void Save(TDetailDTO detail)
+        /// <returns>New instance of DTO with changes reflected during saving.</returns>
+        public virtual TDetailDTO Save(TDetailDTO detail)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
@@ -90,7 +91,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 PopulateDetailToEntity(detail, entity);
 
                 // save
-                Save(entity, isNew, detail, uow);
+                return Save(entity, isNew, detail, uow);
             }
         }
 
@@ -131,7 +132,8 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Saves the changes made to the entity in the database, and if the entity was inserted, updates the DTO with its ID.
         /// </summary>
-        protected virtual void Save(TEntity entity, bool isNew, TDetailDTO detail, IUnitOfWork uow)
+        /// <returns>New instance of DTO with changes reflected during saving.</returns>
+        protected virtual TDetailDTO Save(TEntity entity, bool isNew, TDetailDTO detail, IUnitOfWork uow)
         {
             // insert or update
             if (isNew)
@@ -146,6 +148,8 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
             // save
             uow.Commit();
             detail.Id = entity.Id;
+            var savedDetail = Mapper.MapToDTO(entity);
+            return savedDetail;
         }
 
         /// <summary>
