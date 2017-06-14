@@ -17,27 +17,27 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Gets the query object used to populate the list or records.
         /// </summary>
-        public Func<IQuery<TListDTO>> QueryFactory { get; private set; }
+        public Func<IQuery<TListDTO>> QueryFactory { get; }
 
         /// <summary>
         /// Gets the repository used to perform database operations with the entity.
         /// </summary>
-        public IRepository<TEntity, TKey> Repository { get; private set; }
+        public IRepository<TEntity, TKey> Repository { get; }
 
         /// <summary>
         /// Gets the service that can map entities to DTOs and populate entities with changes made on DTOs.
         /// </summary>
-        public IEntityDTOMapper<TEntity, TDetailDTO> Mapper { get; private set; }
+        public IEntityDTOMapper<TEntity, TDetailDTO> Mapper { get; }
 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CrudFacadeBase{TEntity, TKey, TListDTO, TDetailDTO}"/> class.
         /// </summary>
-        public CrudFacadeBase(Func<IQuery<TListDTO>> queryFactory, IRepository<TEntity, TKey> repository, IEntityDTOMapper<TEntity, TDetailDTO> mapper)
+        protected CrudFacadeBase(Func<IQuery<TListDTO>> queryFactory, IRepository<TEntity, TKey> repository, IEntityDTOMapper<TEntity, TDetailDTO> mapper)
         {
-            this.QueryFactory = queryFactory;
-            this.Repository = repository;
-            this.Mapper = mapper;
+            QueryFactory = queryFactory;
+            Repository = repository;
+            Mapper = mapper;
         }
 
         /// <summary>
