@@ -317,6 +317,6 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             if (entities.Contains(entity)) throw new InvalidOperationException("The entity is already in another collection.");
         }
 
-        
+
     }
 }
