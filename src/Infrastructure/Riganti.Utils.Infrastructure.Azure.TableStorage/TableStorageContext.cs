@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Riganti.Utils.Infrastructure.Azure.TableStorage.TableEntityMappers;
+using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 {
@@ -240,15 +241,17 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// <returns>Number of records processed.</returns>
         protected virtual async Task<int> InsertNewEntitiesAsync(CancellationToken cancellationToken, TableRequestOptions requestOptions = null, OperationContext operationContext = null)
         {
-            // todo: improve logic to use batches; there are few conditions to be met though, so leaving it for future improvement
             var processedRecords = 0;
-            foreach (var entity in newEntities)
+            foreach (var sameTableEntities in removedEntities.GroupBy(x => x.GetType()))
             {
-                var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(entity), cancellationToken, requestOptions, operationContext);
-                var operation = TableOperation.Insert(entity);
-                await table.ExecuteAsync(operation, requestOptions, operationContext, cancellationToken);
-
-                processedRecords++;
+                var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(sameTableEntities.First()), cancellationToken, requestOptions, operationContext);
+                var batch = new TableBatchOperation();
+                foreach (var entity in sameTableEntities)
+                {
+                    batch.Insert(entity);
+                }
+                await ((BatchSafeCloudTable)table).ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken);
+                processedRecords += batch.Count;
             }
             newEntities.Clear();
             return processedRecords;
@@ -260,14 +263,17 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// <returns>Number of records processed.</returns>
         protected virtual async Task<int> UpdateDirtyEntitiesAsync(CancellationToken cancellationToken, TableRequestOptions requestOptions = null, OperationContext operationContext = null)
         {
-            // todo: improve logic to use batches; there are few conditions to be met though, so leaving it for future improvement
             var processedRecords = 0;
-            foreach (var entity in dirtyEntities)
+            foreach (var sameTableEntities in removedEntities.GroupBy(x => x.GetType()))
             {
-                var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(entity), cancellationToken, requestOptions, operationContext);
-                var operation = TableOperation.Replace(entity);
-                await table.ExecuteAsync(operation, requestOptions, operationContext, cancellationToken);
-                processedRecords++;
+                var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(sameTableEntities.First()), cancellationToken, requestOptions, operationContext);
+                var batch = new TableBatchOperation();
+                foreach (var entity in sameTableEntities)
+                {
+                    batch.Replace(entity);
+                }
+                await ((BatchSafeCloudTable)table).ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken);
+                processedRecords += batch.Count;
             }
             dirtyEntities.Clear();
             return processedRecords;
@@ -279,14 +285,17 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// <returns>Number of records processed.</returns>
         protected virtual async Task<int> DeleteRemovedEntitiesAsync(CancellationToken cancellationToken, TableRequestOptions requestOptions = null, OperationContext operationContext = null)
         {
-            // todo: improve logic to use batches; there are few conditions to be met though, so leaving it for future improvement
             var processedRecords = 0;
-            foreach (var entity in removedEntities)
+            foreach (var sameTableEntities in removedEntities.GroupBy(x => x.GetType()))
             {
-                var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(entity), cancellationToken, requestOptions, operationContext);
-                var operation = TableOperation.Delete(entity);
-                await table.ExecuteAsync(operation, requestOptions, operationContext, cancellationToken);
-                processedRecords++;
+                var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(sameTableEntities.First()), cancellationToken, requestOptions, operationContext);
+                var batch = new TableBatchOperation();
+                foreach (var entity in sameTableEntities)
+                {
+                    batch.Delete(entity);
+                }
+                await ((BatchSafeCloudTable) table).ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken);
+                processedRecords += batch.Count;
             }
             removedEntities.Clear();
             return processedRecords;
