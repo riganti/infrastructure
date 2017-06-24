@@ -249,7 +249,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
                 var batch = new TableBatchOperation();
                 foreach (var entity in sameTableEntities)
                 {
-                    batch.Insert(entity);
+                    batch.InsertOrMerge(entity);
                 }
                 await table.ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken);
                 processedRecords += batch.Count;
@@ -271,7 +271,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
                 var batch = new TableBatchOperation();
                 foreach (var entity in sameTableEntities)
                 {
-                    batch.Replace(entity);
+                    batch.InsertOrReplace(entity);
                 }
                 await table.ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken);
                 processedRecords += batch.Count;
