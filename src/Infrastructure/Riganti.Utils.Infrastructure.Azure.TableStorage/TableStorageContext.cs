@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using Riganti.Utils.Infrastructure.Azure.TableStorage.TableEntityMappers;
 
 namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 {
@@ -13,7 +14,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
     /// </summary>
     public class TableStorageContext : StorageContext, ITableStorageContext
     {
-        private readonly TableEntityMapperRegistry mapperRegistry;
+        private readonly ITableEntityMapper tableEntityMapper;
         private readonly HashSet<ITableEntity> newEntities;
         private readonly HashSet<ITableEntity> dirtyEntities;
         private readonly HashSet<ITableEntity> removedEntities;
@@ -22,7 +23,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
         private CloudTableClient client;
 
-        public ITableEntityMapperRegistry EntityMapperRegistry => mapperRegistry;
+        public ITableEntityMapper TableEntityMapper => tableEntityMapper;
 
         /// <summary>
         /// Gets all the entities registered within this context.
@@ -41,10 +42,10 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// <summary>
         /// Initializes a new <see cref="TableStorageContext"/> instance.
         /// </summary>
-        public TableStorageContext(IStorageOptions options, TableEntityMapperRegistry mapperRegistry = null) : base(options)
+        public TableStorageContext(IStorageOptions options, ITableEntityMapper mapperRegistry = null) : base(options)
         {
             var comparer = new TableEntityEqualityComparer<ITableEntity>();
-            this.mapperRegistry = mapperRegistry ?? new TableEntityMapperRegistry();
+            this.tableEntityMapper = mapperRegistry ?? new AggregateTableEntityMapper(new RegistryTableEntityMapper(), new AttributeTableEntityMapper(), new TypeNameTableEntityMapper());
             newEntities = new HashSet<ITableEntity>(comparer);
             dirtyEntities = new HashSet<ITableEntity>(comparer);
             removedEntities = new HashSet<ITableEntity>(comparer);
@@ -71,7 +72,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             if (entity != null) return entity;
 
             var retrieveOperation = TableOperation.Retrieve<TEntity>(partitionKey, rowKey);
-            var cloudTable = await GetOrCreateTableAsync(mapperRegistry.GetTable<TEntity>(), cancellationToken, requestOptions, operationContext);
+            var cloudTable = await GetOrCreateTableAsync(tableEntityMapper.GetTable<TEntity>(), cancellationToken, requestOptions, operationContext);
             var tableResult = await cloudTable.ExecuteAsync(retrieveOperation, requestOptions, operationContext, cancellationToken);
             if (tableResult == null)
                 return default(TEntity);
@@ -88,7 +89,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// </summary>
         public async Task<TableQuerySegment<TEntity>> GetAllAsync<TEntity>(string partitionKey, TableContinuationToken continuationToken) where TEntity : ITableEntity, new()
         {
-            var cloudTable = await GetOrCreateTableAsync(mapperRegistry.GetTable<TEntity>());
+            var cloudTable = await GetOrCreateTableAsync(tableEntityMapper.GetTable<TEntity>());
             var query = new TableQuery<TEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
             var result = await cloudTable.ExecuteQuerySegmentedAsync(query, continuationToken);
             return result;
@@ -99,7 +100,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// </summary>
         public async Task<TableQuerySegment<TEntity>> FindAsync<TEntity>(TableQuery<TEntity> query, TableContinuationToken continuationToken) where TEntity : ITableEntity, new()
         {
-            var cloudTable = await GetOrCreateTableAsync(mapperRegistry.GetTable<TEntity>());
+            var cloudTable = await GetOrCreateTableAsync(tableEntityMapper.GetTable<TEntity>());
             return await cloudTable.ExecuteQuerySegmentedAsync(query, continuationToken);
         }
 
@@ -243,7 +244,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             var processedRecords = 0;
             foreach (var entity in newEntities)
             {
-                var table = await GetOrCreateTableAsync(mapperRegistry.GetTable(entity), cancellationToken, requestOptions, operationContext);
+                var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(entity), cancellationToken, requestOptions, operationContext);
                 var operation = TableOperation.Insert(entity);
                 await table.ExecuteAsync(operation, requestOptions, operationContext, cancellationToken);
 
@@ -263,7 +264,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             var processedRecords = 0;
             foreach (var entity in dirtyEntities)
             {
-                var table = await GetOrCreateTableAsync(mapperRegistry.GetTable(entity), cancellationToken, requestOptions, operationContext);
+                var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(entity), cancellationToken, requestOptions, operationContext);
                 var operation = TableOperation.Replace(entity);
                 await table.ExecuteAsync(operation, requestOptions, operationContext, cancellationToken);
                 processedRecords++;
@@ -282,7 +283,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             var processedRecords = 0;
             foreach (var entity in removedEntities)
             {
-                var table = await GetOrCreateTableAsync(mapperRegistry.GetTable(entity), cancellationToken, requestOptions, operationContext);
+                var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(entity), cancellationToken, requestOptions, operationContext);
                 var operation = TableOperation.Delete(entity);
                 await table.ExecuteAsync(operation, requestOptions, operationContext, cancellationToken);
                 processedRecords++;
