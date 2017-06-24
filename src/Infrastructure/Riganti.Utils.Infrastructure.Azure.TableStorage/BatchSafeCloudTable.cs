@@ -11,6 +11,10 @@ using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 {
+
+    /// <summary>
+    /// Implementation of <see cref="CloudTable"/> which can hadle API limits for batch processing
+    /// </summary>
     public class BatchSafeCloudTable : CloudTable
     {
         public BatchSafeCloudTable(Uri tableAddress) : base(tableAddress)
@@ -25,6 +29,16 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         {
         }
 
+
+        /// <summary>
+        /// Execute a batch of operations on a table. It handles API limits by executing only chunks of the batch which meet limit criteria.
+        /// </summary>
+        /// <param name="batch">The <see cref="TableBatchOperation"/> object representing the operations to execute on the table.</param>
+        /// <param name="requestOptions">A <see cref="TableRequestOptions"/> object that specifies additional options for the request.</param>
+        /// <param name="operationContext">An <see cref="OperationContext"/> object that represents the context for the current operation.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for a task to complete.</param>
+        /// <param name="numberOfBatchesProcesedInParallel">Number of partial batch operations that will be executed simultaneously.</param>
+        /// <returns>List of type <see cref="TableResult"/>.</returns>
         public async Task<IList<TableResult>> ExecuteBatchSafeAsync(TableBatchOperation batch, TableRequestOptions requestOptions, OperationContext operationContext,
             CancellationToken cancellationToken, int numberOfBatchesProcesedInParallel = 3)
         {
