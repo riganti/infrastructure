@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using Riganti.Utils.Infrastructure.Azure.TableStorage.Helpers;
 using Riganti.Utils.Infrastructure.Azure.TableStorage.TableEntityMappers;
 using Riganti.Utils.Infrastructure.Core;
 
@@ -242,7 +243,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         protected virtual async Task<int> InsertNewEntitiesAsync(CancellationToken cancellationToken, TableRequestOptions requestOptions = null, OperationContext operationContext = null)
         {
             var processedRecords = 0;
-            foreach (var sameTableEntities in removedEntities.GroupBy(x => x.GetType()))
+            foreach (var sameTableEntities in newEntities.GroupBy(x => x.GetType()))
             {
                 var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(sameTableEntities.First()), cancellationToken, requestOptions, operationContext);
                 var batch = new TableBatchOperation();
@@ -250,7 +251,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
                 {
                     batch.Insert(entity);
                 }
-                await ((BatchSafeCloudTable)table).ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken);
+                await table.ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken);
                 processedRecords += batch.Count;
             }
             newEntities.Clear();
@@ -264,7 +265,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         protected virtual async Task<int> UpdateDirtyEntitiesAsync(CancellationToken cancellationToken, TableRequestOptions requestOptions = null, OperationContext operationContext = null)
         {
             var processedRecords = 0;
-            foreach (var sameTableEntities in removedEntities.GroupBy(x => x.GetType()))
+            foreach (var sameTableEntities in dirtyEntities.GroupBy(x => x.GetType()))
             {
                 var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(sameTableEntities.First()), cancellationToken, requestOptions, operationContext);
                 var batch = new TableBatchOperation();
@@ -272,7 +273,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
                 {
                     batch.Replace(entity);
                 }
-                await ((BatchSafeCloudTable)table).ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken);
+                await table.ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken);
                 processedRecords += batch.Count;
             }
             dirtyEntities.Clear();
@@ -294,7 +295,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
                 {
                     batch.Delete(entity);
                 }
-                await ((BatchSafeCloudTable) table).ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken);
+                await table.ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken);
                 processedRecords += batch.Count;
             }
             removedEntities.Clear();
