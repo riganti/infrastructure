@@ -34,7 +34,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Helpers
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for a task to complete.</param>
         /// <param name="numberOfBatchesProcesedInParallel">Number of partial batch operations that will be executed simultaneously.</param>
         /// <returns>List of type <see cref="TableResult"/>.</returns>
-        public static async Task<IList<TableResult>> ExecuteBatchSafeAsync(this CloudTable table, TableBatchOperation batch, TableRequestOptions requestOptions, OperationContext operationContext,
+        public static async Task<IList<TableResult>> ExecuteBatchSafeAsync(this CloudTable table, IEnumerable<TableOperation> batch, TableRequestOptions requestOptions, OperationContext operationContext,
             CancellationToken cancellationToken, int numberOfBatchesProcesedInParallel = 3)
         {
             var result = new List<TableResult>();
@@ -53,7 +53,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Helpers
         /// <summary>
         /// Returns chunks of 100 same table operations with the same entity partition
         /// </summary>
-        private static IEnumerable<TableBatchOperation> GetLimitConformingBatches(TableBatchOperation batch)
+        private static IEnumerable<TableBatchOperation> GetLimitConformingBatches(IEnumerable<TableOperation> batch)
         {
             foreach (var sameOperationEntities in batch.GroupBy(x => x.OperationType))
             {

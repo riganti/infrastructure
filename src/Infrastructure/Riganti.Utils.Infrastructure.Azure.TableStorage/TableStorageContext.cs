@@ -246,11 +246,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             foreach (var sameTableEntities in newEntities.GroupBy(x => x.GetType()))
             {
                 var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(sameTableEntities.First()), cancellationToken, requestOptions, operationContext);
-                var batch = new TableBatchOperation();
-                foreach (var entity in sameTableEntities)
-                {
-                    batch.InsertOrMerge(entity);
-                }
+                var batch = sameTableEntities.Select(TableOperation.InsertOrMerge).ToList();
                 await table.ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken);
                 processedRecords += batch.Count;
             }
@@ -268,11 +264,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             foreach (var sameTableEntities in dirtyEntities.GroupBy(x => x.GetType()))
             {
                 var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(sameTableEntities.First()), cancellationToken, requestOptions, operationContext);
-                var batch = new TableBatchOperation();
-                foreach (var entity in sameTableEntities)
-                {
-                    batch.InsertOrReplace(entity);
-                }
+                var batch = sameTableEntities.Select(TableOperation.InsertOrReplace).ToList();
                 await table.ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken);
                 processedRecords += batch.Count;
             }
@@ -290,11 +282,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             foreach (var sameTableEntities in removedEntities.GroupBy(x => x.GetType()))
             {
                 var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(sameTableEntities.First()), cancellationToken, requestOptions, operationContext);
-                var batch = new TableBatchOperation();
-                foreach (var entity in sameTableEntities)
-                {
-                    batch.Delete(entity);
-                }
+                var batch = sameTableEntities.Select(TableOperation.Delete).ToList();
                 await table.ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken);
                 processedRecords += batch.Count;
             }
