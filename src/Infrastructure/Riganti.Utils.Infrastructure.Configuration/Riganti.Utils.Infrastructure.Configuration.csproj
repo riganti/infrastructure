@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.0.3-test</VersionPrefix>
+    <VersionPrefix>2.0.4-test</VersionPrefix>
     <TargetFramework>net461</TargetFramework>
     <AssemblyName>Riganti.Utils.Infrastructure.Configuration</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Configuration</PackageId>
