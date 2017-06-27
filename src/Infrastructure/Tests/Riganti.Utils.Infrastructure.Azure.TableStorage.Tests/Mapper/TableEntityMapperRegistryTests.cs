@@ -1,4 +1,5 @@
-﻿using Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Entities;
+﻿using Riganti.Utils.Infrastructure.Azure.TableStorage.TableEntityMappers;
+using Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Entities;
 using Xunit;
 
 namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Mapper
@@ -6,9 +7,9 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Mapper
     public class TableEntityMapperRegistryTests
     {
         [Fact]
-        public void CanMapEntityTypeToDefaultTable()
+        public void CanMapEntityTypeToTypeNameTable()
         {
-            var registry = new TableEntityMapperRegistry();
+            var registry = new AggregateTableEntityMapper(new TypeNameTableEntityMapper());
             Assert.Equal("Musician", registry.GetTable(typeof(Musician)));
             Assert.Equal("Musician", registry.GetTable<Musician>());
 
@@ -20,7 +21,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Mapper
         [Fact]
         public void CanAddMapperToRegistry()
         {
-            var registry = new TableEntityMapperRegistry();
+            var registry = new RegistryTableEntityMapper();
             registry.Map(typeof(Musician), "Singers");
             Assert.Equal("Singers", registry.GetTable(typeof(Musician)));
             Assert.Equal("Singers", registry.GetTable<Musician>());
