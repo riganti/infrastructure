@@ -3,12 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using Riganti.Utils.Infrastructure.Azure.TableStorage.TableEntityMappers;
 
 namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 {
     public interface ITableStorageContext
     {
-        ITableEntityMapperRegistry EntityMapperRegistry { get; }
+        ITableEntityMapper TableEntityMapper { get; }
         IEnumerable<ITableEntity> Entities { get; }
 
         Task DeleteTableAsync(string tableName);
