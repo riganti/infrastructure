@@ -22,7 +22,8 @@ namespace Riganti.Utils.Infrastructure.Core.Tests
                                                           .Select(t => t.FullName)
                                                           .ToArray();
 
-            Assert.False(incorrectTypes.Any(), $"Incorect types: {string.Join(", ", incorrectTypes)}");
+            var isIncorrectTypesEmpty = !incorrectTypes.Any();
+            Assert.True(isIncorrectTypesEmpty, $"Incorect types: {string.Join(", ", incorrectTypes)}");
         }
     }
 }
