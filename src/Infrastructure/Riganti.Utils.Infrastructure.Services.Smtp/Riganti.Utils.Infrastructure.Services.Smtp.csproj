@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.0.4-test</VersionPrefix>
+    <VersionPrefix>2.0.5</VersionPrefix>
     <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Services.Smtp</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Services.Smtp</PackageId>
