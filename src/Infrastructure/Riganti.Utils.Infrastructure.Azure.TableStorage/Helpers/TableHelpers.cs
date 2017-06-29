@@ -8,7 +8,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Riganti.Utils.Infrastructure.Core;
 
-namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Helpers
+namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 {
     public static class TableHelpers
     {

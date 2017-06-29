@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Riganti.Utils.Infrastructure.Azure.TableStorage.TableEntityMappers;
 using Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Entities;
 using Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.StorageContext;
 using Xunit;

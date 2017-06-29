@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Riganti.Utils.Infrastructure.Azure.TableStorage.TableEntityMappers
+namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 {
     /// <summary>
     /// Evaluates results of multiple implementations of ITableEntityMapper. Returns first non-null result.

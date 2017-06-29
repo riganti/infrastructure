@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.WindowsAzure.Storage.Table;
 
-namespace Riganti.Utils.Infrastructure.Azure.TableStorage.TableEntityMappers
+namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 {
     public interface ITableEntityMapper
     {

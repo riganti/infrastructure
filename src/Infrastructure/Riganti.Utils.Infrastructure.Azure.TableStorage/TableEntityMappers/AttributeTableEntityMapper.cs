@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Riganti.Utils.Infrastructure.Azure.TableStorage.TableEntityMappers
+namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 {
     /// <summary>
     /// Uses <see cref="TableNameAttribute"/> to determine a name of table.

@@ -1,5 +1,4 @@
-﻿using Riganti.Utils.Infrastructure.Azure.TableStorage.TableEntityMappers;
-using Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Entities;
+﻿using Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Entities;
 using Xunit;
 
 namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Mapper

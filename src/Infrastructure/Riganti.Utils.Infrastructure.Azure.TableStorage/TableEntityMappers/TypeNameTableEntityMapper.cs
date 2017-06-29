@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Riganti.Utils.Infrastructure.Azure.TableStorage.TableEntityMappers
+namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 {
     public class TypeNameTableEntityMapper : TableEntityMapperBase
     {

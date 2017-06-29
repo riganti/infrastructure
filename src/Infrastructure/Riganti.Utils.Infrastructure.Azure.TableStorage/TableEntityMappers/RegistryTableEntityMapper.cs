@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.WindowsAzure.Storage.Table;
 
-namespace Riganti.Utils.Infrastructure.Azure.TableStorage.TableEntityMappers
+namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 {
     /// <summary>
     /// Register mappings of type to cloud table.

@@ -4,7 +4,6 @@ using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Riganti.Utils.Infrastructure.Core;
-using Riganti.Utils.Infrastructure.Core.Helpers;
 
 namespace Riganti.Utils.Infrastructure.Services.Logging
 {

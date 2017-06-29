@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace Riganti.Utils.Infrastructure.Core.Helpers
+namespace Riganti.Utils.Infrastructure.Core
 {
     public static class Guard
     {
