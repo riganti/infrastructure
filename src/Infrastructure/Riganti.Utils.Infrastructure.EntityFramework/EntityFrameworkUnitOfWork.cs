@@ -1,5 +1,7 @@
 using System;
 using System.Data.Entity;
+using System.Threading;
+using System.Threading.Tasks;
 using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.EntityFramework
@@ -9,14 +11,12 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
     /// </summary>
     public class EntityFrameworkUnitOfWork : UnitOfWorkBase
     {
-        private bool hasOwnContext;
+        private readonly bool hasOwnContext;
 
         /// <summary>
         /// Gets the <see cref="DbContext"/>.
         /// </summary>
         public DbContext Context { get; private set; }
-
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork"/> class.
@@ -43,10 +43,22 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// </summary>
         public override void Commit()
         {
-            if (hasOwnContext)
+            if (HasOwnContext())
             {
                 base.Commit();
             }
+        }
+        
+        /// <summary>
+        /// Commits this instance when we have to.
+        /// </summary>
+        public override Task CommitAsync()
+        {
+            if (HasOwnContext())
+            {
+                return base.CommitAsync();
+            }
+            return Task.FromResult(true);
         }
 
         /// <summary>
@@ -57,15 +69,26 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
             Context.SaveChanges();
         }
 
+        protected override async Task CommitAsyncCore(CancellationToken cancellationToken)
+        {
+            await Context.SaveChangesAsync(cancellationToken);
+        }
+
         /// <summary>
         /// Disposes the context.
         /// </summary>
         protected override void DisposeCore()
         {
-            if (hasOwnContext)
+            if (HasOwnContext())
             {
                 Context.Dispose();
             }
+        }
+
+
+        private bool HasOwnContext()
+        {
+            return hasOwnContext;
         }
 
         /// <summary>

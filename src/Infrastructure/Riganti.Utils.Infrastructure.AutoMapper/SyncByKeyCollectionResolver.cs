@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using AutoMapper.Execution;
 
 namespace Riganti.Utils.Infrastructure.AutoMapper
 {
@@ -23,11 +22,13 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
 
         public bool KeepRemovedItemsInDestinationCollection { get; set; }
 
+        public Func<TDestinationItem, bool> DestinationFilter { get; set; }
+
 
         public ICollection<TDestinationItem> Resolve(TSource source, TDestination destination, ICollection<TSourceItem> sourceMember, ICollection<TDestinationItem> destMember, ResolutionContext context)
         {
             var sourceKeys = sourceMember.Select(SourceKeySelector).ToList();
-            var destinationKeys = destMember.Select(DestinationKeySelector).ToList();
+            var destinationKeys = destMember.Where(DestinationFilter).Select(DestinationKeySelector).ToList();
 
             foreach (var sourceItem in sourceMember)
             {
@@ -48,7 +49,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 }
             }
 
-            foreach (var destItem in new List<TDestinationItem>(destMember))
+            foreach (var destItem in new List<TDestinationItem>(destMember.Where(DestinationFilter)))
             {
                 var key = DestinationKeySelector(destItem);
 
@@ -64,7 +65,8 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 }
             }
 
-            return destMember;
+            // we cannot return the original collection instance since AutoMapper erases it and then tries to map the results from this method
+            return new List<TDestinationItem>(destMember);
         }
     }
 }

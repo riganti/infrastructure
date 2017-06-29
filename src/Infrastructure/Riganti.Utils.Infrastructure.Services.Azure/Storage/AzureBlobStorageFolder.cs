@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -33,7 +29,7 @@ namespace Riganti.Utils.Infrastructure.Services.Azure.Storage
 
         public static AzureBlobStorageFolder CreateContainerIfNotExists(CloudBlobContainer containerReference, BlobContainerPublicAccessType blobContainerPublicAccessType)
         {
-            containerReference.CreateIfNotExists(blobContainerPublicAccessType);
+            containerReference.CreateIfNotExistsAsync(blobContainerPublicAccessType, new BlobRequestOptions(), new OperationContext()).Wait();
             return new AzureBlobStorageFolder(containerReference);
         }
 

@@ -18,10 +18,12 @@ namespace Riganti.Utils.Infrastructure.Core.Tests
 
             var incorrectTypes = infrastructureCoreAssembly.GetTypes()
                                                           .Where(t => t.Namespace != correctNameSpace)
+                                                          .Where(t => t.Namespace != "JetBrains.Profiler.Windows.Core.Instrumentation") //dotcover continuous testing add this namespace at runtime 
                                                           .Select(t => t.FullName)
                                                           .ToArray();
 
-            Assert.False(incorrectTypes.Any(), $"Incorect types: {string.Join(", ", incorrectTypes)}");
+            var isIncorrectTypesEmpty = !incorrectTypes.Any();
+            Assert.True(isIncorrectTypesEmpty, $"Incorect types: {string.Join(", ", incorrectTypes)}");
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <summary>
         /// Gets the stack of currently active unit of work objects.
         /// </summary>
-        protected internal override Stack<IUnitOfWork> GetStack()
+        protected override Stack<IUnitOfWork> GetStack()
         {
             return stack.Value;
         }

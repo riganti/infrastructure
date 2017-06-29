@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using Riganti.Utils.Infrastructure.Core;
+
+#if EntityFrameworkCore
+using Riganti.Utils.Infrastructure.EntityFrameworkCore;
+#else
 using Riganti.Utils.Infrastructure.EntityFramework;
+#endif
 
 namespace Riganti.Utils.Infrastructure.AutoMapper
 {
@@ -21,10 +24,11 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 this IMemberConfigurationExpression<TSource, TDestination, ICollection<TDestinationItem>> config,
                 Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
                 Func<TSourceItem, TDestinationItem> projection = null,
-                Action<TDestinationItem> removeCallback = null
+                Action<TDestinationItem> removeCallback = null,
+                Func<TDestinationItem, bool> destinationFilter = null
             )
         {
-            config.ResolveUsing(new DropAndCreateCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem>(projection, removeCallback), sourceCollectionSelector);
+            config.ResolveUsing(new DropAndCreateCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem>(projection, removeCallback, destinationFilter), sourceCollectionSelector);
         }
 
         public static void DropAndCreateCollection<TSource, TSourceItem, TDestination, TDestinationItem>
@@ -33,7 +37,8 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 IUnitOfWorkProvider unitOfWorkProvider,
                 Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
                 Func<TSourceItem, TDestinationItem> projection = null,
-                Action<TDestinationItem> removeCallback = null
+                Action<TDestinationItem> removeCallback = null,
+                Func<TDestinationItem, bool> destinationFilter = null
             )
             where TDestinationItem : class
         {
@@ -46,7 +51,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 };
             }
 
-            DropAndCreateCollection(config, sourceCollectionSelector, projection, removeCallback);
+            DropAndCreateCollection(config, sourceCollectionSelector, projection, removeCallback, destinationFilter);
         }
 
 
@@ -59,10 +64,11 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Func<TSourceItem, TDestinationItem> createFunction = null,
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
                 Action<TDestinationItem> removeFunction = null,
-                bool keepRemovedItemsInDestinationCollection = false
+                bool keepRemovedItemsInDestinationCollection = false,
+                Func<TDestinationItem, bool> destinationFilter = null
             )
         {
-            SyncCollectionByKey(config, sourceCollectionSelector, sourceKeySelector.Compile(), destinationSelector.Compile(), createFunction, updateFunction, removeFunction, keepRemovedItemsInDestinationCollection);
+            SyncCollectionByKey(config, sourceCollectionSelector, sourceKeySelector.Compile(), destinationSelector.Compile(), createFunction, updateFunction, removeFunction, keepRemovedItemsInDestinationCollection, destinationFilter);
         }
 
 
@@ -75,7 +81,8 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Func<TSourceItem, TDestinationItem> createFunction = null,
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
                 Action<TDestinationItem> removeFunction = null,
-                bool keepRemovedItemsInDestinationCollection = false
+                bool keepRemovedItemsInDestinationCollection = false,
+                Func<TDestinationItem, bool> destinationFilter = null
             )
         {
             config.ResolveUsing(new SyncByKeyCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem, TKey>()
@@ -85,7 +92,8 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 CreateFunction = createFunction ?? Mapper.Map<TSourceItem, TDestinationItem>,
                 UpdateFunction = updateFunction ?? ((s, d) => Mapper.Map(s, d)),
                 RemoveFunction = removeFunction ?? (d => { }),
-                KeepRemovedItemsInDestinationCollection = keepRemovedItemsInDestinationCollection
+                KeepRemovedItemsInDestinationCollection = keepRemovedItemsInDestinationCollection,
+                DestinationFilter = destinationFilter ?? (e => true)
             }, sourceCollectionSelector);
         }
 
@@ -96,7 +104,8 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
                 Func<TSourceItem, TDestinationItem> createFunction = null,
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
-                Action<TDestinationItem> removeFunction = null
+                Action<TDestinationItem> removeFunction = null,
+                Func<TDestinationItem, bool> destinationFilter = null
             )
             where TDestinationItem : class
         {
@@ -109,10 +118,16 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 };
             }
 
-            var sourceKeyEntityType = typeof(TSourceItem).GetInterfaces().SingleOrDefault(s => s.IsGenericType && s.GetGenericTypeDefinition() == typeof(IEntity<>));
+            var sourceKeyEntityType = typeof(TSourceItem).GetTypeInfo()
+                .GetInterfaces()
+                .Select(s => s.GetTypeInfo())
+                .SingleOrDefault(s => s.IsGenericType && s.GetGenericTypeDefinition() == typeof(IEntity<>));
             var sourceKeyType = sourceKeyEntityType?.GetGenericArguments()[0];
 
-            var destinationKeyEntityType = typeof(TDestinationItem).GetInterfaces().SingleOrDefault(s => s.IsGenericType && s.GetGenericTypeDefinition() == typeof(IEntity<>));
+            var destinationKeyEntityType = typeof(TDestinationItem).GetTypeInfo()
+                .GetInterfaces()
+                .Select(s => s.GetTypeInfo())
+                .SingleOrDefault(s => s.IsGenericType && s.GetGenericTypeDefinition() == typeof(IEntity<>));
             var destinationKeyType = destinationKeyEntityType?.GetGenericArguments()[0];
 
             if (sourceKeyType == null || destinationKeyType == null || sourceKeyType != destinationKeyType)
@@ -125,9 +140,9 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
             var destinationParam = Expression.Parameter(typeof(TDestinationItem), "i");
             var destinationKeySelector = Expression.Lambda(Expression.Property(destinationParam, nameof(IEntity<int>.Id)), destinationParam);
 
-            var method = typeof(Extensions).GetMethod("SyncCollectionByKeyReflectionOnly", BindingFlags.NonPublic | BindingFlags.Static);
+            var method = typeof(Extensions).GetTypeInfo().GetMethod("SyncCollectionByKeyReflectionOnly", BindingFlags.NonPublic | BindingFlags.Static);
             method.MakeGenericMethod(typeof(TSource), typeof(TSourceItem), typeof(TDestination), typeof(TDestinationItem), sourceKeyType)
-                .Invoke(null, new object[] { config, sourceCollectionSelector, sourceKeySelector, destinationKeySelector, createFunction, updateFunction, removeFunction, true });
+                .Invoke(null, new object[] { config, sourceCollectionSelector, sourceKeySelector, destinationKeySelector, createFunction, updateFunction, removeFunction, true, destinationFilter });
         }
 
 
@@ -140,7 +155,8 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Func<TDestinationItem, TKey> destinationKeySelector,
                 Func<TSourceItem, TDestinationItem> createFunction = null,
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
-                Action<TDestinationItem> removeFunction = null
+                Action<TDestinationItem> removeFunction = null,
+                Func<TDestinationItem, bool> destinationFilter = null
             )
             where TDestinationItem : class
         {
@@ -153,7 +169,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 };
             }
 
-            SyncCollectionByKey(config, sourceCollectionSelector, sourceKeySelector, destinationKeySelector, createFunction, updateFunction, removeFunction, true);
+            SyncCollectionByKey(config, sourceCollectionSelector, sourceKeySelector, destinationKeySelector, createFunction, updateFunction, removeFunction, true, destinationFilter);
         }
     }
 }

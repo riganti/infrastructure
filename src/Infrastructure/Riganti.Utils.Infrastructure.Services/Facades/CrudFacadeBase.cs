@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.Services.Facades
@@ -20,27 +17,27 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Gets the query object used to populate the list or records.
         /// </summary>
-        public IQuery<TListDTO> Query { get; private set; }
+        public Func<IQuery<TListDTO>> QueryFactory { get; }
 
         /// <summary>
         /// Gets the repository used to perform database operations with the entity.
         /// </summary>
-        public IRepository<TEntity, TKey> Repository { get; private set; }
+        public IRepository<TEntity, TKey> Repository { get; }
 
         /// <summary>
         /// Gets the service that can map entities to DTOs and populate entities with changes made on DTOs.
         /// </summary>
-        public IEntityDTOMapper<TEntity, TDetailDTO> Mapper { get; private set; }
+        public IEntityDTOMapper<TEntity, TDetailDTO> Mapper { get; }
 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CrudFacadeBase{TEntity, TKey, TListDTO, TDetailDTO}"/> class.
         /// </summary>
-        public CrudFacadeBase(IQuery<TListDTO> query, IRepository<TEntity, TKey> repository, IEntityDTOMapper<TEntity, TDetailDTO> mapper)
+        protected CrudFacadeBase(Func<IQuery<TListDTO>> queryFactory, IRepository<TEntity, TKey> repository, IEntityDTOMapper<TEntity, TDetailDTO> mapper)
         {
-            this.Query = query;
-            this.Repository = repository;
-            this.Mapper = mapper;
+            QueryFactory = queryFactory;
+            Repository = repository;
+            Mapper = mapper;
         }
 
         /// <summary>
@@ -72,7 +69,8 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Saves the changes on the specified DTO to the database.
         /// </summary>
-        public virtual void Save(TDetailDTO detail)
+        /// <returns>New instance of DTO with changes reflected during saving.</returns>
+        public virtual TDetailDTO Save(TDetailDTO detail)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
@@ -93,7 +91,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 PopulateDetailToEntity(detail, entity);
 
                 // save
-                Save(entity, isNew, detail, uow);
+                return Save(entity, isNew, detail, uow);
             }
         }
 
@@ -112,14 +110,17 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Gets the list of the DTOs using the Query object.
         /// </summary>
-        public virtual IEnumerable<TListDTO> GetList()
+        public virtual IEnumerable<TListDTO> GetList(Action<IQuery<TListDTO>> queryConfiguration = null)
         {
             using (UnitOfWorkProvider.Create())
             {
-                return Query.Execute();
+                var query = QueryFactory();
+                queryConfiguration?.Invoke(query);
+                return query.Execute();
             }
         }
-
+        
+        
         /// <summary>
         /// Transfers the changes on DTO made by the user to the corresponding database entity.
         /// </summary>
@@ -131,7 +132,8 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Saves the changes made to the entity in the database, and if the entity was inserted, updates the DTO with its ID.
         /// </summary>
-        protected virtual void Save(TEntity entity, bool isNew, TDetailDTO detail, IUnitOfWork uow)
+        /// <returns>New instance of DTO with changes reflected during saving.</returns>
+        protected virtual TDetailDTO Save(TEntity entity, bool isNew, TDetailDTO detail, IUnitOfWork uow)
         {
             // insert or update
             if (isNew)
@@ -146,6 +148,8 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
             // save
             uow.Commit();
             detail.Id = entity.Id;
+            var savedDetail = Mapper.MapToDTO(entity);
+            return savedDetail;
         }
 
         /// <summary>
