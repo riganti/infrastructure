@@ -45,7 +45,12 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// <summary>
         /// Finds entities by executing the query.
         /// </summary>
-        Task<IEnumerable<TEntity>> FindAsync(TableQuery<TEntity> query);
+        Task<IEnumerable<TEntity>> FindAllAsync(TableQuery<TEntity> query);
+
+        /// <summary>
+        /// Finds entities by executing the query.
+        /// </summary>
+        Task<TableQuerySegment<TEntity>> FindAsync(TableQuery<TEntity> query, TableContinuationToken continuationToken);
 
         /// <summary>
         /// Initializes a new entity with appropriate default values.
