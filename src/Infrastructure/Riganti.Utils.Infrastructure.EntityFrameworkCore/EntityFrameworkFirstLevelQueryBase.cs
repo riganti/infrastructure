@@ -1,11 +1,28 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Reflection;
 using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
 {
-    public class EntityFrameworkFirstLevelQueryBase<TEntity> : IFirstLevelQuery<TEntity> where TEntity : class
+    /// <summary>
+    /// A base class for first level queries which return filtered entity sets based on user identity or other criteria.
+    /// </summary>
+    public class EntityFrameworkFirstLevelQueryBase<TEntity> : EntityFrameworkFirstLevelQueryBase<TEntity, DbContext>
+        where TEntity : class
+    {
+        public EntityFrameworkFirstLevelQueryBase(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider)
+        {
+        }
+    }
+
+    /// <summary>
+    /// A base class for first level queries which return filtered entity sets based on user identity or other criteria.
+    /// </summary>
+    public class EntityFrameworkFirstLevelQueryBase<TEntity, TDbContext> : IFirstLevelQuery<TEntity>
+        where TEntity : class
+        where TDbContext : DbContext
     {
         private readonly IUnitOfWorkProvider unitOfWorkProvider;
 
@@ -14,9 +31,17 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
             this.unitOfWorkProvider = unitOfWorkProvider;
         }
 
-        protected DbContext Context
+        protected TDbContext Context
         {
-            get { return EntityFrameworkUnitOfWork.TryGetDbContext(unitOfWorkProvider); }
+            get
+            {
+                var context = EntityFrameworkUnitOfWork.TryGetDbContext<TDbContext>(unitOfWorkProvider);
+                if (context == null)
+                {
+                    throw new InvalidOperationException("The EntityFrameworkRepository must be used in a unit of work of type EntityFrameworkUnitOfWork!");
+                }
+                return context;
+            }
         }
 
 

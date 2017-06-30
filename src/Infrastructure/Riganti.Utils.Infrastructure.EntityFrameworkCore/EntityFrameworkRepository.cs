@@ -10,10 +10,24 @@ using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
 {
+
     /// <summary>
     /// A base implementation of a repository in Entity Framework.
     /// </summary>
-    public class EntityFrameworkRepository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>, new()
+    public class EntityFrameworkRepository<TEntity, TKey> : EntityFrameworkRepository<TEntity, TKey, DbContext>
+        where TEntity : class, IEntity<TKey>, new()
+    {
+        public EntityFrameworkRepository(IUnitOfWorkProvider provider, IDateTimeProvider dateTimeProvider) : base(provider, dateTimeProvider)
+        {
+        }
+    }
+
+    /// <summary>
+    /// A base implementation of a repository in Entity Framework.
+    /// </summary>
+    public class EntityFrameworkRepository<TEntity, TKey, TDbContext> : IRepository<TEntity, TKey> 
+        where TEntity : class, IEntity<TKey>, new()
+        where TDbContext : DbContext
     {
         private readonly IUnitOfWorkProvider provider;
         private readonly IDateTimeProvider dateTimeProvider;
@@ -21,8 +35,18 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         /// <summary>
         /// Gets the <see cref="DbContext"/>.
         /// </summary>
-        protected DbContext Context => EntityFrameworkUnitOfWork.TryGetDbContext(provider);
-
+        protected virtual TDbContext Context
+        {
+            get
+            {
+                var context = EntityFrameworkUnitOfWork.TryGetDbContext<TDbContext>(provider);
+                if (context == null)
+                {
+                    throw new InvalidOperationException("The EntityFrameworkRepository must be used in a unit of work of type EntityFrameworkUnitOfWork!");
+                }
+                return context;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkRepository{TEntity, TKey}"/> class.

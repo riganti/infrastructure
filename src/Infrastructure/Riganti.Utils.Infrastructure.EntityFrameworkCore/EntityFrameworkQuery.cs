@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
@@ -32,7 +33,19 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
     /// <summary>
     /// A base implementation of query object in Entity Framework.
     /// </summary>
-    public abstract class EntityFrameworkQuery<TQueryableResult, TResult> : QueryBase<TQueryableResult, TResult>
+    public abstract class EntityFrameworkQuery<TQueryableResult, TResult> : EntityFrameworkQuery<TQueryableResult, TResult, DbContext>
+    {
+        public EntityFrameworkQuery(IUnitOfWorkProvider provider) : base(provider)
+        {
+        }
+    }
+
+
+    /// <summary>
+    /// A base implementation of query object in Entity Framework.
+    /// </summary>
+    public abstract class EntityFrameworkQuery<TQueryableResult, TResult, TDbContext> : QueryBase<TQueryableResult, TResult>
+        where TDbContext : DbContext
     {
         private readonly IUnitOfWorkProvider provider;
 
@@ -47,7 +60,18 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         /// <summary>
         /// Gets the <see cref="DbContext"/>.
         /// </summary>
-        protected virtual DbContext Context => EntityFrameworkUnitOfWork.TryGetDbContext(provider);
+        protected virtual TDbContext Context
+        {
+            get
+            {
+                var context = EntityFrameworkUnitOfWork.TryGetDbContext<TDbContext>(provider);
+                if (context == null)
+                {
+                    throw new InvalidOperationException("The EntityFrameworkQuery must be used in a unit of work of type EntityFrameworkUnitOfWork!");
+                }
+                return context;
+            }
+        }
 
         protected override async Task<IList<TQueryableResult>> ExecuteQueryAsync(IQueryable<TQueryableResult> query, CancellationToken cancellationToken)
         {

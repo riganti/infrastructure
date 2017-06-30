@@ -7,14 +7,25 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
     /// <summary>
     /// An implementation of unit of work provider in Entity Framework.
     /// </summary>
-    public class EntityFrameworkUnitOfWorkProvider : UnitOfWorkProviderBase
+    public class EntityFrameworkUnitOfWorkProvider : EntityFrameworkUnitOfWorkProvider<DbContext>
     {
-        private readonly Func<DbContext> dbContextFactory;
+        public EntityFrameworkUnitOfWorkProvider(IUnitOfWorkRegistry registry, Func<DbContext> dbContextFactory) : base(registry, dbContextFactory)
+        {
+        }
+    }
+
+    /// <summary>
+    /// An implementation of unit of work provider in Entity Framework.
+    /// </summary>
+    public class EntityFrameworkUnitOfWorkProvider<TDbContext> : UnitOfWorkProviderBase
+        where TDbContext : DbContext
+    {
+        private readonly Func<TDbContext> dbContextFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWorkProvider"/> class.
         /// </summary>
-        public EntityFrameworkUnitOfWorkProvider(IUnitOfWorkRegistry registry, Func<DbContext> dbContextFactory) : base(registry)
+        public EntityFrameworkUnitOfWorkProvider(IUnitOfWorkRegistry registry, Func<TDbContext> dbContextFactory) : base(registry)
         {
             this.dbContextFactory = dbContextFactory;
         }
@@ -39,9 +50,9 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         /// <summary>
         /// Creates the unit of work.
         /// </summary>
-        protected virtual EntityFrameworkUnitOfWork CreateUnitOfWork(Func<DbContext> dbContextFactory, DbContextOptions options)
+        protected virtual EntityFrameworkUnitOfWork<TDbContext> CreateUnitOfWork(Func<TDbContext> contextFactory, DbContextOptions options)
         {
-            return new EntityFrameworkUnitOfWork(this, dbContextFactory, options);
+            return new EntityFrameworkUnitOfWork<TDbContext>(this, contextFactory, options);
         }
     }
 }
