@@ -47,12 +47,12 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
     public abstract class EntityFrameworkQuery<TQueryableResult, TResult, TDbContext> : QueryBase<TQueryableResult, TResult>
         where TDbContext : DbContext
     {
-        private readonly IUnitOfWorkProvider provider;
+        private readonly IEntityFrameworkUnitOfWorkProvider<TDbContext> provider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkQuery{TQueryableResult, TResult}"/> class.
         /// </summary>
-        protected EntityFrameworkQuery(IUnitOfWorkProvider provider)
+        protected EntityFrameworkQuery(IEntityFrameworkUnitOfWorkProvider<TDbContext> provider)
         {
             this.provider = provider;
         }

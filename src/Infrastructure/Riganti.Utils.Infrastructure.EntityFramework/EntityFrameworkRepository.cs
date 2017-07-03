@@ -24,11 +24,11 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
     /// <summary>
     /// A base implementation of a repository in Entity Framework.
     /// </summary>
-    public class EntityFrameworkRepository<TEntity, TKey, TDbContext> : IRepository<TEntity, TKey>
+    public class EntityFrameworkRepository<TEntity, TKey, TDbContext> : IEntityFrameworkRepository<TEntity, TKey, TDbContext>
         where TEntity : class, IEntity<TKey>, new()
         where TDbContext : DbContext
     {
-        private readonly IUnitOfWorkProvider provider;
+        private readonly IEntityFrameworkUnitOfWorkProvider<TDbContext> provider;
         private readonly IDateTimeProvider dateTimeProvider;
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkRepository{TEntity, TKey}"/> class.
         /// </summary>
-        public EntityFrameworkRepository(IUnitOfWorkProvider provider, IDateTimeProvider dateTimeProvider)
+        public EntityFrameworkRepository(IEntityFrameworkUnitOfWorkProvider<TDbContext> provider, IDateTimeProvider dateTimeProvider)
         {
             this.provider = provider;
             this.dateTimeProvider = dateTimeProvider;

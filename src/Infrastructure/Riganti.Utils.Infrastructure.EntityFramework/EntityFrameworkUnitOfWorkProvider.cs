@@ -17,7 +17,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
     /// <summary>
     /// An implementation of unit of work provider in Entity Framework.
     /// </summary>
-    public class EntityFrameworkUnitOfWorkProvider<TDbContext> : UnitOfWorkProviderBase
+    public class EntityFrameworkUnitOfWorkProvider<TDbContext> : UnitOfWorkProviderBase, IEntityFrameworkUnitOfWorkProvider<TDbContext>
         where TDbContext : DbContext
     {
         private readonly Func<TDbContext> dbContextFactory;

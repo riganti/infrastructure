@@ -64,7 +64,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork"/> class.
         /// </summary>
-        public EntityFrameworkUnitOfWork(IUnitOfWorkProvider provider, Func<TDbContext> dbContextFactory, DbContextOptions options)
+        public EntityFrameworkUnitOfWork(IEntityFrameworkUnitOfWorkProvider<TDbContext> provider, Func<TDbContext> dbContextFactory, DbContextOptions options)
         {
             if (options == DbContextOptions.ReuseParentContext)
             {
