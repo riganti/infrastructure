@@ -16,7 +16,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkQuery{TResult}"/> class.
         /// </summary>
-        protected EntityFrameworkQuery(IUnitOfWorkProvider provider) : base(provider)
+        protected EntityFrameworkQuery(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider)
         {
         }
 
@@ -35,7 +35,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
     /// </summary>
     public abstract class EntityFrameworkQuery<TQueryableResult, TResult> : EntityFrameworkQuery<TQueryableResult, TResult, DbContext>
     {
-        public EntityFrameworkQuery(IUnitOfWorkProvider provider) : base(provider)
+        protected EntityFrameworkQuery(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider)
         {
         }
     }
@@ -47,14 +47,22 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
     public abstract class EntityFrameworkQuery<TQueryableResult, TResult, TDbContext> : QueryBase<TQueryableResult, TResult>
         where TDbContext : DbContext
     {
-        private readonly IEntityFrameworkUnitOfWorkProvider<TDbContext> provider;
+        private readonly IUnitOfWorkProvider unitOfWorkProvider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityFrameworkQuery{TQueryableResult, TResult}"/> class.
+        /// Initializes a new instance of the <see cref="EntityFrameworkQuery{TQueryableResult, TResult, TDbContext}"/> class.
         /// </summary>
-        protected EntityFrameworkQuery(IEntityFrameworkUnitOfWorkProvider<TDbContext> provider)
+        protected EntityFrameworkQuery(IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider)
+            : this((IUnitOfWorkProvider)unitOfWorkProvider)
         {
-            this.provider = provider;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityFrameworkQuery{TQueryableResult, TResult, TDbContext}"/> class.
+        /// </summary>
+        protected EntityFrameworkQuery(IUnitOfWorkProvider unitOfWorkProvider)
+        {
+            this.unitOfWorkProvider = unitOfWorkProvider;
         }
 
         /// <summary>
@@ -64,7 +72,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         {
             get
             {
-                var context = EntityFrameworkUnitOfWork.TryGetDbContext<TDbContext>(provider);
+                var context = EntityFrameworkUnitOfWork.TryGetDbContext<TDbContext>(unitOfWorkProvider);
                 if (context == null)
                 {
                     throw new InvalidOperationException("The EntityFrameworkQuery must be used in a unit of work of type EntityFrameworkUnitOfWork!");

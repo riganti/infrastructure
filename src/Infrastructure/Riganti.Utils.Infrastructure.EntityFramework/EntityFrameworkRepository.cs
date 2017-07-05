@@ -16,7 +16,8 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
     public class EntityFrameworkRepository<TEntity, TKey> : EntityFrameworkRepository<TEntity, TKey, DbContext>
         where TEntity : class, IEntity<TKey>, new()
     {
-        public EntityFrameworkRepository(IUnitOfWorkProvider provider, IDateTimeProvider dateTimeProvider) : base(provider, dateTimeProvider)
+        public EntityFrameworkRepository(IUnitOfWorkProvider unitOfWorkProvider, IDateTimeProvider dateTimeProvider)
+            : base(unitOfWorkProvider, dateTimeProvider)
         {
         }
     }
@@ -28,7 +29,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         where TEntity : class, IEntity<TKey>, new()
         where TDbContext : DbContext
     {
-        private readonly IEntityFrameworkUnitOfWorkProvider<TDbContext> provider;
+        private readonly IUnitOfWorkProvider unitOfWorkProvider;
         private readonly IDateTimeProvider dateTimeProvider;
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         {
             get
             {
-                var context = EntityFrameworkUnitOfWork.TryGetDbContext<TDbContext>(provider);
+                var context = EntityFrameworkUnitOfWork.TryGetDbContext<TDbContext>(unitOfWorkProvider);
                 if (context == null)
                 {
                     throw new InvalidOperationException("The EntityFrameworkRepository must be used in a unit of work of type EntityFrameworkUnitOfWork!");
@@ -48,11 +49,19 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityFrameworkRepository{TEntity, TKey}"/> class.
+        /// Initializes a new instance of the <see cref="EntityFrameworkRepository{TEntity, TKey, TDbContext}"/> class.
         /// </summary>
-        public EntityFrameworkRepository(IEntityFrameworkUnitOfWorkProvider<TDbContext> provider, IDateTimeProvider dateTimeProvider)
+        public EntityFrameworkRepository(IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider, IDateTimeProvider dateTimeProvider)
+            : this((IUnitOfWorkProvider)unitOfWorkProvider, dateTimeProvider)
         {
-            this.provider = provider;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityFrameworkRepository{TEntity, TKey, TDbContext}"/> class.
+        /// </summary>
+        protected EntityFrameworkRepository(IUnitOfWorkProvider unitOfWorkProvider, IDateTimeProvider dateTimeProvider)
+        {
+            this.unitOfWorkProvider = unitOfWorkProvider;
             this.dateTimeProvider = dateTimeProvider;
         }
 

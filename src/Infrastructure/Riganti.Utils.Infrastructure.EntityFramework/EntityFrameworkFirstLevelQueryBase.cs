@@ -23,9 +23,22 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         where TEntity : class
         where TDbContext : DbContext
     {
-        private readonly IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider;
+        private readonly IUnitOfWorkProvider unitOfWorkProvider;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityFrameworkFirstLevelQueryBase{TEntity, TDbContext}"/> class.
+        /// </summary>
+        /// <param name="unitOfWorkProvider">The unit of work provider.</param>
         public EntityFrameworkFirstLevelQueryBase(IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider)
+            : this((IUnitOfWorkProvider) unitOfWorkProvider)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityFrameworkFirstLevelQueryBase{TEntity, TDbContext}"/> class.
+        /// </summary>
+        /// <param name="unitOfWorkProvider">The unit of work provider.</param>
+        protected EntityFrameworkFirstLevelQueryBase(IUnitOfWorkProvider unitOfWorkProvider)
         {
             this.unitOfWorkProvider = unitOfWorkProvider;
         }

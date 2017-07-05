@@ -11,26 +11,27 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
     /// </summary>
     public class EntityFrameworkUnitOfWork : EntityFrameworkUnitOfWork<DbContext>
     {
-        public EntityFrameworkUnitOfWork(IUnitOfWorkProvider provider, Func<DbContext> dbContextFactory, DbContextOptions options) : base(provider, dbContextFactory, options)
+        public EntityFrameworkUnitOfWork(IUnitOfWorkProvider unitOfWorkProvider, Func<DbContext> dbContextFactory, DbContextOptions options)
+            : base(unitOfWorkProvider, dbContextFactory, options)
         {
         }
 
         /// <summary>
         /// Tries to get the <see cref="DbContext"/> in the current scope.
         /// </summary>
-        public static DbContext TryGetDbContext(IUnitOfWorkProvider provider)
+        public static DbContext TryGetDbContext(IUnitOfWorkProvider unitOfWorkProvider)
         {
-            return TryGetDbContext<DbContext>(provider);
+            return TryGetDbContext<DbContext>(unitOfWorkProvider);
         }
 
         /// <summary>
         /// Tries to get the <see cref="DbContext"/> in the current scope.
         /// </summary>
-        public static TDbContext TryGetDbContext<TDbContext>(IUnitOfWorkProvider provider)
+        public static TDbContext TryGetDbContext<TDbContext>(IUnitOfWorkProvider unitOfWorkProvider)
             where TDbContext : DbContext
         {
             var index = 0;
-            var uow = provider.GetCurrent(index);
+            var uow = unitOfWorkProvider.GetCurrent(index);
             while (uow != null)
             {
                 if (uow is EntityFrameworkUnitOfWork<TDbContext> efuow)
@@ -39,7 +40,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
                 }
 
                 index++;
-                uow = provider.GetCurrent(index);
+                uow = unitOfWorkProvider.GetCurrent(index);
             }
 
             return null;
@@ -57,24 +58,32 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         /// <summary>
         /// Gets the <see cref="DbContext"/>.
         /// </summary>
-        public TDbContext Context { get; private set; }
+        public TDbContext Context { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork"/> class.
+        /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork{TDbContext}"/> class.
         /// </summary>
-        public EntityFrameworkUnitOfWork(IEntityFrameworkUnitOfWorkProvider<TDbContext> provider, Func<TDbContext> dbContextFactory, DbContextOptions options)
+        public EntityFrameworkUnitOfWork(IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider, Func<TDbContext> dbContextFactory, DbContextOptions options)
+            : this((IUnitOfWorkProvider)unitOfWorkProvider, dbContextFactory, options)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork{TDbContext}"/> class.
+        /// </summary>
+        protected EntityFrameworkUnitOfWork(IUnitOfWorkProvider unitOfWorkProvider, Func<TDbContext> dbContextFactory, DbContextOptions options)
         {
             if (options == DbContextOptions.ReuseParentContext)
             {
-                var parentContext = EntityFrameworkUnitOfWork.TryGetDbContext<TDbContext>(provider);
+                var parentContext = EntityFrameworkUnitOfWork.TryGetDbContext<TDbContext>(unitOfWorkProvider);
                 if (parentContext != null)
                 {
-                    this.Context = parentContext;
+                    Context = parentContext;
                     return;
                 }
             }
 
-            this.Context = dbContextFactory();
+            Context = dbContextFactory();
             hasOwnContext = true;
         }
 
