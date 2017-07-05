@@ -19,7 +19,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
     /// <summary>
     /// A base class for first level queries which return filtered entity sets based on user identity or other criteria.
     /// </summary>
-    public class EntityFrameworkFirstLevelQueryBase<TEntity, TDbContext> : IFirstLevelQuery<TEntity> 
+    public class EntityFrameworkFirstLevelQueryBase<TEntity, TDbContext> : IEntityFrameworkFirstLevelQuery<TEntity, TDbContext> 
         where TEntity : class
         where TDbContext : DbContext
     {
