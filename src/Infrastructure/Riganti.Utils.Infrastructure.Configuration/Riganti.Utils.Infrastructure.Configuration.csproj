@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.0.7-multidbcontext</VersionPrefix>
+    <VersionPrefix>2.0.7-multidbcontext2</VersionPrefix>
     <TargetFramework>net461</TargetFramework>
     <AssemblyName>Riganti.Utils.Infrastructure.Configuration</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Configuration</PackageId>
