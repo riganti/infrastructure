@@ -171,17 +171,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Riganti.Utils.Infrastructure.EntityFramework.Tests\Repository\DbContextMockFactory.cs">
+      <Link>Repository\DbContextMockFactory.cs</Link>
+    </Compile>
     <Compile Include="..\Riganti.Utils.Infrastructure.EntityFramework.Tests\Repository\EntityFrameworkUnitOfProviderTests.cs">
       <Link>Repository\EntityFrameworkUnitOfProviderTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Riganti.Utils.Infrastructure.EntityFramework.Tests\Repository\EpisodeEntity.cs">
+      <Link>Repository\EpisodeEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\Riganti.Utils.Infrastructure.EntityFramework.Tests\Repository\QuoteEntity.cs">
+      <Link>Repository\QuoteEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\Riganti.Utils.Infrastructure.EntityFramework.Tests\Repository\YesMinisterDbContext.cs">
+      <Link>Repository\YesMinisterDbContext.cs</Link>
     </Compile>
     <Compile Include="..\Riganti.Utils.Infrastructure.EntityFramework.Tests\UnitOfWork\EntityFrameworkUnitOfWorkTests.cs">
       <Link>UnitOfWork\EntityFrameworkUnitOfWorkTests.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\EntityFrameworkRepositoryTests.cs" />
-    <Compile Include="Repository\EpisodeEntity.cs" />
-    <Compile Include="Repository\QuoteEntity.cs" />
-    <Compile Include="Repository\YesMinisterDbContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

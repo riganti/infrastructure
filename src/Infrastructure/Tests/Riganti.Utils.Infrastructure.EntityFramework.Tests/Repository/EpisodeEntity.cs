@@ -1,7 +1,10 @@
-﻿using System.Security.AccessControl;
-using Riganti.Utils.Infrastructure.Core;
+﻿using Riganti.Utils.Infrastructure.Core;
 
+#if EFCORE
+namespace Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests.Repository
+#else
 namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.Repository
+#endif
 {
     public class EpisodeEntity : IEntity<int>
     {

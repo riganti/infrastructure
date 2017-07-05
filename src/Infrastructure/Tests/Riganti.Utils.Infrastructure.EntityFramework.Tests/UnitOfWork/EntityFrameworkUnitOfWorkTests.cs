@@ -8,13 +8,15 @@ using Xunit;
 
 #if EFCORE
 using Microsoft.EntityFrameworkCore;
-using Riganti.Utils.Infrastructure.EntityFrameworkCore;
-using DbContextOptions = Riganti.Utils.Infrastructure.EntityFrameworkCore.DbContextOptions;
 #else
 using System.Data.Entity;
 #endif
 
+#if EFCORE
+namespace Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests.UnitOfWork
+#else
 namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
+#endif
 {
     public class EntityFrameworkUnitOfWorkTests
     {

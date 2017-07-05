@@ -3,12 +3,15 @@ using Xunit;
 
 #if EFCORE
 using Microsoft.EntityFrameworkCore;
-using Riganti.Utils.Infrastructure.EntityFrameworkCore;
 #else
 using System.Data.Entity;
 #endif
 
+#if EFCORE
+namespace Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests.Repository
+#else
 namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.Repository
+#endif
 {
     public class EntityFrameworkUnitOfProviderTests
     {
