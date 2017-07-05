@@ -1,11 +1,17 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using Moq.Protected;
 using Riganti.Utils.Infrastructure.Core;
 using Xunit;
+#if EFCORE
+using Microsoft.EntityFrameworkCore;
+using Riganti.Utils.Infrastructure.EntityFrameworkCore;
+using DbContextOptions = Riganti.Utils.Infrastructure.EntityFrameworkCore.DbContextOptions;
+#else
+using System.Data.Entity;
+#endif
 
 namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
 {
@@ -168,7 +174,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
             Func<DbContext> dbContextFactory = () => dbContext;
             var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
             var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub, dbContextFactory);
-            
+
             var value = EntityFrameworkUnitOfWork.TryGetDbContext(unitOfWorkProvider);
             Assert.Null(value);
         }
