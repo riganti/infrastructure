@@ -38,10 +38,10 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.Repository
                     Assert.Equal(uow1, parent);
 
                     var inner = EntityFrameworkUnitOfWork.TryGetDbContext<CustomDbContext2>(uowp2);
-                    Assert.Equal(inner, ((EntityFrameworkUnitOfWork<CustomDbContext2>)uow2).Context);
+                    Assert.Equal(((EntityFrameworkUnitOfWork<CustomDbContext2>)uow2).Context, inner);
 
                     var outer = EntityFrameworkUnitOfWork.TryGetDbContext<CustomDbContext1>(uowp1);
-                    Assert.Equal(outer, ((EntityFrameworkUnitOfWork<CustomDbContext1>)uow1).Context);
+                    Assert.Equal(((EntityFrameworkUnitOfWork<CustomDbContext1>)uow1).Context, outer);
                 }
             }
         }
