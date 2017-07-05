@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.0.7-multidbcontext3</VersionPrefix>
+    <VersionPrefix>2.0.7</VersionPrefix>
     <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.AspNetCore</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.AspNetCore</PackageId>

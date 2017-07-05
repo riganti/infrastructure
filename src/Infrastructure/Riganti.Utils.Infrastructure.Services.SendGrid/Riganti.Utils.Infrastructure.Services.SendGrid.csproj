@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.0.7-multidbcontext3</VersionPrefix>
+    <VersionPrefix>2.0.7</VersionPrefix>
     <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Services.SendGrid</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Services.SendGrid</PackageId>
