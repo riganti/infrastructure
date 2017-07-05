@@ -8,6 +8,7 @@ using Riganti.Utils.Infrastructure.Core;
 using Riganti.Utils.Infrastructure.EntityFrameworkCore;
 using Xunit;
 
+// ReSharper disable once CheckNamespace
 namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
 {
     public class EntityFrameworkUnitOfWorkTests

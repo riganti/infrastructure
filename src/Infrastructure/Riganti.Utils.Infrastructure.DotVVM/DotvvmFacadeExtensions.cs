@@ -2,6 +2,7 @@
 using Riganti.Utils.Infrastructure.Core;
 using Riganti.Utils.Infrastructure.Services.Facades;
 
+// ReSharper disable once CheckNamespace
 namespace Riganti.Utils.Infrastructure
 {
     public static class DotvvmFacadeExtensions
