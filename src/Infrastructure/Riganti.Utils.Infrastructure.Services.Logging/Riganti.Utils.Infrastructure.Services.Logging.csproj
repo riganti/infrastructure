@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.0.6-multidbcontext</VersionPrefix>
+    <VersionPrefix>2.0.7-multidbcontext</VersionPrefix>
     <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Services.Logging</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Services.Logging</PackageId>
