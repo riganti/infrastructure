@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
+// ReSharper disable once CheckNamespace
 namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.Repository
 {
     public class YesMinisterDbContext : DbContext

@@ -10,13 +10,13 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork.Provider
         {
             var unitOfWorkRegistryMock = new Mock<IUnitOfWorkRegistry>();
             var unitOfWork = new Mock<IUnitOfWork>().Object;
-            unitOfWorkRegistryMock.Setup(unitOfWorkRegistry => unitOfWorkRegistry.GetCurrent()).Returns(unitOfWork);
+            unitOfWorkRegistryMock.Setup(unitOfWorkRegistry => unitOfWorkRegistry.GetCurrent(0)).Returns(unitOfWork);
             var unitOfWorkProviderSUT = CreateUnitOfWorkProviderStub(unitOfWorkRegistry: unitOfWorkRegistryMock.Object);
 
             var unitOfWorkProviderCurrentUnitOfWork = unitOfWorkProviderSUT.GetCurrent();
 
             Assert.Same(unitOfWork, unitOfWorkProviderCurrentUnitOfWork);
-            unitOfWorkRegistryMock.Verify(unitOfWorkRegistry => unitOfWorkRegistry.GetCurrent(), Times.Once);
+            unitOfWorkRegistryMock.Verify(unitOfWorkRegistry => unitOfWorkRegistry.GetCurrent(0), Times.Once);
         }
 
         [Fact]

@@ -1,35 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
 {
+
     /// <summary>
     /// A base implementation of a repository in Entity Framework.
     /// </summary>
-    public class EntityFrameworkRepository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>, new()
+    public class EntityFrameworkRepository<TEntity, TKey> : EntityFrameworkRepository<TEntity, TKey, DbContext>
+        where TEntity : class, IEntity<TKey>, new()
     {
-        private readonly IUnitOfWorkProvider provider;
+        public EntityFrameworkRepository(IUnitOfWorkProvider unitOfWorkProvider, IDateTimeProvider dateTimeProvider) : base(unitOfWorkProvider, dateTimeProvider)
+        {
+        }
+    }
+
+    /// <summary>
+    /// A base implementation of a repository in Entity Framework.
+    /// </summary>
+    public class EntityFrameworkRepository<TEntity, TKey, TDbContext> : IEntityFrameworkRepository<TEntity, TKey, TDbContext>
+        where TEntity : class, IEntity<TKey>, new()
+        where TDbContext : DbContext
+    {
+        private readonly IUnitOfWorkProvider unitOfWorkProvider;
         private readonly IDateTimeProvider dateTimeProvider;
 
         /// <summary>
         /// Gets the <see cref="DbContext"/>.
         /// </summary>
-        protected DbContext Context => EntityFrameworkUnitOfWork.TryGetDbContext(provider);
-
+        protected virtual TDbContext Context
+        {
+            get
+            {
+                var context = EntityFrameworkUnitOfWork.TryGetDbContext<TDbContext>(unitOfWorkProvider);
+                if (context == null)
+                {
+                    throw new InvalidOperationException("The EntityFrameworkRepository must be used in a unit of work of type EntityFrameworkUnitOfWork!");
+                }
+                return context;
+            }
+        }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityFrameworkRepository{TEntity, TKey}"/> class.
+        /// Initializes a new instance of the <see cref="EntityFrameworkRepository{TEntity, TKey,TDbContext}"/> class.
         /// </summary>
-        public EntityFrameworkRepository(IUnitOfWorkProvider provider, IDateTimeProvider dateTimeProvider)
+        public EntityFrameworkRepository(IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider, IDateTimeProvider dateTimeProvider)
+            : this((IUnitOfWorkProvider) unitOfWorkProvider, dateTimeProvider)
         {
-            this.provider = provider;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityFrameworkRepository{TEntity, TKey, TDbContext}"/> class.
+        /// </summary>
+        protected EntityFrameworkRepository(IUnitOfWorkProvider unitOfWorkProvider, IDateTimeProvider dateTimeProvider)
+        {
+            this.unitOfWorkProvider = unitOfWorkProvider;
             this.dateTimeProvider = dateTimeProvider;
         }
 

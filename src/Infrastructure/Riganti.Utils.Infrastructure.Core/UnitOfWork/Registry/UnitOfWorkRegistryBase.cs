@@ -81,21 +81,25 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <summary>
         /// Gets the unit of work in the current scope.
         /// </summary>
-        public IUnitOfWork GetCurrent()
+        public IUnitOfWork GetCurrent(int ancestorLevel = 0)
         {
             var unitOfWorkStack = GetStack();
             if (unitOfWorkStack == null)
             {
-                return AlternateRegistry.GetCurrent();
+                return AlternateRegistry.GetCurrent(ancestorLevel);
             }
 
-            if (unitOfWorkStack.Count == 0)
+            if (ancestorLevel >= unitOfWorkStack.Count)
             {
                 return null;
             }
-            else
+            else if (ancestorLevel == 0)
             {
                 return unitOfWorkStack.Peek();
+            }
+            else 
+            {
+                return unitOfWorkStack.ToArray()[ancestorLevel];
             }
         }
     }

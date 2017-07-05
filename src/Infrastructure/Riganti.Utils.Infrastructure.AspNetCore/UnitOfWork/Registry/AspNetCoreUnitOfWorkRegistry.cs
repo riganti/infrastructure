@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 
+// ReSharper disable once CheckNamespace
 namespace Riganti.Utils.Infrastructure.Core
 {
     public class AspNetCoreUnitOfWorkRegistry : UnitOfWorkRegistryBase

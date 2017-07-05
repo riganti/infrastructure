@@ -162,17 +162,15 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
         }
 
         [Fact]
-        public void TryGetDbContext_UnitOfWorkRegistryHasNotUnitOfWork_ThrowsException()
+        public void TryGetDbContext_UnitOfWorkRegistryHasNotUnitOfWork_ReturnsNull()
         {
             var dbContext = new Mock<DbContext>().Object;
             Func<DbContext> dbContextFactory = () => dbContext;
             var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
             var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub, dbContextFactory);
             
-            Action sut = () => EntityFrameworkUnitOfWork.TryGetDbContext(unitOfWorkProvider);
-
-            var invalidOperationException = Assert.Throws<InvalidOperationException>(sut);
-            Assert.Contains("The EntityFrameworkRepository must be used in a unit of work of type EntityFrameworkUnitOfWork!", invalidOperationException.Message);
+            var value = EntityFrameworkUnitOfWork.TryGetDbContext(unitOfWorkProvider);
+            Assert.Null(value);
         }
     }
 }

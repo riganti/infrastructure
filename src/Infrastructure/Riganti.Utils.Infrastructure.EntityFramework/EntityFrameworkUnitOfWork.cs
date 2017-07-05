@@ -6,37 +6,88 @@ using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.EntityFramework
 {
+
     /// <summary>
     /// An implementation of unit of work in Entity ramework.
     /// </summary>
-    public class EntityFrameworkUnitOfWork : UnitOfWorkBase
+    public class EntityFrameworkUnitOfWork : EntityFrameworkUnitOfWork<DbContext>
+    {
+        public EntityFrameworkUnitOfWork(IUnitOfWorkProvider unitOfWorkProvider, Func<DbContext> dbContextFactory, DbContextOptions options)
+            : base(unitOfWorkProvider, dbContextFactory, options)
+        {
+        }
+
+
+        /// <summary>
+        /// Tries to get the <see cref="DbContext"/> in the current scope.
+        /// </summary>
+        public static DbContext TryGetDbContext(IUnitOfWorkProvider unitOfWorkProvider)
+        {
+            return TryGetDbContext<DbContext>(unitOfWorkProvider);
+        }
+
+        /// <summary>
+        /// Tries to get the <see cref="DbContext"/> in the current scope.
+        /// </summary>
+        public static TDbContext TryGetDbContext<TDbContext>(IUnitOfWorkProvider unitOfWorkProvider)
+            where TDbContext : DbContext
+        {
+            var index = 0;
+            var uow = unitOfWorkProvider.GetCurrent(index);
+            while (uow != null)
+            {
+                if (uow is EntityFrameworkUnitOfWork<TDbContext> efuow)
+                {
+                    return efuow.Context;
+                }
+
+                index++;
+                uow = unitOfWorkProvider.GetCurrent(index);
+            }
+
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// An implementation of unit of work in Entity ramework.
+    /// </summary>
+    public class EntityFrameworkUnitOfWork<TDbContext> : UnitOfWorkBase 
+        where TDbContext : DbContext
     {
         private readonly bool hasOwnContext;
 
         /// <summary>
         /// Gets the <see cref="DbContext"/>.
         /// </summary>
-        public DbContext Context { get; private set; }
+        public TDbContext Context { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork"/> class.
+        /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork{TDbContext}"/> class.
         /// </summary>
-        public EntityFrameworkUnitOfWork(IUnitOfWorkProvider provider, Func<DbContext> dbContextFactory, DbContextOptions options)
+        public EntityFrameworkUnitOfWork(IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider, Func<TDbContext> dbContextFactory, DbContextOptions options)
+            : this((IUnitOfWorkProvider)unitOfWorkProvider, dbContextFactory, options)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork{TDbContext}"/> class.
+        /// </summary>
+        protected EntityFrameworkUnitOfWork(IUnitOfWorkProvider unitOfWorkProvider, Func<TDbContext> dbContextFactory, DbContextOptions options)
         {
             if (options == DbContextOptions.ReuseParentContext)
             {
-                var parentUow = provider.GetCurrent() as EntityFrameworkUnitOfWork;
-                if (parentUow != null)
+                var parentContext = EntityFrameworkUnitOfWork.TryGetDbContext<TDbContext>(unitOfWorkProvider);
+                if (parentContext != null)
                 {
-                    this.Context = parentUow.Context;
+                    Context = parentContext;
                     return;
                 }
             }
 
-            this.Context = dbContextFactory();
+            Context = dbContextFactory();
             hasOwnContext = true;
         }
-
 
         /// <summary>
         /// Commits this instance when we have to.
@@ -91,17 +142,5 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
             return hasOwnContext;
         }
 
-        /// <summary>
-        /// Tries to get the <see cref="DbContext"/> in the current scope.
-        /// </summary>
-        public static DbContext TryGetDbContext(IUnitOfWorkProvider provider)
-        {
-            var uow = provider.GetCurrent() as EntityFrameworkUnitOfWork;
-            if (uow == null)
-            {
-                throw new InvalidOperationException("The EntityFrameworkRepository must be used in a unit of work of type EntityFrameworkUnitOfWork!");
-            }
-            return uow.Context;
-        }
     }
 }
