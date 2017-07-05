@@ -171,6 +171,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Riganti.Utils.Infrastructure.EntityFramework.Tests\Repository\EntityFrameworkUnitOfProviderTests.cs">
+      <Link>Repository\EntityFrameworkUnitOfProviderTests.cs</Link>
+    </Compile>
     <Compile Include="..\Riganti.Utils.Infrastructure.EntityFramework.Tests\UnitOfWork\EntityFrameworkUnitOfWorkTests.cs">
       <Link>UnitOfWork\EntityFrameworkUnitOfWorkTests.cs</Link>
     </Compile>

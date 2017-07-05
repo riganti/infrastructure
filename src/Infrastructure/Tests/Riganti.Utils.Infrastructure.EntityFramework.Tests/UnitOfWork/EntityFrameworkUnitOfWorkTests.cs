@@ -5,6 +5,7 @@ using Moq;
 using Moq.Protected;
 using Riganti.Utils.Infrastructure.Core;
 using Xunit;
+
 #if EFCORE
 using Microsoft.EntityFrameworkCore;
 using Riganti.Utils.Infrastructure.EntityFrameworkCore;

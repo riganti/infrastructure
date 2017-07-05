@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Riganti.Utils.Infrastructure.Core;
+﻿using Riganti.Utils.Infrastructure.Core;
 using Xunit;
+
+#if EFCORE
+using Microsoft.EntityFrameworkCore;
+using Riganti.Utils.Infrastructure.EntityFrameworkCore;
+#else
+using System.Data.Entity;
+#endif
 
 namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.Repository
 {
