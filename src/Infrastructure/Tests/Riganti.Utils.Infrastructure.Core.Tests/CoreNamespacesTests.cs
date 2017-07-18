@@ -1,5 +1,6 @@
 ﻿
 using System.Linq;
+using System.Reflection;
 using Xunit;
 
 namespace Riganti.Utils.Infrastructure.Core.Tests
@@ -14,7 +15,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests
         public void AllClassesHaveCorrectNameSpace_Test()
         {
             var correctNameSpace = "Riganti.Utils.Infrastructure.Core";
-            var infrastructureCoreAssembly = typeof(IRepository<,>).Assembly;
+            var infrastructureCoreAssembly = typeof(IRepository<,>).GetTypeInfo().Assembly;
 
             var incorrectTypes = infrastructureCoreAssembly.GetTypes()
                                                           .Where(t => t.Namespace != correctNameSpace)

@@ -110,7 +110,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Helpers
         public void ToNullableDateTime_CorrectInput_ReturnsCorrectValue()
         {
             var expectedDateTime = new DateTime(2015, 11, 22);
-            var expectedDateTimeString = expectedDateTime.ToLongDateString();
+            var expectedDateTimeString = expectedDateTime.ToString("D");
 
             var convertedDateTime = expectedDateTimeString.ToNullableDateTime();
 

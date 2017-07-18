@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}"
 EndProject
@@ -49,7 +49,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Services.Mailing", "Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj", "{BDB3B6EA-1F85-468A-AB75-63576C0E87BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests", "Tests\Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests\Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests.csproj", "{6C97A790-A231-4088-864B-D5B00F9C8D42}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests", "Tests\Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests\Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests.csproj", "{1373AA88-83A9-48E2-8C29-782135CB98AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -313,18 +313,18 @@ Global
 		{BDB3B6EA-1F85-468A-AB75-63576C0E87BA}.Release|x64.Build.0 = Release|Any CPU
 		{BDB3B6EA-1F85-468A-AB75-63576C0E87BA}.Release|x86.ActiveCfg = Release|Any CPU
 		{BDB3B6EA-1F85-468A-AB75-63576C0E87BA}.Release|x86.Build.0 = Release|Any CPU
-		{6C97A790-A231-4088-864B-D5B00F9C8D42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C97A790-A231-4088-864B-D5B00F9C8D42}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C97A790-A231-4088-864B-D5B00F9C8D42}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6C97A790-A231-4088-864B-D5B00F9C8D42}.Debug|x64.Build.0 = Debug|Any CPU
-		{6C97A790-A231-4088-864B-D5B00F9C8D42}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6C97A790-A231-4088-864B-D5B00F9C8D42}.Debug|x86.Build.0 = Debug|Any CPU
-		{6C97A790-A231-4088-864B-D5B00F9C8D42}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C97A790-A231-4088-864B-D5B00F9C8D42}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C97A790-A231-4088-864B-D5B00F9C8D42}.Release|x64.ActiveCfg = Release|Any CPU
-		{6C97A790-A231-4088-864B-D5B00F9C8D42}.Release|x64.Build.0 = Release|Any CPU
-		{6C97A790-A231-4088-864B-D5B00F9C8D42}.Release|x86.ActiveCfg = Release|Any CPU
-		{6C97A790-A231-4088-864B-D5B00F9C8D42}.Release|x86.Build.0 = Release|Any CPU
+		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Debug|x64.Build.0 = Debug|Any CPU
+		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Debug|x86.Build.0 = Debug|Any CPU
+		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Release|x64.ActiveCfg = Release|Any CPU
+		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Release|x64.Build.0 = Release|Any CPU
+		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Release|x86.ActiveCfg = Release|Any CPU
+		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -334,6 +334,6 @@ Global
 		{08A731F6-DC7F-427E-9CBB-007D33CB4491} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{3921DCDC-00E3-4011-9474-B17364C82BEA} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
-		{6C97A790-A231-4088-864B-D5B00F9C8D42} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
+		{1373AA88-83A9-48E2-8C29-782135CB98AD} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 	EndGlobalSection
 EndGlobal

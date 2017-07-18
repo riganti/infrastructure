@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
-    <RuntimeIdentifier>win7-x86</RuntimeIdentifier>
+    <TargetFrameworks>netcoreapp1.0;net461</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Services.Smtp.Tests</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Riganti.Utils.Infrastructure.Services.Smtp.Tests</PackageId>
