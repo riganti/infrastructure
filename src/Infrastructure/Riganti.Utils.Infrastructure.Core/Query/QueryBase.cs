@@ -87,7 +87,7 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <summary>
         ///     Executes the query and returns the results.
         /// </summary>
-        public IList<TResult> Execute()
+        public virtual IList<TResult> Execute()
         {
             var query = PreProcessQuery();
             var queryResults = query.ToList();
@@ -98,7 +98,7 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <summary>
         ///     Asynchronously executes the query and returns the results.
         /// </summary>
-        public async Task<IList<TResult>> ExecuteAsync()
+        public virtual async Task<IList<TResult>> ExecuteAsync()
         {
             return await ExecuteAsync(default(CancellationToken));
         }
@@ -106,7 +106,7 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <summary>
         ///     Asynchronously executes the query and returns the results.
         /// </summary>
-        public async Task<IList<TResult>> ExecuteAsync(CancellationToken cancellationToken)
+        public virtual async Task<IList<TResult>> ExecuteAsync(CancellationToken cancellationToken)
         {
             var query = PreProcessQuery();
             var queryResults = await ExecuteQueryAsync(query, cancellationToken);
@@ -117,15 +117,22 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <summary>
         ///     Gets the total row count without respect to paging.
         /// </summary>
-        public int GetTotalRowCount()
+        public virtual int GetTotalRowCount()
         {
             return GetQueryable().Count();
         }
-        public Task<int> GetTotalRowCountAsync()
+
+        /// <summary>
+        ///     Gets the total row count without respect to paging.
+        /// </summary>
+        public virtual Task<int> GetTotalRowCountAsync()
         {
             return GetTotalRowCountAsync(CancellationToken.None);
         }
 
+        /// <summary>
+        ///     Gets the total row count without respect to paging.
+        /// </summary>
         public abstract Task<int> GetTotalRowCountAsync(CancellationToken cancellationToken);
 
         private void AddSortCriteriaCore<TKey>(Expression<Func<TQueryableResult, TKey>> sortExpression, SortDirection direction)

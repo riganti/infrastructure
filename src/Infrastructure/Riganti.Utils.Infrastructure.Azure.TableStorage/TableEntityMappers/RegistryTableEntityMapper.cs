@@ -7,12 +7,12 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
     /// <summary>
     /// Register mappings of type to cloud table.
     /// </summary>
-    public class TableEntityMapperRegistry : ITableEntityMapperRegistry
+    public class RegistryTableEntityMapper : TableEntityMapperBase
     {
         // contains collection of typeName-table
         private readonly Dictionary<string, string> mappings;
 
-        public TableEntityMapperRegistry()
+        public RegistryTableEntityMapper()
         {
             mappings = new Dictionary<string, string>();
         }
@@ -46,29 +46,13 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// <summary>
         /// Gets the mapping table for specified type.
         /// </summary>
-        public string GetTable(Type type)
+        public override string GetTable(Type type)
         {
             string table;
             if (mappings.TryGetValue(type.Name, out table))
                 return table;
 
-            return type.Name;
-        }
-
-        /// <summary>
-        /// Gets the mapping table for specified entity.
-        /// </summary>
-        public string GetTable<TEntity>(TEntity entity) where TEntity: ITableEntity
-        {
-            return GetTable(entity.GetType());
-        }
-
-        /// <summary>
-        /// Gets the mapping table for specified type.
-        /// </summary>
-        public string GetTable<TEntity>() where TEntity: ITableEntity
-        {
-            return GetTable(typeof(TEntity));
+            return null;
         }
     }
 }

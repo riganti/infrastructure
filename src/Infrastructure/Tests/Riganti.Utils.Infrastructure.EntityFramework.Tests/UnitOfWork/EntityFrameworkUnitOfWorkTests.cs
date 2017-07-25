@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
@@ -7,7 +6,17 @@ using Moq.Protected;
 using Riganti.Utils.Infrastructure.Core;
 using Xunit;
 
+#if EFCORE
+using Microsoft.EntityFrameworkCore;
+#else
+using System.Data.Entity;
+#endif
+
+#if EFCORE
+namespace Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests.UnitOfWork
+#else
 namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
+#endif
 {
     public class EntityFrameworkUnitOfWorkTests
     {
@@ -162,17 +171,15 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
         }
 
         [Fact]
-        public void TryGetDbContext_UnitOfWorkRegistryHasNotUnitOfWork_ThrowsException()
+        public void TryGetDbContext_UnitOfWorkRegistryHasNotUnitOfWork_ReturnsNull()
         {
             var dbContext = new Mock<DbContext>().Object;
             Func<DbContext> dbContextFactory = () => dbContext;
             var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
             var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub, dbContextFactory);
-            
-            Action sut = () => EntityFrameworkUnitOfWork.TryGetDbContext(unitOfWorkProvider);
 
-            var invalidOperationException = Assert.Throws<InvalidOperationException>(sut);
-            Assert.Contains("The EntityFrameworkRepository must be used in a unit of work of type EntityFrameworkUnitOfWork!", invalidOperationException.Message);
+            var value = EntityFrameworkUnitOfWork.TryGetDbContext(unitOfWorkProvider);
+            Assert.Null(value);
         }
     }
 }

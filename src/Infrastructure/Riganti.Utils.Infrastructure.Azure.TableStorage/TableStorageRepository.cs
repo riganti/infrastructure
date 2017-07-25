@@ -36,19 +36,19 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 
         public async void DeleteAsync(string partitionKey, string rowKey, CancellationToken cancellationToken)
         {
-            var entity = await Context.GetAsync<TEntity>(partitionKey, rowKey, cancellationToken);
+            var entity = await Context.GetAsync<TEntity>(partitionKey, rowKey, cancellationToken).ConfigureAwait(false);
             Delete(entity);
         }
 
-        public async Task<TEntity> GetByKeyAsync(string partitionKey, string rowKey)
+        public Task<TEntity> GetByKeyAsync(string partitionKey, string rowKey)
         {
-            return await GetByKeyAsync(partitionKey, rowKey, CancellationToken.None);
+            return GetByKeyAsync(partitionKey, rowKey, CancellationToken.None);
         }
 
-        public async Task<TEntity> GetByKeyAsync(string partitionKey, string rowKey, CancellationToken cancellationToken)
+        public Task<TEntity> GetByKeyAsync(string partitionKey, string rowKey, CancellationToken cancellationToken)
         {
                         
-            return await Context.GetAsync<TEntity>(partitionKey, rowKey, cancellationToken);
+            return Context.GetAsync<TEntity>(partitionKey, rowKey, cancellationToken);
         }
 
         public TEntity InitializeNew(string partitionKey, string rowKey)
@@ -94,24 +94,29 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             TableQuerySegment<TEntity> result;
             do
             {
-                result = await Context.GetAllAsync<TEntity>(partitionKey, continuationToken);
+                result = await Context.GetAllAsync<TEntity>(partitionKey, continuationToken).ConfigureAwait(false);
                 continuationToken = result.ContinuationToken;
             } while (continuationToken != null);
 
             return result.Results;
         }
 
-        public async Task<IEnumerable<TEntity>> FindAsync(TableQuery<TEntity> query)
+        public async Task<IEnumerable<TEntity>> FindAllAsync(TableQuery<TEntity> query)
         {
             TableContinuationToken continuationToken = null;
             TableQuerySegment<TEntity> result;
             do
             {
-                result = await Context.FindAsync(query, continuationToken);
+                result = await Context.FindAsync(query, continuationToken).ConfigureAwait(false);
                 continuationToken = result.ContinuationToken;
             } while (continuationToken != null);
 
             return result.Results;
+        }
+
+        public Task<TableQuerySegment<TEntity>> FindAsync(TableQuery<TEntity> query, TableContinuationToken continuationToken)
+        {
+            return Context.FindAsync(query, continuationToken);
         }
     }
 }

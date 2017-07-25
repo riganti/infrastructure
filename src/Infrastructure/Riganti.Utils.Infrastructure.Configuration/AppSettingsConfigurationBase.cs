@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 
+// ReSharper disable once CheckNamespace
 namespace Riganti.Utils.Infrastructure.Core
 {
     public class AppSettingsConfigurationBase

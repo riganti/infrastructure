@@ -54,9 +54,9 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <summary>
         /// Gets the unit of work in the current scope.
         /// </summary>
-        public IUnitOfWork GetCurrent()
+        public IUnitOfWork GetCurrent(int ancestorLevel = 0)
         {
-            return registry.GetCurrent();
+            return registry.GetCurrent(ancestorLevel);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Riganti.Utils.Infrastructure.Core.Helpers;
-using System;
+﻿using System;
 using Xunit;
 
 namespace Riganti.Utils.Infrastructure.Core.Tests.Helpers

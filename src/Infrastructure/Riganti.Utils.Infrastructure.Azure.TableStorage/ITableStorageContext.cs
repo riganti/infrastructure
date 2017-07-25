@@ -8,7 +8,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 {
     public interface ITableStorageContext
     {
-        ITableEntityMapperRegistry EntityMapperRegistry { get; }
+        ITableEntityMapper TableEntityMapper { get; }
         IEnumerable<ITableEntity> Entities { get; }
 
         Task DeleteTableAsync(string tableName);

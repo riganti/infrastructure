@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.0.2</VersionPrefix>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <VersionPrefix>2.0.7</VersionPrefix>
+    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.EntityFrameworkCore</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.EntityFrameworkCore</PackageId>
     <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>

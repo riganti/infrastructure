@@ -13,7 +13,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
     /// </summary>
     public class TableStorageContext : StorageContext, ITableStorageContext
     {
-        private readonly TableEntityMapperRegistry mapperRegistry;
+        private readonly ITableEntityMapper tableEntityMapper;
         private readonly HashSet<ITableEntity> newEntities;
         private readonly HashSet<ITableEntity> dirtyEntities;
         private readonly HashSet<ITableEntity> removedEntities;
@@ -22,7 +22,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
         private CloudTableClient client;
 
-        public ITableEntityMapperRegistry EntityMapperRegistry => mapperRegistry;
+        public ITableEntityMapper TableEntityMapper => tableEntityMapper;
 
         /// <summary>
         /// Gets all the entities registered within this context.
@@ -41,10 +41,10 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// <summary>
         /// Initializes a new <see cref="TableStorageContext"/> instance.
         /// </summary>
-        public TableStorageContext(IStorageOptions options, TableEntityMapperRegistry mapperRegistry = null) : base(options)
+        public TableStorageContext(IStorageOptions options, ITableEntityMapper mapperRegistry = null) : base(options)
         {
             var comparer = new TableEntityEqualityComparer<ITableEntity>();
-            this.mapperRegistry = mapperRegistry ?? new TableEntityMapperRegistry();
+            tableEntityMapper = mapperRegistry ?? new AggregateTableEntityMapper(new RegistryTableEntityMapper(), new AttributeTableEntityMapper(), new TypeNameTableEntityMapper());
             newEntities = new HashSet<ITableEntity>(comparer);
             dirtyEntities = new HashSet<ITableEntity>(comparer);
             removedEntities = new HashSet<ITableEntity>(comparer);
@@ -54,9 +54,9 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// <summary>
         /// Gets the entity from identity map, if exists, or loads it from the table storage.
         /// </summary>
-        public async Task<TEntity> GetAsync<TEntity>(string partitionKey, string rowKey) where TEntity : ITableEntity, new()
+        public Task<TEntity> GetAsync<TEntity>(string partitionKey, string rowKey) where TEntity : ITableEntity, new()
         {
-            return await GetAsync<TEntity>(partitionKey, rowKey, CancellationToken.None);
+            return GetAsync<TEntity>(partitionKey, rowKey, CancellationToken.None);
         }
 
         /// <summary>
@@ -71,8 +71,8 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             if (entity != null) return entity;
 
             var retrieveOperation = TableOperation.Retrieve<TEntity>(partitionKey, rowKey);
-            var cloudTable = await GetOrCreateTableAsync(mapperRegistry.GetTable<TEntity>(), cancellationToken, requestOptions, operationContext);
-            var tableResult = await cloudTable.ExecuteAsync(retrieveOperation, requestOptions, operationContext, cancellationToken);
+            var cloudTable = await GetOrCreateTableAsync(tableEntityMapper.GetTable<TEntity>(), cancellationToken, requestOptions, operationContext).ConfigureAwait(false);
+            var tableResult = await cloudTable.ExecuteAsync(retrieveOperation, requestOptions, operationContext, cancellationToken).ConfigureAwait(false);
             if (tableResult == null)
                 return default(TEntity);
 
@@ -88,10 +88,9 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// </summary>
         public async Task<TableQuerySegment<TEntity>> GetAllAsync<TEntity>(string partitionKey, TableContinuationToken continuationToken) where TEntity : ITableEntity, new()
         {
-            var cloudTable = await GetOrCreateTableAsync(mapperRegistry.GetTable<TEntity>());
+            var cloudTable = await GetOrCreateTableAsync(tableEntityMapper.GetTable<TEntity>()).ConfigureAwait(false);
             var query = new TableQuery<TEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
-            var result = await cloudTable.ExecuteQuerySegmentedAsync(query, continuationToken);
-            return result;
+            return await cloudTable.ExecuteQuerySegmentedAsync(query, continuationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -99,17 +98,17 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// </summary>
         public async Task<TableQuerySegment<TEntity>> FindAsync<TEntity>(TableQuery<TEntity> query, TableContinuationToken continuationToken) where TEntity : ITableEntity, new()
         {
-            var cloudTable = await GetOrCreateTableAsync(mapperRegistry.GetTable<TEntity>());
-            return await cloudTable.ExecuteQuerySegmentedAsync(query, continuationToken);
+            var cloudTable = await GetOrCreateTableAsync(tableEntityMapper.GetTable<TEntity>()).ConfigureAwait(false);
+            return await cloudTable.ExecuteQuerySegmentedAsync(query, continuationToken).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Triggers execution of operations stored in the local queue asynchronously.
         /// </summary>
         /// <returns>Number of records affected.</returns>
-        public async Task<int> SaveChangesAsync()
+        public Task<int> SaveChangesAsync()
         {
-            return await SaveChangesAsync(CancellationToken.None);
+            return SaveChangesAsync(CancellationToken.None);
         }
 
         /// <summary>
@@ -118,13 +117,13 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// <returns>Number of records affected.</returns>
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken, TableRequestOptions requestOptions = null, OperationContext operationContext = null)
         {
-            await semaphore.WaitAsync(cancellationToken);
+            await semaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
             var affectedRecordsCount = 0;
             try
             {
-                affectedRecordsCount += await InsertNewEntitiesAsync(cancellationToken, requestOptions, operationContext);
-                affectedRecordsCount += await UpdateDirtyEntitiesAsync(cancellationToken, requestOptions, operationContext);
-                affectedRecordsCount += await DeleteRemovedEntitiesAsync(cancellationToken, requestOptions, operationContext);
+                affectedRecordsCount += await InsertNewEntitiesAsync(cancellationToken, requestOptions, operationContext).ConfigureAwait(false);
+                affectedRecordsCount += await UpdateDirtyEntitiesAsync(cancellationToken, requestOptions, operationContext).ConfigureAwait(false);
+                affectedRecordsCount += await DeleteRemovedEntitiesAsync(cancellationToken, requestOptions, operationContext).ConfigureAwait(false);
             }
             finally
             {
@@ -137,9 +136,9 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// Gets the CloudTable instance. 
         /// </summary>
         /// <param name="tableName">Gets existing or creates a new instance of CloudTable</param>
-        public async Task<CloudTable> GetOrCreateTableAsync(string tableName)
+        public Task<CloudTable> GetOrCreateTableAsync(string tableName)
         {
-            return await GetOrCreateTableAsync(tableName, CancellationToken.None, null, null);
+            return GetOrCreateTableAsync(tableName, CancellationToken.None, null, null);
         }
 
         /// <summary>
@@ -154,7 +153,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             }
 
             table = Client.GetTableReference(tableName);
-            await table.CreateIfNotExistsAsync(requestOptions, operationContext, cancellationToken);
+            await table.CreateIfNotExistsAsync(requestOptions, operationContext, cancellationToken).ConfigureAwait(false);
             tables.Add(tableName, table);
             return table;
         }
@@ -164,7 +163,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// </summary>
         public async Task DeleteTableAsync(string tableName)
         {
-            await DeleteTableAsync(tableName, CancellationToken.None, null, null);
+            await DeleteTableAsync(tableName, CancellationToken.None, null, null).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -173,10 +172,10 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         public async Task DeleteTableAsync(string tableName, CancellationToken cancellationToken, TableRequestOptions requestOptions, OperationContext operationContext)
         {
             var table = Client.GetTableReference(tableName);
-            var exists = await table.ExistsAsync(requestOptions, operationContext, cancellationToken);
+            var exists = await table.ExistsAsync(requestOptions, operationContext, cancellationToken).ConfigureAwait(false);
             if (exists)
             {
-                await table.DeleteAsync(requestOptions, operationContext, cancellationToken);
+                await table.DeleteAsync(requestOptions, operationContext, cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -239,15 +238,13 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// <returns>Number of records processed.</returns>
         protected virtual async Task<int> InsertNewEntitiesAsync(CancellationToken cancellationToken, TableRequestOptions requestOptions = null, OperationContext operationContext = null)
         {
-            // todo: improve logic to use batches; there are few conditions to be met though, so leaving it for future improvement
             var processedRecords = 0;
-            foreach (var entity in newEntities)
+            foreach (var sameTableEntities in newEntities.GroupBy(x => x.GetType()))
             {
-                var table = await GetOrCreateTableAsync(mapperRegistry.GetTable(entity), cancellationToken, requestOptions, operationContext);
-                var operation = TableOperation.Insert(entity);
-                await table.ExecuteAsync(operation, requestOptions, operationContext, cancellationToken);
-
-                processedRecords++;
+                var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(sameTableEntities.First()), cancellationToken, requestOptions, operationContext).ConfigureAwait(false);
+                var batch = sameTableEntities.Select(TableOperation.InsertOrMerge).ToList();
+                await table.ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken).ConfigureAwait(false);
+                processedRecords += batch.Count;
             }
             newEntities.Clear();
             return processedRecords;
@@ -259,14 +256,13 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// <returns>Number of records processed.</returns>
         protected virtual async Task<int> UpdateDirtyEntitiesAsync(CancellationToken cancellationToken, TableRequestOptions requestOptions = null, OperationContext operationContext = null)
         {
-            // todo: improve logic to use batches; there are few conditions to be met though, so leaving it for future improvement
             var processedRecords = 0;
-            foreach (var entity in dirtyEntities)
+            foreach (var sameTableEntities in dirtyEntities.GroupBy(x => x.GetType()))
             {
-                var table = await GetOrCreateTableAsync(mapperRegistry.GetTable(entity), cancellationToken, requestOptions, operationContext);
-                var operation = TableOperation.Replace(entity);
-                await table.ExecuteAsync(operation, requestOptions, operationContext, cancellationToken);
-                processedRecords++;
+                var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(sameTableEntities.First()), cancellationToken, requestOptions, operationContext).ConfigureAwait(false);
+                var batch = sameTableEntities.Select(TableOperation.InsertOrReplace).ToList();
+                await table.ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken).ConfigureAwait(false);
+                processedRecords += batch.Count;
             }
             dirtyEntities.Clear();
             return processedRecords;
@@ -278,14 +274,13 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// <returns>Number of records processed.</returns>
         protected virtual async Task<int> DeleteRemovedEntitiesAsync(CancellationToken cancellationToken, TableRequestOptions requestOptions = null, OperationContext operationContext = null)
         {
-            // todo: improve logic to use batches; there are few conditions to be met though, so leaving it for future improvement
             var processedRecords = 0;
-            foreach (var entity in removedEntities)
+            foreach (var sameTableEntities in removedEntities.GroupBy(x => x.GetType()))
             {
-                var table = await GetOrCreateTableAsync(mapperRegistry.GetTable(entity), cancellationToken, requestOptions, operationContext);
-                var operation = TableOperation.Delete(entity);
-                await table.ExecuteAsync(operation, requestOptions, operationContext, cancellationToken);
-                processedRecords++;
+                var table = await GetOrCreateTableAsync(tableEntityMapper.GetTable(sameTableEntities.First()), cancellationToken, requestOptions, operationContext).ConfigureAwait(false);
+                var batch = sameTableEntities.Select(TableOperation.Delete).ToList();
+                await table.ExecuteBatchSafeAsync(batch, requestOptions, operationContext, cancellationToken).ConfigureAwait(false);
+                processedRecords += batch.Count;
             }
             removedEntities.Clear();
             return processedRecords;
@@ -306,6 +301,6 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             if (entities.Contains(entity)) throw new InvalidOperationException("The entity is already in another collection.");
         }
 
-        
+
     }
 }

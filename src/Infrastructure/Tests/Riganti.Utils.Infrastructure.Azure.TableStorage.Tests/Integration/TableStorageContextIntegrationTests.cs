@@ -13,8 +13,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Integration
         public TableStorageContextIntegrationTests()
         {
             var options = new CreateOwnContextTableStorageOptions();
-            var registry = new TableEntityMapperRegistry();
-            context = new TableStorageContext(options, registry);
+            context = new TableStorageContext(options);
         }
 
         [Fact]
@@ -34,7 +33,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Integration
         [Fact]
         public async Task SaveChanges_Should_ReturnNumberOfProcessedRecords()
         {
-            var registry = new TableEntityMapperRegistry();
+            var registry = new AggregateTableEntityMapper(new RegistryTableEntityMapper(), new AttributeTableEntityMapper(), new TypeNameTableEntityMapper());
             await context.DeleteTableAsync("Musician");
 
             var musician1 = new Musician("John Doe", "Anonymous", "john.doe@riganti.cz");
