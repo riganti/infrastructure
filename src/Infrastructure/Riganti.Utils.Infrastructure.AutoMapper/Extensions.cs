@@ -113,8 +113,8 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
             {
                 removeFunction = d =>
                 {
-                    var uow = EntityFrameworkUnitOfWork.TryGetDbContext(unitOfWorkProvider);
-                    uow.Set<TDestinationItem>().Remove(d);
+                    var dbContext = EntityFrameworkUnitOfWork.TryGetDbContext(unitOfWorkProvider);
+                    dbContext.Set<TDestinationItem>().Remove(d);
                 };
             }
 
