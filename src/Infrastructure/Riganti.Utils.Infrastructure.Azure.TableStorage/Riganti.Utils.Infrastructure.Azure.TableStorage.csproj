@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>0.0.1-test</VersionPrefix>
+    <VersionPrefix>2.0.8</VersionPrefix>
     <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Azure.TableStorage</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Services.Azure.TableStorage</PackageId>
