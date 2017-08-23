@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.0.9</VersionPrefix>
+    <VersionPrefix>2.0.10</VersionPrefix>
     <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Services.Logging.Email</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Services.Logging.Email</PackageId>
