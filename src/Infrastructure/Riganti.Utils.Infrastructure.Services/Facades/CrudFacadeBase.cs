@@ -48,11 +48,12 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
             using (UnitOfWorkProvider.Create())
             {
                 var entity = Repository.GetById(id, EntityIncludes);
+                ValidateReadPermissions(entity);
                 var detail = Mapper.MapToDTO(entity);
                 return detail;
             }
         }
-
+        
         /// <summary>
         /// Gets a new detail DTO with default values.
         /// </summary>
@@ -85,10 +86,13 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 else
                 {
                     entity = Repository.GetById(detail.Id, EntityIncludes);
+                    ValidateModifyPermissions(entity, ModificationStage.BeforeMap);
                 }
 
                 // populate the entity
                 PopulateDetailToEntity(detail, entity);
+
+                ValidateModifyPermissions(entity, ModificationStage.AfterMap);
 
                 // save
                 return Save(entity, isNew, detail, uow);
@@ -157,6 +161,26 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// </summary>
         protected virtual Expression<Func<TEntity, object>>[] EntityIncludes => new Expression<Func<TEntity, object>>[] { };
 
+
+        /// <summary>
+        /// Validates that the entity detail can be displayed by the user. If the user does not have permissions, the method should throw an exception.
+        /// </summary>
+        /// <param name="entity"></param>
+        protected virtual void ValidateReadPermissions(TEntity entity)
+        {
+        }
+
+        /// <summary>
+        /// Validates that the entity can be modified by the current user. If the user does not have permissions, the method should throw an exception.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="stage">
+        ///     The BeforeMap stage is called when an existing entity is loaded from the database and is about to be mapped. 
+        ///     The AfterMap stage is called when the DTO was mapped to the entity and the entity is about to be saved.
+        /// </param>
+        protected virtual void ValidateModifyPermissions(TEntity entity, ModificationStage stage)
+        {
+        }
 
     }
 }
