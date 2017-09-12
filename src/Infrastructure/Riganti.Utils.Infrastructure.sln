@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}"
 EndProject
@@ -49,7 +49,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Services.Mailing", "Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj", "{BDB3B6EA-1F85-468A-AB75-63576C0E87BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests", "Tests\Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests\Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests.csproj", "{1373AA88-83A9-48E2-8C29-782135CB98AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests", "Tests\Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests\Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests.csproj", "{1373AA88-83A9-48E2-8C29-782135CB98AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.AutoMapper.EntityFramework", "Riganti.Utils.Infrastructure.AutoMapper.EntityFramework\Riganti.Utils.Infrastructure.AutoMapper.EntityFramework.csproj", "{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore", "Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore\Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore.csproj", "{584AF547-0311-4EEA-AC86-83F082C0BFEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -325,6 +329,30 @@ Global
 		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Release|x64.Build.0 = Release|Any CPU
 		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Release|x86.ActiveCfg = Release|Any CPU
 		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Release|x86.Build.0 = Release|Any CPU
+		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Debug|x64.Build.0 = Debug|Any CPU
+		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Debug|x86.Build.0 = Debug|Any CPU
+		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Release|x64.ActiveCfg = Release|Any CPU
+		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Release|x64.Build.0 = Release|Any CPU
+		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Release|x86.ActiveCfg = Release|Any CPU
+		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Release|x86.Build.0 = Release|Any CPU
+		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Debug|x64.Build.0 = Debug|Any CPU
+		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Debug|x86.Build.0 = Debug|Any CPU
+		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Release|x64.ActiveCfg = Release|Any CPU
+		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Release|x64.Build.0 = Release|Any CPU
+		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Release|x86.ActiveCfg = Release|Any CPU
+		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -335,5 +363,8 @@ Global
 		{3921DCDC-00E3-4011-9474-B17364C82BEA} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{1373AA88-83A9-48E2-8C29-782135CB98AD} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8E96C65E-1C48-4FDC-84AF-298014ABB360}
 	EndGlobalSection
 EndGlobal

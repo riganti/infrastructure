@@ -101,6 +101,8 @@ $packages = @(
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Smtp"; Directory = "Riganti.Utils.Infrastructure.Services.Smtp" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.DotVVM"; Directory = "Riganti.Utils.Infrastructure.DotVVM" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.AutoMapper"; Directory = "Riganti.Utils.Infrastructure.AutoMapper" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.AutoMapper.EntityFramework"; Directory = "Riganti.Utils.Infrastructure.AutoMapper.EntityFramework" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore"; Directory = "Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.AspNetCore"; Directory = "Riganti.Utils.Infrastructure.AspNetCore" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.SystemWeb"; Directory = "Riganti.Utils.Infrastructure.SystemWeb" }
 )
