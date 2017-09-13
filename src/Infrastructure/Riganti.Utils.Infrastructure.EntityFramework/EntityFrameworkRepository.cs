@@ -294,9 +294,17 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// </summary>
         public virtual void Delete(TKey id)
         {
-            var fake = new TEntity() { Id = id };
-            Context.Set<TEntity>().Attach(fake);
-            Delete(fake);
+            // try to get entity from the context
+            var entity = Context.Set<TEntity>().Local.SingleOrDefault(e => e.Id.Equals(id));
+
+            // if entity is not found in the context, create fake entity and attach it
+            if (entity == null)
+            {
+                entity = new TEntity { Id = id };
+                Context.Set<TEntity>().Attach(entity);
+            }
+
+            Delete(entity);
         }
 
         /// <summary>
