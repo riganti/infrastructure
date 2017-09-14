@@ -111,13 +111,13 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.Repository
         }
 
         [Fact]
-        public void DeleteById_OneItem_ShouldCallAttach()
+        public void DeleteById_OneItem_ShouldCallRemove()
         {
             var deletedEpisode = episodesSeriesOne[1];
 
             episodeRepositorySUT.Delete(deletedEpisode.Id);
 
-            episodesDbSetMock.Verify(set => set.Attach(It.Is<EpisodeEntity>(entity => entity.Id == deletedEpisode.Id)), Times.Once);
+            episodesDbSetMock.Verify(set => set.Remove(It.Is<EpisodeEntity>(entity => entity.Id == deletedEpisode.Id)), Times.Once);
         }
 
         [Fact]
@@ -173,13 +173,13 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.Repository
         }
 
         [Fact]
-        public void SoftDeleteById_OneItem_ShouldCallAttach()
+        public void SoftDeleteById_OneItem_ShouldCallRemove()
         {
             var deletedEpisode = episodesSeriesOne[1];
 
             episodeRepositorySUT.Delete(deletedEpisode.Id);
 
-            episodesDbSetMock.Verify(set => set.Attach(It.Is<EpisodeEntity>(entity => entity.Id == deletedEpisode.Id)), Times.Once);
+            episodesDbSetMock.Verify(set => set.Remove(It.Is<EpisodeEntity>(entity => entity.Id == deletedEpisode.Id)), Times.Once);
         }
 
         [Fact]
