@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,7 +31,7 @@ namespace Riganti.Utils.Infrastructure.Core
     /// <summary>
     /// A generic interface for query objects with support for paging and sorting.
     /// </summary>
-    public interface IQuery<TQueryableResult, TResult> : IQuery<TResult>
+    public interface IQuery<TQueryableResult, TResult> : IQuery<TResult>, ISortableQuery<TQueryableResult>
     {
     }
 }
