@@ -15,7 +15,7 @@ namespace Riganti.Utils.Infrastructure.Logging
         protected readonly IDateTimeProvider DateTimeProvider;
 
         /// <summary>
-        /// Gets or sets the minimum severity of messages that are not ignored.
+        /// Gets or sets the minimum severity of messages that are not ignored (default <see cref="Severity.Info"/>).
         /// </summary>
         public Severity MinimumSeverity { get; set; } = Severity.Info;
 
@@ -23,18 +23,65 @@ namespace Riganti.Utils.Infrastructure.Logging
         /// Gets or sets the mechanism that formats the exception messages.
         /// </summary>
         public IExceptionFormatter ExceptionFormatter { get; set; } = new DefaultExceptionFormatter();
-
-
-        public LoggerBase(IDateTimeProvider dateTimeProvider, IEnumerable<IAdditionalDataProvider> additionalDataProviders = null)
+        
+        protected LoggerBase(IDateTimeProvider dateTimeProvider, IEnumerable<IAdditionalDataProvider> additionalDataProviders = null)
         {
-            this.DateTimeProvider = dateTimeProvider;
+            DateTimeProvider = dateTimeProvider;
             if (additionalDataProviders != null)
             {
                 this.additionalDataProviders.AddRange(additionalDataProviders);
             }
         }
 
+        /// <summary>
+        /// Log verbose message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void LogVerbose(string message)
+        {
+            LogMessage(message, severity: Severity.Verbose);
+        }
 
+        /// <summary>
+        /// Log info message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void LogInfo(string message)
+        {
+            // ReSharper disable once RedundantArgumentDefaultValue
+            LogMessage(message, severity: Severity.Info);
+        }
+
+        /// <summary>
+        /// Log warning message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void LogWarning(string message)
+        {
+            LogMessage(message, severity: Severity.Warning);
+        }
+
+        /// <summary>
+        /// Log error message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void LogError(string message)
+        {
+            LogMessage(message, severity: Severity.Error);
+        }
+
+        /// <summary>
+        /// Log critical message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void LogCritical(string message)
+        {
+            LogMessage(message, severity: Severity.Critical);
+        }
+
+        /// <summary>
+        /// Log the exception with additional data.
+        /// </summary>
         public void LogException(Exception exception, IDictionary<string, string> additionalData = null, Severity severity = Severity.Error)
         {
             try
@@ -53,7 +100,10 @@ namespace Riganti.Utils.Infrastructure.Logging
                 }
             }
         }
-        
+
+        /// <summary>
+        /// Log generic message with additional data.
+        /// </summary>
         public void LogMessage(string message, IDictionary<string, string> additionalData = null, Severity severity = Severity.Info)
         {
             try
@@ -73,13 +123,18 @@ namespace Riganti.Utils.Infrastructure.Logging
             }
         }
 
+        /// <summary>
+        /// Internal implementation of how the exception is logged.
+        /// </summary>
         protected virtual void LogExceptionCore(Exception exception, IDictionary<string, string> additionalData, Severity severity)
         {
             var message = ExceptionFormatter.FormatException(exception);
             LogMessageCore(message, additionalData, severity);
         }
 
-
+        /// <summary>
+        /// Internal implementation of how the message is logged.
+        /// </summary>
         protected abstract void LogMessageCore(string message, IDictionary<string, string> additionalData, Severity severity);
 
         private void ExtractAdditionalData(ref IDictionary<string, string> additionalData)
