@@ -2,11 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Riganti.Utils.Infrastructure.Services.Mailing;
-using Riganti.Utils.Infrastructure.Services.Smtp.Mailing;
 using Xunit;
 
-namespace Riganti.Utils.Infrastructure.Services.Smtp.Tests
+namespace Riganti.Utils.Infrastructure.Services.Mailing.Tests
 {
     public class PickupFolderMailSenderTest
     {

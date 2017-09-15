@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}"
 EndProject
@@ -33,10 +33,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Services.Amazon.SES", "Riganti.Utils.Infrastructure.Services.Amazon.SES\Riganti.Utils.Infrastructure.Services.Amazon.SES.csproj", "{96C19D40-BFC9-43DD-8B8C-381F8EA894D6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Services.Smtp", "Riganti.Utils.Infrastructure.Services.Smtp\Riganti.Utils.Infrastructure.Services.Smtp.csproj", "{92BE13B9-1977-4928-835D-434369EAEC45}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Services.Smtp.Tests", "Tests\Riganti.Utils.Infrastructure.Services.Smtp.Tests\Riganti.Utils.Infrastructure.Services.Smtp.Tests.csproj", "{3921DCDC-00E3-4011-9474-B17364C82BEA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Azure.TableStorage", "Riganti.Utils.Infrastructure.Azure.TableStorage\Riganti.Utils.Infrastructure.Azure.TableStorage.csproj", "{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Azure.TableStorage.Tests", "Tests\Riganti.Utils.Infrastructure.Azure.TableStorage.Tests\Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.csproj", "{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC}"
@@ -51,9 +47,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests", "Tests\Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests\Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests.csproj", "{1373AA88-83A9-48E2-8C29-782135CB98AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.AutoMapper.EntityFramework", "Riganti.Utils.Infrastructure.AutoMapper.EntityFramework\Riganti.Utils.Infrastructure.AutoMapper.EntityFramework.csproj", "{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.AutoMapper.EntityFramework", "Riganti.Utils.Infrastructure.AutoMapper.EntityFramework\Riganti.Utils.Infrastructure.AutoMapper.EntityFramework.csproj", "{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore", "Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore\Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore.csproj", "{584AF547-0311-4EEA-AC86-83F082C0BFEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore", "Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore\Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore.csproj", "{584AF547-0311-4EEA-AC86-83F082C0BFEA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Services.Mailing.Tests", "Tests\Riganti.Utils.Infrastructure.Services.Mailing.Tests\Riganti.Utils.Infrastructure.Services.Mailing.Tests.csproj", "{7EFFD697-35E1-4A38-9E80-5710DC8601D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -225,26 +223,6 @@ Global
 		{96C19D40-BFC9-43DD-8B8C-381F8EA894D6}.Release|x64.Build.0 = Release|Any CPU
 		{96C19D40-BFC9-43DD-8B8C-381F8EA894D6}.Release|x86.ActiveCfg = Release|Any CPU
 		{96C19D40-BFC9-43DD-8B8C-381F8EA894D6}.Release|x86.Build.0 = Release|Any CPU
-		{92BE13B9-1977-4928-835D-434369EAEC45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{92BE13B9-1977-4928-835D-434369EAEC45}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{92BE13B9-1977-4928-835D-434369EAEC45}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{92BE13B9-1977-4928-835D-434369EAEC45}.Debug|x64.Build.0 = Debug|Any CPU
-		{92BE13B9-1977-4928-835D-434369EAEC45}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{92BE13B9-1977-4928-835D-434369EAEC45}.Debug|x86.Build.0 = Debug|Any CPU
-		{92BE13B9-1977-4928-835D-434369EAEC45}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{92BE13B9-1977-4928-835D-434369EAEC45}.Release|Any CPU.Build.0 = Release|Any CPU
-		{92BE13B9-1977-4928-835D-434369EAEC45}.Release|x64.ActiveCfg = Release|Any CPU
-		{92BE13B9-1977-4928-835D-434369EAEC45}.Release|x64.Build.0 = Release|Any CPU
-		{92BE13B9-1977-4928-835D-434369EAEC45}.Release|x86.ActiveCfg = Release|Any CPU
-		{92BE13B9-1977-4928-835D-434369EAEC45}.Release|x86.Build.0 = Release|Any CPU
-		{3921DCDC-00E3-4011-9474-B17364C82BEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3921DCDC-00E3-4011-9474-B17364C82BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3921DCDC-00E3-4011-9474-B17364C82BEA}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3921DCDC-00E3-4011-9474-B17364C82BEA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3921DCDC-00E3-4011-9474-B17364C82BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3921DCDC-00E3-4011-9474-B17364C82BEA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3921DCDC-00E3-4011-9474-B17364C82BEA}.Release|x64.ActiveCfg = Release|Any CPU
-		{3921DCDC-00E3-4011-9474-B17364C82BEA}.Release|x86.ActiveCfg = Release|Any CPU
 		{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -353,6 +331,18 @@ Global
 		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Release|x64.Build.0 = Release|Any CPU
 		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Release|x86.ActiveCfg = Release|Any CPU
 		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Release|x86.Build.0 = Release|Any CPU
+		{7EFFD697-35E1-4A38-9E80-5710DC8601D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EFFD697-35E1-4A38-9E80-5710DC8601D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EFFD697-35E1-4A38-9E80-5710DC8601D2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7EFFD697-35E1-4A38-9E80-5710DC8601D2}.Debug|x64.Build.0 = Debug|Any CPU
+		{7EFFD697-35E1-4A38-9E80-5710DC8601D2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7EFFD697-35E1-4A38-9E80-5710DC8601D2}.Debug|x86.Build.0 = Debug|Any CPU
+		{7EFFD697-35E1-4A38-9E80-5710DC8601D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EFFD697-35E1-4A38-9E80-5710DC8601D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EFFD697-35E1-4A38-9E80-5710DC8601D2}.Release|x64.ActiveCfg = Release|Any CPU
+		{7EFFD697-35E1-4A38-9E80-5710DC8601D2}.Release|x64.Build.0 = Release|Any CPU
+		{7EFFD697-35E1-4A38-9E80-5710DC8601D2}.Release|x86.ActiveCfg = Release|Any CPU
+		{7EFFD697-35E1-4A38-9E80-5710DC8601D2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -360,9 +350,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{BFC74F73-FA8A-4D61-BA7D-E3D5476F6E87} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{08A731F6-DC7F-427E-9CBB-007D33CB4491} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
-		{3921DCDC-00E3-4011-9474-B17364C82BEA} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{1373AA88-83A9-48E2-8C29-782135CB98AD} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
+		{7EFFD697-35E1-4A38-9E80-5710DC8601D2} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8E96C65E-1C48-4FDC-84AF-298014ABB360}

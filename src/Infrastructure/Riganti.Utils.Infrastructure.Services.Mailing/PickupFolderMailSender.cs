@@ -2,9 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Riganti.Utils.Infrastructure.Services.Mailing;
 
-namespace Riganti.Utils.Infrastructure.Services.Smtp.Mailing
+namespace Riganti.Utils.Infrastructure.Services.Mailing
 {
     public class PickupFolderMailSender : IMailSender
     {

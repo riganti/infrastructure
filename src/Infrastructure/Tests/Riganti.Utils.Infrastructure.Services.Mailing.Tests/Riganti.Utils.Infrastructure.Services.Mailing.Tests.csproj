@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp1.0;net461</TargetFrameworks>
-    <AssemblyName>Riganti.Utils.Infrastructure.Services.Smtp.Tests</AssemblyName>
+    <AssemblyName>Riganti.Utils.Infrastructure.Services.Mailing.Tests</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Riganti.Utils.Infrastructure.Services.Smtp.Tests</PackageId>
     <PackageVersion>2.0.0</PackageVersion>
@@ -19,12 +19,8 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/riganti/infrastructure</PackageProjectUrl>
     <RepositoryUrl>https://github.com/riganti/infrastructure.git</RepositoryUrl>
+    <RootNamespace>Riganti.Utils.Infrastructure.Services.Mailing.Tests</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj" />
-    <ProjectReference Include="..\..\Riganti.Utils.Infrastructure.Services.Smtp\Riganti.Utils.Infrastructure.Services.Smtp.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
@@ -40,6 +36,10 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj" />
   </ItemGroup>
 
   <ItemGroup>
