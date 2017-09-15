@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Riganti.Utils.Infrastructure.Core;
@@ -8,39 +9,47 @@ namespace Riganti.Utils.Infrastructure.Logging
     public class TextFileLogger : LoggerBase
     {
         private readonly string directory;
+        private readonly string extension;
+        private readonly Encoding fileEncoding = new UTF8Encoding(false);
+        private readonly string fileNameWithoutExtension;
+        private readonly object fileWriteLock = new object();
 
+        public IMessageFormatter MessageFormatter { get; set; }
 
-        public TextFileLogger(string directory, IDateTimeProvider dateTimeProvider, IEnumerable<IAdditionalDataProvider> additionalDataProviders = null) : base(dateTimeProvider, additionalDataProviders)
+        public string RollingTimeFormat { get; set; } = "yyyy-MM-dd";
+
+        public TextFileLogger(string filePath, IDateTimeProvider dateTimeProvider, IEnumerable<IAdditionalDataProvider> additionalDataProviders = null)
+            : base(dateTimeProvider, additionalDataProviders)
         {
-            this.directory = directory;
+            directory = Path.GetDirectoryName(filePath);
+            fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
+            extension = Path.GetExtension(filePath);
 
-            if (!Directory.Exists(directory))
+            if (!String.IsNullOrWhiteSpace(directory) && !Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
             }
+
+            MessageFormatter = new DefaultLogFormatter(dateTimeProvider);
         }
 
         protected virtual string GetLogFileName()
         {
-            return Path.Combine(directory, DateTimeProvider.Now.ToString("yyyy-MM-dd") + ".txt");
+            var fileName = $"{fileNameWithoutExtension}_{DateTimeProvider.Now.ToString(RollingTimeFormat)}{extension}";
+            return Path.Combine(directory, fileName);
         }
 
         protected override void LogMessageCore(string message, IDictionary<string, string> additionalData, Severity severity)
         {
             var sb = new StringBuilder();
-
-            sb.AppendLine($"{DateTimeProvider.Now:yyyy-MM-dd HH:mm:ss}\t{message}");
-            if (additionalData.Count > 0)
-            {
-                sb.AppendLine("Additional data:");
-                foreach (var data in additionalData)
-                {
-                    sb.AppendLine($"{data.Key,20}{data.Value}");
-                }
-            }
+            MessageFormatter.Format(message, additionalData, severity, sb);
             sb.AppendLine();
-            
-            File.AppendAllText(GetLogFileName(), sb.ToString(), Encoding.UTF8);
+
+            // TODO: temporary workaround
+            lock (fileWriteLock)
+            {
+                File.AppendAllText(GetLogFileName(), sb.ToString(), fileEncoding);
+            }
         }
     }
 }
