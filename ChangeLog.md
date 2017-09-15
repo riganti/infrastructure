@@ -6,16 +6,16 @@
   - *Riganti.Utils.Infrastructure.Services.Smtp.Mailing* NuGet no longer exists.
   - All *\*.Services.Logging.\** namespaces renamed to *\*.Logging.\** (*Service* part was removed).
 - Logging extended ([edeab27](https://github.com/riganti/infrastructure/commit/edeab27e25e669ebc8588d13a1c35f599f3e878a))
-  - Added methods to [`ILogger`](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/ILogger.cs)
-  interface and [`LoggerBase`](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/LoggerBase.cs)
+  - Added methods to [ILogger](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/ILogger.cs)
+  interface and [LoggerBase](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/LoggerBase.cs)
   class: `LogVerbose(string message)`, `LogInfo(string message)`, etc.
-  - Added [`ConsoleLogger`](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/ConsoleLogger.cs).
-  - Added [`EmptyLogger`](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/EmptyLogger.cs).
-  - Added `IMessageFormatter` and default [`DefaultLogFormatter`](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/DefaultLogFormatter.cs).
-  - Modified [`DefaultExceptionFormatter`](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/DefaultExceptionFormatter.cs):
+  - Added [ConsoleLogger](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/ConsoleLogger.cs).
+  - Added [EmptyLogger](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/EmptyLogger.cs).
+  - Added `IMessageFormatter` and default [DefaultLogFormatter](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/DefaultLogFormatter.cs).
+  - Modified [DefaultExceptionFormatter](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/DefaultExceptionFormatter.cs):
     - Added displaying of `Data` property.
     - Added displaying of reflected properties (with possibility to modify `IgnoredReflectionProperties` collection).
-    - Added `ExceptionAdapters` property as collection of `IExceptionAdapter` with default [`DbEntityValidationExceptionAdapter`](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/DbEntityValidationExceptionAdapter.cs), that allows to format specific exception.
+    - Added `ExceptionAdapters` property as collection of `IExceptionAdapter` with default [DbEntityValidationExceptionAdapter](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/DbEntityValidationExceptionAdapter.cs), that allows to format specific exception.
 
 ## 2.0.12
 - Fixed `EntityFrameworkRepository.Delete(TKey id)` method - attach fake entity only when not found in local context. ([PR #24](https://github.com/riganti/infrastructure/pull/24))
