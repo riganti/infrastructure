@@ -8,7 +8,7 @@
   - All *\*.Services.Logging.\** namespaces renamed to *\*.Logging.\** (*Service* part was removed).
 
 ## 2.0.12
-- `ISortableQuery&lt;TQueryableResult&gt;` interface moved from `QueryBase` to `IQuery`. ([PR #25](https://github.com/riganti/infrastructure/pull/25))
+- `ISortableQuery<TQueryableResult>` interface moved from `QueryBase` to `IQuery`. ([PR #25](https://github.com/riganti/infrastructure/pull/25))
 - Fixed `EntityFrameworkRepository.Delete(TKey id)` method - attach fake entity only when not found in local context. ([PR #24](https://github.com/riganti/infrastructure/pull/24))
 
 ## 2.0.11
