@@ -6,7 +6,7 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Riganti.Utils.Infrastructure.Core;
 
 // ReSharper disable once CheckNamespace
-namespace Riganti.Utils.Infrastructure.Services.Logging
+namespace Riganti.Utils.Infrastructure.Logging
 {
     public class ApplicationInsightsLogger : LoggerBase
     {

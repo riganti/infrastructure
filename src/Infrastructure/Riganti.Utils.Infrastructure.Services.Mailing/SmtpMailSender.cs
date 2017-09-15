@@ -3,9 +3,8 @@ using System.Net.Security;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using MailKit.Security;
-using Riganti.Utils.Infrastructure.Services.Mailing;
 
-namespace Riganti.Utils.Infrastructure.Services.Smtp.Mailing
+namespace Riganti.Utils.Infrastructure.Services.Mailing
 {
     public class SmtpMailSender : IMailSender
     {

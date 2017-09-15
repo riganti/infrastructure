@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Riganti.Utils.Infrastructure.Services.Logging
+namespace Riganti.Utils.Infrastructure.Logging
 {
     public interface IExceptionFormatter
     {

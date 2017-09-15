@@ -1,5 +1,5 @@
 ﻿// ReSharper disable once CheckNamespace
-namespace Riganti.Utils.Infrastructure.Services.Logging
+namespace Riganti.Utils.Infrastructure.Logging
 {
     public interface IApplicationInsightsSettings
     {

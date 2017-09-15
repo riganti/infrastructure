@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Riganti.Utils.Infrastructure.Services.Logging
+namespace Riganti.Utils.Infrastructure.Logging
 {
     public class DefaultExceptionFormatter : IExceptionFormatter
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Riganti.Utils.Infrastructure.Core;
 
-namespace Riganti.Utils.Infrastructure.Services.Logging
+namespace Riganti.Utils.Infrastructure.Logging
 {
     /// <summary>
     /// A base class for all logging mechanisms.

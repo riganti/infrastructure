@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MimeKit;
-using Riganti.Utils.Infrastructure.Services.Mailing;
 
-namespace Riganti.Utils.Infrastructure.Services.Smtp.Mailing
+namespace Riganti.Utils.Infrastructure.Services.Mailing
 {
     public static class Extensions
     {
