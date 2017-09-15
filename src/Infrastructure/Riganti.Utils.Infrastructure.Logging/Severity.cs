@@ -1,4 +1,4 @@
-namespace Riganti.Utils.Infrastructure.Services.Logging
+namespace Riganti.Utils.Infrastructure.Logging
 {
     public enum Severity
     {

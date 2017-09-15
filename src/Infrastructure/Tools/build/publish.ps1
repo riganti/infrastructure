@@ -91,9 +91,9 @@ $packages = @(
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Azure.TableStorage"; Directory = "Riganti.Utils.Infrastructure.Azure.TableStorage" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Configuration"; Directory = "Riganti.Utils.Infrastructure.Configuration" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services"; Directory = "Riganti.Utils.Infrastructure.Services" },
-	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Logging"; Directory = "Riganti.Utils.Infrastructure.Services.Logging" },
-	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Logging.Email"; Directory = "Riganti.Utils.Infrastructure.Services.Logging.Email" },
-	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Logging.ApplicationInsights"; Directory = "Riganti.Utils.Infrastructure.Services.Logging.ApplicationInsights" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Logging"; Directory = "Riganti.Utils.Infrastructure.Logging" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Logging.Email"; Directory = "Riganti.Utils.Infrastructure.Logging.Email" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Logging.ApplicationInsights"; Directory = "Riganti.Utils.Infrastructure.Logging.ApplicationInsights" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Mailing"; Directory = "Riganti.Utils.Infrastructure.Services.Mailing" }
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Azure"; Directory = "Riganti.Utils.Infrastructure.Services.Azure" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.SendGrid"; Directory = "Riganti.Utils.Infrastructure.Services.SendGrid" },

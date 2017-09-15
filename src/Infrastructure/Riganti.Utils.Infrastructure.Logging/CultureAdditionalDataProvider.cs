@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using System.Threading;
 
-namespace Riganti.Utils.Infrastructure.Services.Logging
+namespace Riganti.Utils.Infrastructure.Logging
 {
     public class CultureAdditionalDataProvider : IAdditionalDataProvider
     {

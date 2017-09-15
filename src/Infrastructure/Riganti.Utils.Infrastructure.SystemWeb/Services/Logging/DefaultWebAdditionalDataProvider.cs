@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Web;
 
 // ReSharper disable once CheckNamespace
-namespace Riganti.Utils.Infrastructure.Services.Logging
+namespace Riganti.Utils.Infrastructure.Logging
 {
     public class DefaultWebAdditionalDataProvider : IAdditionalDataProvider
     {

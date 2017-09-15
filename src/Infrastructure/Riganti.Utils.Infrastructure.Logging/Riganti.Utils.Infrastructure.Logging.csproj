@@ -3,8 +3,8 @@
   <PropertyGroup>
     <VersionPrefix>2.0.12</VersionPrefix>
     <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
-    <AssemblyName>Riganti.Utils.Infrastructure.Services.Logging</AssemblyName>
-    <PackageId>Riganti.Utils.Infrastructure.Services.Logging</PackageId>
+    <AssemblyName>Riganti.Utils.Infrastructure.Logging</AssemblyName>
+    <PackageId>Riganti.Utils.Infrastructure.Logging</PackageId>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -21,6 +21,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/riganti/infrastructure</PackageProjectUrl>
     <RepositoryUrl>https://github.com/riganti/infrastructure.git</RepositoryUrl>
+    <RootNamespace>Riganti.Utils.Infrastructure.Logging</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">

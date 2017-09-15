@@ -1,6 +1,6 @@
 <Playlist Version="1.0">
-  <Add Test="Riganti.Utils.Infrastructure.Services.Smtp.Tests.PickupFolderMailSenderTest.SendPlainTextMail_Test" />
-  <Add Test="Riganti.Utils.Infrastructure.Services.Smtp.Tests.PickupFolderMailSenderTest.SendMailWithAttachment_Test" />
-  <Add Test="Riganti.Utils.Infrastructure.Services.Smtp.Tests.PickupFolderMailSenderTest.SendAlternateMail_Test" />
-  <Add Test="Riganti.Utils.Infrastructure.Services.Smtp.Tests.PickupFolderMailSenderTest.SendHtmlMail_Test" />
+  <Add Test="Riganti.Utils.Infrastructure.Services.Mailing.Tests.PickupFolderMailSenderTest.SendPlainTextMail_Test" />
+  <Add Test="Riganti.Utils.Infrastructure.Services.Mailing.Tests.PickupFolderMailSenderTest.SendMailWithAttachment_Test" />
+  <Add Test="Riganti.Utils.Infrastructure.Services.Mailing.Tests.PickupFolderMailSenderTest.SendAlternateMail_Test" />
+  <Add Test="Riganti.Utils.Infrastructure.Services.Mailing.Tests.PickupFolderMailSenderTest.SendHtmlMail_Test" />
 </Playlist>

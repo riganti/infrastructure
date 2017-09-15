@@ -3,9 +3,10 @@
   <PropertyGroup>
     <VersionPrefix>2.0.12</VersionPrefix>
     <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
-    <AssemblyName>Riganti.Utils.Infrastructure.Services.Logging.Email</AssemblyName>
-    <PackageId>Riganti.Utils.Infrastructure.Services.Logging.Email</PackageId>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
+    <AssemblyName>Riganti.Utils.Infrastructure.Logging.ApplicationInsights</AssemblyName>
+    <PackageId>Riganti.Utils.Infrastructure.Logging.ApplicationInsights</PackageId>
+    <NetStandardImplicitPackageVersion Condition="'$(TargetFramework)' == 'netstandard1.6'">1.6.1</NetStandardImplicitPackageVersion>
+    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -14,26 +15,21 @@
     <Description>Infrastructure project setup for building modern enterprise applications using EntityFramework or Azure Table Storage.</Description>
     <Copyright>Copyright 2017 (c) Riganti s.r.o. - All rights reserved.</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageTags>infrastructure utils enterprise services logging email</PackageTags>
+    <PackageTags>infrastructure utils enterprise logging logger application insights</PackageTags>
     <PackageLicenseUrl>https://github.com/riganti/infrastructure/blob/master/LICENSE</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/riganti/infrastructure</PackageProjectUrl>
     <RepositoryUrl>https://github.com/riganti/infrastructure.git</RepositoryUrl>
+    <RootNamespace>Riganti.Utils.Infrastructure.Logging.ApplicationInsights</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
-    <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj" />
-    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services.Logging\Riganti.Utils.Infrastructure.Services.Logging.csproj" />
-    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj" />
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Logging\Riganti.Utils.Infrastructure.Logging.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.4.0-beta2" />
   </ItemGroup>
 
 </Project>

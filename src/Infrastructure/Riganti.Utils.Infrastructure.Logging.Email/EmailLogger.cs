@@ -5,7 +5,7 @@ using Riganti.Utils.Infrastructure.Core;
 using Riganti.Utils.Infrastructure.Services.Mailing;
 
 // ReSharper disable once CheckNamespace
-namespace Riganti.Utils.Infrastructure.Services.Logging
+namespace Riganti.Utils.Infrastructure.Logging
 {
     public class EmailLogger : LoggerBase
     {

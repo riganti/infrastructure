@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using Riganti.Utils.Infrastructure.Core;
 
-namespace Riganti.Utils.Infrastructure.Services.Logging
+namespace Riganti.Utils.Infrastructure.Logging
 {
     public class TextFileLogger : LoggerBase
     {
