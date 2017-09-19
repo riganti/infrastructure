@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.1.1
+- Refactored Message Formater in logging - removed from
+  [ConsoleLogger](https://github.com/riganti/infrastructure/blob/8578ef4068c4ecf4b20b25b74c0b74062961e6d7/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/ConsoleLogger.cs)
+  and [TextFileLogger](https://github.com/riganti/infrastructure/blob/8578ef4068c4ecf4b20b25b74c0b74062961e6d7/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/TextFileLogger.cs)
+  and added to [LoggerBase](https://github.com/riganti/infrastructure/blob/8578ef4068c4ecf4b20b25b74c0b74062961e6d7/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/LoggerBase.cs).
+  Default value set to [DefaultMessageFormatter](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/DefaultMessageFormatter.cs).
+
 ## 2.1.0
 - Namespaces refactoring ([PR #26](https://github.com/riganti/infrastructure/pull/26))
   - *Riganti.Utils.Infrastructure.Services.Smtp.Mailing* namespace has been removed, all types moved to *Riganti.Utils.Infrastructure.Services.Mailing* namespace.
