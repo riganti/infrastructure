@@ -16,6 +16,10 @@
     - Added displaying of `Data` property.
     - Added displaying of reflected properties (with possibility to modify `IgnoredReflectionProperties` collection).
     - Added `ExceptionAdapters` property as collection of `IExceptionAdapter` with default [DbEntityValidationExceptionAdapter](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/DbEntityValidationExceptionAdapter.cs), that allows to format specific exception.
+- [ILogger](https://github.com/riganti/infrastructure/blob/c4567ad51b1b7b095399dec5c6d9e8a65273934b/src/Infrastructure/Riganti.Utils.Infrastructure.Core/Logging/ILogger.cs)
+  and [Severity](https://github.com/riganti/infrastructure/blob/c4567ad51b1b7b095399dec5c6d9e8a65273934b/src/Infrastructure/Riganti.Utils.Infrastructure.Core/Logging/Severity.cs)
+  moved to *Riganti.Utils.Infrastructure.Core*.
+- Added [XUnitOutputLogger](https://github.com/riganti/infrastructure/blob/e612747531e83efd622dbd7389c5ed83ecaa53d1/src/Infrastructure/Riganti.Utils.Infrastructure.Testing/Riganti.Utils.Infrastructure.Testing.csproj).
 
 ## 2.0.12
 - Fixed `EntityFrameworkRepository.Delete(TKey id)` method - attach fake entity only when not found in local context. ([PR #24](https://github.com/riganti/infrastructure/pull/24))
