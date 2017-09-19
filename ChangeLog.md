@@ -18,11 +18,14 @@
 - [ILogger](https://github.com/riganti/infrastructure/blob/c4567ad51b1b7b095399dec5c6d9e8a65273934b/src/Infrastructure/Riganti.Utils.Infrastructure.Core/Logging/ILogger.cs)
   and [Severity](https://github.com/riganti/infrastructure/blob/c4567ad51b1b7b095399dec5c6d9e8a65273934b/src/Infrastructure/Riganti.Utils.Infrastructure.Core/Logging/Severity.cs)
   moved to *Riganti.Utils.Infrastructure.Core*.
-- Added [XUnitOutputLogger](https://github.com/riganti/infrastructure/blob/e612747531e83efd622dbd7389c5ed83ecaa53d1/src/Infrastructure/Riganti.Utils.Infrastructure.Testing/Riganti.Utils.Infrastructure.Testing.csproj).
+- Added [XUnitOutputLogger](https://github.com/riganti/infrastructure/blob/e612747531e83efd622dbd7389c5ed83ecaa53d1/src/Infrastructure/Riganti.Utils.Infrastructure.Testing/Riganti.Utils.Infrastructure.Testing.csproj)
+  and NuGet package *Riganti.Utils.Infrastructure.Testing*.
 
-### Important notes
-- *__Riganti.Utils.Infrastructure.Services.Smtp.Mailing__* and *__Riganti.Utils.Infrastructure.Services.Logging__* NuGet packages no longer exist.
-  
+#### These NuGet packages no longer exist:
+- *Riganti.Utils.Infrastructure.Services.Logging*
+- *Riganti.Utils.Infrastructure.Services.Logging.ApplicationInsights*
+- *Riganti.Utils.Infrastructure.Services.Logging.Email*
+- *Riganti.Utils.Infrastructure.Services.Smtp*
 
 ## 2.0.12
 - Fixed `EntityFrameworkRepository.Delete(TKey id)` method - attach fake entity only when not found in local context. ([PR #24](https://github.com/riganti/infrastructure/pull/24))
