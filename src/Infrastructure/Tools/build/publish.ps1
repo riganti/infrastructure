@@ -103,7 +103,8 @@ $packages = @(
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.AutoMapper.EntityFramework"; Directory = "Riganti.Utils.Infrastructure.AutoMapper.EntityFramework" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore"; Directory = "Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.AspNetCore"; Directory = "Riganti.Utils.Infrastructure.AspNetCore" },
-	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.SystemWeb"; Directory = "Riganti.Utils.Infrastructure.SystemWeb" }
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.SystemWeb"; Directory = "Riganti.Utils.Infrastructure.SystemWeb" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Testing"; Directory = "Riganti.Utils.Infrastructure.Testing" }
 )
 
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.Logging
 {

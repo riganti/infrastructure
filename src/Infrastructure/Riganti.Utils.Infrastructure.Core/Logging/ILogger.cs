@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Riganti.Utils.Infrastructure.Logging
+namespace Riganti.Utils.Infrastructure.Core
 {
     public interface ILogger
     {
