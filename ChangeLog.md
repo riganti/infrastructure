@@ -3,7 +3,6 @@
 ## vNext (2.1.0)
 - Namespaces refactoring ([PR #26](https://github.com/riganti/infrastructure/pull/26))
   - *Riganti.Utils.Infrastructure.Services.Smtp.Mailing* namespace has been removed, all types moved to *Riganti.Utils.Infrastructure.Services.Mailing* namespace.
-  - *Riganti.Utils.Infrastructure.Services.Smtp.Mailing* NuGet no longer exists.
   - All *\*.Services.Logging.\** namespaces renamed to *\*.Logging.\** (*Service* part was removed).
 - Logging extended ([edeab27](https://github.com/riganti/infrastructure/commit/edeab27e25e669ebc8588d13a1c35f599f3e878a))
   - Added methods to [ILogger](https://github.com/riganti/infrastructure/blob/edeab27e25e669ebc8588d13a1c35f599f3e878a/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/ILogger.cs)
@@ -20,6 +19,10 @@
   and [Severity](https://github.com/riganti/infrastructure/blob/c4567ad51b1b7b095399dec5c6d9e8a65273934b/src/Infrastructure/Riganti.Utils.Infrastructure.Core/Logging/Severity.cs)
   moved to *Riganti.Utils.Infrastructure.Core*.
 - Added [XUnitOutputLogger](https://github.com/riganti/infrastructure/blob/e612747531e83efd622dbd7389c5ed83ecaa53d1/src/Infrastructure/Riganti.Utils.Infrastructure.Testing/Riganti.Utils.Infrastructure.Testing.csproj).
+
+### Important notes
+- *__Riganti.Utils.Infrastructure.Services.Smtp.Mailing__* and *__Riganti.Utils.Infrastructure.Services.Logging__* NuGet packages no longer exist.
+  
 
 ## 2.0.12
 - Fixed `EntityFrameworkRepository.Delete(TKey id)` method - attach fake entity only when not found in local context. ([PR #24](https://github.com/riganti/infrastructure/pull/24))
