@@ -12,7 +12,10 @@ namespace Riganti.Utils.Infrastructure.Logging
     {
         private readonly List<IAdditionalDataProvider> additionalDataProviders = new List<IAdditionalDataProvider>();
 
-        protected readonly IDateTimeProvider DateTimeProvider;
+        /// <summary>
+        /// Gets the provider of current time.
+        /// </summary>
+        protected IDateTimeProvider DateTimeProvider { get; }
 
         /// <summary>
         /// Gets or sets the minimum severity of messages that are not ignored (default <see cref="Severity.Info"/>).
@@ -20,13 +23,25 @@ namespace Riganti.Utils.Infrastructure.Logging
         public Severity MinimumSeverity { get; set; } = Severity.Info;
 
         /// <summary>
-        /// Gets or sets the mechanism that formats the exception messages.
+        /// Gets or sets the mechanism that formats the message
+        /// (<see cref="DefaultMessageFormatter"/> by default).
+        /// </summary>
+        public IMessageFormatter MessageFormatter { get; set; }
+
+        /// <summary>
+        /// Gets or sets the mechanism that formats the exception
+        /// (<see cref="DefaultExceptionFormatter"/> by default).
         /// </summary>
         public IExceptionFormatter ExceptionFormatter { get; set; } = new DefaultExceptionFormatter();
-        
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoggerBase" /> class with defined
+        /// <paramref name="dateTimeProvider"/> and <see cref="DefaultMessageFormatter"/>.
+        /// </summary>
         protected LoggerBase(IDateTimeProvider dateTimeProvider, IEnumerable<IAdditionalDataProvider> additionalDataProviders = null)
         {
             DateTimeProvider = dateTimeProvider;
+            MessageFormatter = new DefaultMessageFormatter(dateTimeProvider);
             if (additionalDataProviders != null)
             {
                 this.additionalDataProviders.AddRange(additionalDataProviders);

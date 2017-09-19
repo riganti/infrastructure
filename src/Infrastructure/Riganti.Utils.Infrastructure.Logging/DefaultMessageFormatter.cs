@@ -10,27 +10,27 @@ namespace Riganti.Utils.Infrastructure.Logging
     /// <summary>
     /// Default log formater with timestamp and severity.
     /// </summary>
-    public class DefaultLogFormatter : IMessageFormatter
+    public class DefaultMessageFormatter : IMessageFormatter
     {
         private readonly IDateTimeProvider dateTimeProvider;
         private readonly string timestampFormat;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultLogFormatter"/> class
+        /// Initializes a new instance of the <see cref="DefaultMessageFormatter"/> class
         /// with default timestamp format "yyyy-MM-dd HH:mm:ss.fff".
         /// </summary>
-        public DefaultLogFormatter(IDateTimeProvider dateTimeProvider)
+        public DefaultMessageFormatter(IDateTimeProvider dateTimeProvider)
             : this(dateTimeProvider, "yyyy-MM-dd HH:mm:ss")
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultLogFormatter"/> class
+        /// Initializes a new instance of the <see cref="DefaultMessageFormatter"/> class
         /// with <param name="timestampFormat"></param>.
         /// </summary>
         /// <param name="dateTimeProvider">Current time provider.</param>
         /// <param name="timestampFormat">The timestamp format.</param>
-        public DefaultLogFormatter(IDateTimeProvider dateTimeProvider, string timestampFormat)
+        public DefaultMessageFormatter(IDateTimeProvider dateTimeProvider, string timestampFormat)
         {
             this.dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
             this.timestampFormat = timestampFormat ?? throw new ArgumentNullException(nameof(timestampFormat));

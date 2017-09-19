@@ -3,7 +3,7 @@
 namespace Riganti.Utils.Infrastructure.Core
 {
     /// <summary>
-    /// Custom provide of current time.
+    /// Custom provider of current time.
     /// </summary>
     public interface IDateTimeProvider
     {

@@ -10,13 +10,11 @@ namespace Riganti.Utils.Infrastructure.Logging
     /// </summary>
     public class ConsoleLogger : LoggerBase
     {
-        public IMessageFormatter MessageFormatter { get; set; }
-
         public ConsoleLogger(IDateTimeProvider dateTimeProvider, IEnumerable<IAdditionalDataProvider> additionalDataProviders = null)
             : base(dateTimeProvider, additionalDataProviders)
         {
-            MessageFormatter = new DefaultLogFormatter(dateTimeProvider);
         }
+
         protected override void LogMessageCore(string message, IDictionary<string, string> additionalData, Severity severity)
         {
             var sb = new StringBuilder();

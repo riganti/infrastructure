@@ -14,8 +14,6 @@ namespace Riganti.Utils.Infrastructure.Logging
         private readonly string fileNameWithoutExtension;
         private readonly object fileWriteLock = new object();
 
-        public IMessageFormatter MessageFormatter { get; set; }
-
         public string RollingTimeFormat { get; set; } = "yyyy-MM-dd";
 
         public TextFileLogger(string filePath, IDateTimeProvider dateTimeProvider, IEnumerable<IAdditionalDataProvider> additionalDataProviders = null)
@@ -29,8 +27,6 @@ namespace Riganti.Utils.Infrastructure.Logging
             {
                 Directory.CreateDirectory(directory);
             }
-
-            MessageFormatter = new DefaultLogFormatter(dateTimeProvider);
         }
 
         protected virtual string GetLogFileName()
