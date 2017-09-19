@@ -20,7 +20,7 @@ namespace Riganti.Utils.Infrastructure.Logging
         /// with default timestamp format "yyyy-MM-dd HH:mm:ss.fff".
         /// </summary>
         public DefaultMessageFormatter(IDateTimeProvider dateTimeProvider)
-            : this(dateTimeProvider, "yyyy-MM-dd HH:mm:ss")
+            : this(dateTimeProvider, "yyyy-MM-dd HH:mm:ss.fff")
         {
         }
 
