@@ -4,7 +4,7 @@
 - Fixed default timestamp format in [DefaultMessageFormatter](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/DefaultMessageFormatter.cs)
   ([1ebe6d6](https://github.com/riganti/infrastructure/commit/1ebe6d60163700a9d91afae1dbb4f18502727443)).
 - Fix - directory is created if not exists in [PickupFolderMailSender](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services.Mailing/PickupFolderMailSender.cs)
-- ([PR #28](https://github.com/riganti/infrastructure/pull/28)).
+  ([PR #28](https://github.com/riganti/infrastructure/pull/28)).
 
 ## 2.1.1
 - Refactored Message Formater in logging - removed from
