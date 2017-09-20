@@ -1,11 +1,18 @@
 # Change Log
 
+## vNext (2.1.2)
+- Fixed default timestamp format in [DefaultMessageFormatter](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/DefaultMessageFormatter.cs)
+  ([1ebe6d6](https://github.com/riganti/infrastructure/commit/1ebe6d60163700a9d91afae1dbb4f18502727443)).
+- Fix - directory is created if not exists in [PickupFolderMailSender](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services.Mailing/PickupFolderMailSender.cs)
+- ([PR #28](https://github.com/riganti/infrastructure/pull/28)).
+
 ## 2.1.1
 - Refactored Message Formater in logging - removed from
-  [ConsoleLogger](https://github.com/riganti/infrastructure/blob/8578ef4068c4ecf4b20b25b74c0b74062961e6d7/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/ConsoleLogger.cs)
-  and [TextFileLogger](https://github.com/riganti/infrastructure/blob/8578ef4068c4ecf4b20b25b74c0b74062961e6d7/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/TextFileLogger.cs)
-  and added to [LoggerBase](https://github.com/riganti/infrastructure/blob/8578ef4068c4ecf4b20b25b74c0b74062961e6d7/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/LoggerBase.cs).
-  Default value set to [DefaultMessageFormatter](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/DefaultMessageFormatter.cs).
+  [ConsoleLogger](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/ConsoleLogger.cs)
+  and [TextFileLogger](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/TextFileLogger.cs)
+  and added to [LoggerBase](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/LoggerBase.cs).
+  Default value set to [DefaultMessageFormatter](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/DefaultMessageFormatter.cs)
+  ([8578ef4](https://github.com/riganti/infrastructure/commit/8578ef4068c4ecf4b20b25b74c0b74062961e6d7)).
 
 ## 2.1.0
 - Namespaces refactoring ([PR #26](https://github.com/riganti/infrastructure/pull/26))

@@ -80,6 +80,23 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing.Tests
             Assert.True(EmlFileExists(mx.FolderName));
         }
 
+        [Fact]
+        public async Task Directory_ShouldBeCreated_IfNotExists()
+        {
+            var folderName = GetTempFolderName("not-created");
+            var mx = new PickupFolderMailSender(folderName);
+            var msg = new MailMessageDTO
+            {
+                From = new MailAddressDTO("sender@example.com", "Example Sender"),
+                Subject = "Žluťoučký kůň úpěl ďábelské ódy - subject",
+                BodyText = "Žluťoučký kůň úpěl ďábelské ódy - text."
+            };
+            msg.To.Add(new MailAddressDTO("recipient@example.com", "Example Recipient"));
+            await mx.SendAsync(msg);
+
+            Assert.True(EmlFileExists(folderName));
+        }
+
         private static bool EmlFileExists(string folderName)
         {
             return Directory.EnumerateFiles(folderName, "*.eml").Count() == 1;
@@ -87,8 +104,14 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing.Tests
 
         private static string CreateTempFolder(string suffix)
         {
-            var folderName = Path.Combine(Path.GetTempPath(), "PickupFolderMailSenderTest", DateTime.Now.ToString("yyyyMMdd-HHmmss-fffffff") + "-" + suffix);
+            var folderName = GetTempFolderName(suffix);
             Directory.CreateDirectory(folderName);
+            return folderName;
+        }
+
+        private static string GetTempFolderName(string suffix)
+        {
+            var folderName = Path.Combine(Path.GetTempPath(), "PickupFolderMailSenderTest", DateTime.Now.ToString("yyyyMMdd-HHmmss-fffffff") + "-" + suffix);
             return folderName;
         }
 
