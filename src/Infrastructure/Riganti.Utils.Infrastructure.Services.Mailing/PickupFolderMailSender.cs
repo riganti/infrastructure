@@ -15,7 +15,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
             if (folderName == null) throw new ArgumentNullException(nameof(folderName));
             if (string.IsNullOrWhiteSpace(folderName)) throw new ArgumentException("Value cannot be empty or whitespace only string.", nameof(folderName));
 
-            this.FolderName = folderName;
+            FolderName = folderName;
         }
 
         public async Task SendAsync(MailMessageDTO message)
@@ -46,8 +46,15 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
                 msg.WriteTo(sw.BaseStream);
             }
 
+            var msgFileName = Path.Combine(FolderName, string.Join(".", DateTime.Now.ToString("yyyyMMdd-HHmmss"), Guid.NewGuid().ToString("N"), "eml"));
+
+            // Create final directory if not exists
+            if (!Directory.Exists(FolderName))
+            {
+                Directory.CreateDirectory(FolderName);
+            }
+
             // Move the file to final destination
-            var msgFileName = Path.Combine(this.FolderName, string.Join(".", DateTime.Now.ToString("yyyyMMdd-HHmmss"), Guid.NewGuid().ToString("N"), "eml"));
             File.Move(tempFileName, msgFileName);
         }
     }
