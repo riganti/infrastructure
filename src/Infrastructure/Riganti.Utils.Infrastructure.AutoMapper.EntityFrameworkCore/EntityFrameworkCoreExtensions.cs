@@ -43,11 +43,11 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 this IMemberConfigurationExpression<TSource, TDestination, ICollection<TDestinationItem>> config,
                 IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider,
                 Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
-                bool keepRemovedItemsInDestinationCollection = true,
                 Func<TSourceItem, TDestinationItem> createFunction = null,
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
                 Action<TDestinationItem> removeFunction = null,
-                Func<TDestinationItem, bool> destinationFilter = null
+                Func<TDestinationItem, bool> destinationFilter = null,
+                bool keepRemovedItemsInDestinationCollection = true
             )
             where TDbContext : DbContext
             where TDestinationItem : class
@@ -96,11 +96,11 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
                 Func<TSourceItem, TKey> sourceKeySelector,
                 Func<TDestinationItem, TKey> destinationKeySelector,
-                bool keepRemovedItemsInDestinationCollection = true,
                 Func<TSourceItem, TDestinationItem> createFunction = null,
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
                 Action<TDestinationItem> removeFunction = null,
-                Func<TDestinationItem, bool> destinationFilter = null
+                Func<TDestinationItem, bool> destinationFilter = null,
+                bool keepRemovedItemsInDestinationCollection = true
             )
             where TDbContext : DbContext
             where TDestinationItem : class
