@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Riganti.Utils.Infrastructure.Services.Facades;
 
 namespace Riganti.Utils.Infrastructure.AutoMapper
@@ -13,6 +8,11 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
         public TDTO MapToDTO(TEntity source)
         {
             return Mapper.Map<TDTO>(source);
+        }
+
+        public TEntity MapToEntity(TDTO source)
+        {
+            return Mapper.Map<TEntity>(source);
         }
 
         public void PopulateEntity(TDTO source, TEntity target)

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Riganti.Utils.Infrastructure.Core
@@ -15,6 +14,16 @@ namespace Riganti.Utils.Infrastructure.Core
         /// Commits the changes made inside this unit of work.
         /// </summary>
         void Commit();
+
+        /// <summary>
+        /// Asynchronously commits the changes made inside this unit of work.
+        /// </summary>
+        Task CommitAsync();
+
+        /// <summary>
+        /// Asynchronously commits the changes made inside this unit of work.
+        /// </summary>
+        Task CommitAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Registers an action to be applied after the work is committed.

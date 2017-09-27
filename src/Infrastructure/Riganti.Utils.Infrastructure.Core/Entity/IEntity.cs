@@ -1,8 +1,4 @@
-﻿using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Riganti.Utils.Infrastructure.Core
+﻿namespace Riganti.Utils.Infrastructure.Core
 {
 
     /// <summary>

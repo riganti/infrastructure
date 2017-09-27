@@ -2,6 +2,9 @@
 # Riganti.Utils.Infrastructure
 Riganti.Utils.Infrastructure is an implementation of common enterprise architecture design patterns. This library can be used as a foundation of a business layer in your application.
 
+## Changes
+You can find last changes in [Change Log](./ChangeLog.md).
+
 ## How To Install
 There are two NuGet packages - *Riganti.Utils.Infrastructure.Core* contains the interfaces for Unit of Work, Query Object, Repository and other patterns, and *Riganti.Utils.Infrastructure.EntityFramework* implements these interfaces to be used with the Entity Framework 6.1. 
 
