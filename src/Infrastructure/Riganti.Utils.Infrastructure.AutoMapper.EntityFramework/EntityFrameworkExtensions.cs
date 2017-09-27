@@ -43,6 +43,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 this IMemberConfigurationExpression<TSource, TDestination, ICollection<TDestinationItem>> config,
                 IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider,
                 Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
+                bool keepRemovedItemsInDestinationCollection = true,
                 Func<TSourceItem, TDestinationItem> createFunction = null,
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
                 Action<TDestinationItem> removeFunction = null,
@@ -84,7 +85,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
 
             var method = typeof(Extensions).GetTypeInfo().GetMethod("SyncCollectionByKeyReflectionOnly", BindingFlags.NonPublic | BindingFlags.Static);
             method.MakeGenericMethod(typeof(TSource), typeof(TSourceItem), typeof(TDestination), typeof(TDestinationItem), sourceKeyType)
-                .Invoke(null, new object[] { config, sourceCollectionSelector, sourceKeySelector, destinationKeySelector, createFunction, updateFunction, removeFunction, true, destinationFilter });
+                .Invoke(null, new object[] { config, sourceCollectionSelector, sourceKeySelector, destinationKeySelector, createFunction, updateFunction, removeFunction, keepRemovedItemsInDestinationCollection, destinationFilter });
         }
 
 
@@ -95,6 +96,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
                 Func<TSourceItem, TKey> sourceKeySelector,
                 Func<TDestinationItem, TKey> destinationKeySelector,
+                bool keepRemovedItemsInDestinationCollection = true,
                 Func<TSourceItem, TDestinationItem> createFunction = null,
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
                 Action<TDestinationItem> removeFunction = null,
@@ -112,7 +114,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 };
             }
 
-            Extensions.SyncCollectionByKey(config, sourceCollectionSelector, sourceKeySelector, destinationKeySelector, createFunction, updateFunction, removeFunction, true, destinationFilter);
+            Extensions.SyncCollectionByKey(config, sourceCollectionSelector, sourceKeySelector, destinationKeySelector, createFunction, updateFunction, removeFunction, keepRemovedItemsInDestinationCollection, destinationFilter);
         }
 
     }
