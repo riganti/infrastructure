@@ -1,11 +1,11 @@
 # Change Log
 
-## vNext (2.1.2)
+## 2.1.2
 - Fixed default timestamp format in [DefaultMessageFormatter](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/DefaultMessageFormatter.cs)
   ([1ebe6d6](https://github.com/riganti/infrastructure/commit/1ebe6d60163700a9d91afae1dbb4f18502727443)).
 - Fix - directory is created if not exists in [PickupFolderMailSender](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services.Mailing/PickupFolderMailSender.cs)
   ([PR #28](https://github.com/riganti/infrastructure/pull/28)).
-- Added optional parametr keepRemovedItemsInDestinationCollection(default value is true) for method SyncCollectionByKey([a55350b](https://github.com/riganti/infrastructure/commit/a55350be61064c0dada06b71bb7965ea541d7371)).
+- Added optional parametr `keepRemovedItemsInDestinationCollection` (default value is *true*) for method `SyncCollectionByKey` ([a55350b](https://github.com/riganti/infrastructure/commit/a55350be61064c0dada06b71bb7965ea541d7371)).
 
 ## 2.1.1
 - Refactored Message Formater in logging - removed from
