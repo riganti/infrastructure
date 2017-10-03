@@ -12,7 +12,8 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
     /// <typeparam name="TKey">The type of the entity primary key.</typeparam>
     /// <typeparam name="TListDTO">The type of the DTO used in the list of records, e.g. in the GridView control.</typeparam>
     /// <typeparam name="TDetailDTO">The type of the DTO used in the detail form.</typeparam>
-    public abstract class CrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO> : FacadeBase where TEntity : IEntity<TKey> where TDetailDTO : IEntity<TKey>
+    public abstract class CrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO> : FacadeBase, ICrudFacade<TListDTO, TDetailDTO, TKey>
+        where TEntity : IEntity<TKey> where TDetailDTO : IEntity<TKey>
     {
         /// <summary>
         /// Gets the query object used to populate the list or records.
