@@ -1,5 +1,15 @@
 # Change Log
 
+## vNext (2.1.3)
+- Added facade interfaces ([5676d58](https://github.com/riganti/infrastructure/commit/5676d5859e6da394c2da86f807b7f64ca7e099e5)):
+  - [ICrudDetailFacade](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services/Facades/ICrudDetailFacade.cs)
+  - [ICrudFacade](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services/Facades/ICrudFacade.cs)
+  - [ICrudFilteredFacade](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services/Facades/ICrudFilteredFacade.cs)
+  - [ICrudFilteredListFacade](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services/Facades/ICrudFilteredListFacade.cs)
+  - [ICrudListFacade](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services/Facades/ICrudListFacade.cs)
+- Added [ITemporalEntity](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Core/Entity/ITemporalEntity.cs) ([2cf8d40](https://github.com/riganti/infrastructure/commit/2cf8d4085a0347d09b451eff774c9b928580d0e4)).
+- Added [TemporalRelationshipCrudFacade](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services/Facades/TemporalRelationshipCrudFacade.cs) ([359f3b3](https://github.com/riganti/infrastructure/commit/359f3b33aefb2596227e9c21d359e5f27666f370)) with unit tests.
+
 ## 2.1.2
 - Fixed default timestamp format in [DefaultMessageFormatter](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Logging/DefaultMessageFormatter.cs)
   ([1ebe6d6](https://github.com/riganti/infrastructure/commit/1ebe6d60163700a9d91afae1dbb4f18502727443)).
