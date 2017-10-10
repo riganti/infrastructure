@@ -22,21 +22,34 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         public IRepository<TRelationshipEntity, TKey> Repository { get; }
         public IRepository<TParentEntity, TKey> ParentRepository { get; }
 
-        // TODO: Tom slibil dodat comment
+        /// <summary>
+        /// Gets a function which selects a key of the parent entity.
+        /// </summary>
         public abstract Func<TRelationshipEntity, TKey> ParentEntityKeySelector { get; }
-        // TODO: Tom slibil dodat comment
+
+        /// <summary>
+        /// Gets a function which selects a key of the parent DTO.
+        /// </summary>
         public abstract Func<TRelationshipDTO, TKey> ParentDTOKeySelector { get; }
 
-        // TODO: Tom slibil dodat comment
+        /// <summary>
+        /// Gets a function which selects a key of the child entity.
+        /// </summary>
         public abstract Func<TRelationshipEntity, TKey> ChildEntityKeySelector { get; }
-        // TODO: Tom slibil dodat comment
+
+        /// <summary>
+        /// Gets a function which selects a key of the child DTO.
+        /// </summary>
         public abstract Func<TRelationshipDTO, TKey> ChildDTOKeySelector { get; }
 
-        // TODO: Tom slibil dodat comment
+        /// <summary>
+        /// Gets an expression which selects a collection of child entities from the parent entity.
+        /// </summary>
         public abstract Expression<Func<TParentEntity, ICollection<TRelationshipEntity>>> ChildEntityCollectionSelector { get; }
-        // TODO: uplne zrusit propertu a nahradit ji propertou ChildEntityCollectionSelector
-        public abstract Expression<Func<TParentEntity, object>> ChildEntityCollectionExpression { get; }
-        // TODO: Tom slibil dodat comment
+        
+        /// <summary>
+        /// Gets an array of expressions which defines additional navigation properties to be included when the parent entity is loaded.
+        /// </summary>
         public virtual Expression<Func<TParentEntity, object>>[] AdditionalParentIncludes => new Expression<Func<TParentEntity, object>>[0];
 
         protected TemporalRelationshipCrudFacade(Func<IFilteredQuery<TRelationshipDTO, TFilterDTO>> queryFactory,
@@ -85,11 +98,16 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 }
 
                 var parentId = ParentEntityKeySelector(entity);
-                var includes = AdditionalParentIncludes.Concat(new [] { ChildEntityCollectionExpression }).ToArray();
+                var includes = AdditionalParentIncludes.Concat(new [] { ConvertChildEntityCollectionSelector(ChildEntityCollectionSelector) }).ToArray();
                 var parentEntity = ParentRepository.GetById(parentId, includes);
                 ValidateReadPermissions(parentEntity);
                 return entityMapper.MapToDTO(entity);
             }
+        }
+
+        private Expression<Func<TParentEntity, object>> ConvertChildEntityCollectionSelector(Expression<Func<TParentEntity, ICollection<TRelationshipEntity>>> childEntityCollectionSelector)
+        {
+            return Expression.Lambda<Func<TParentEntity, object>>(childEntityCollectionSelector.Body, childEntityCollectionSelector.Parameters);
         }
 
         /// <summary>
@@ -163,7 +181,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         private ICollection<TRelationshipEntity> GetRelationshipCollection(TRelationshipDTO relationship)
         {
             var parentId = ParentDTOKeySelector(relationship);
-            var includes = AdditionalParentIncludes.Concat(new[] { ChildEntityCollectionExpression }).ToArray();
+            var includes = AdditionalParentIncludes.Concat(new[] { ConvertChildEntityCollectionSelector(ChildEntityCollectionSelector) }).ToArray();
             var parentEntity = ParentRepository.GetById(parentId, includes);
             ValidateModifyPermissions(parentEntity);
 

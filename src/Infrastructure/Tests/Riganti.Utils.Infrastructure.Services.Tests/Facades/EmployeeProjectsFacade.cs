@@ -13,7 +13,6 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
         public override Func<EmployeeProject, int> ChildEntityKeySelector => ep => ep.ProjectId;
         public override Func<EmployeeProjectDTO, int> ChildDTOKeySelector => ep => ep.ProjectId;
         public override Expression<Func<Employee, ICollection<EmployeeProject>>> ChildEntityCollectionSelector => e => e.EmployeeProjects;
-        public override Expression<Func<Employee, object>> ChildEntityCollectionExpression => e => e.EmployeeProjects;
         public override Expression<Func<Employee, object>>[] AdditionalParentIncludes => new Expression<Func<Employee, object>>[0];
 
         public EmployeeProjectsFacade(Func<IFilteredQuery<EmployeeProjectDTO, EmployeeProjectFilterDTO>> queryFactory,
