@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Riganti.Utils.Infrastructure.Core;
 
@@ -21,26 +22,22 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         public IRepository<TRelationshipEntity, TKey> Repository { get; }
         public IRepository<TParentEntity, TKey> ParentRepository { get; }
 
-        /// <summary>
-        /// Gets the function that returns the value of the property in the <see cref="TRelationshipEntity"/> and <see cref="TRelationshipDTO"/>
-        /// classes which represents the ID of the main parent entity (the M in the M:N relationship).
-        /// </summary>
-        public abstract Func<TRelationshipEntity, TKey> ParentIdValueEntityFunc { get; }
-        public abstract Func<TRelationshipDTO, TKey> ParentIdValueDtoFunc { get; }
+        // TODO: Tom slibil dodat comment
+        public abstract Func<TRelationshipEntity, TKey> ParentEntityKeySelector { get; }
+        // TODO: Tom slibil dodat comment
+        public abstract Func<TRelationshipDTO, TKey> ParentDTOKeySelector { get; }
 
-        /// <summary>
-        /// Gets the function that returns the value of the property in the <see cref="TRelationshipEntity"/> and <see cref="TRelationshipDTO"/>
-        /// classes which represents the ID of the other parent entity (the N in the M:N relationship).
-        /// </summary>
-        public abstract Func<TRelationshipEntity, TKey> IdentifierValueEntityFunc { get; }
-        public abstract Func<TRelationshipDTO, TKey> IdentifierValueDtoFunc { get; }
+        // TODO: Tom slibil dodat comment
+        public abstract Func<TRelationshipEntity, TKey> ChildEntityKeySelector { get; }
+        // TODO: Tom slibil dodat comment
+        public abstract Func<TRelationshipDTO, TKey> ChildDTOKeySelector { get; }
 
-        /// <summary>
-        /// Gets or sets the function that return collection in the <see cref="TParentEntity"/> class which holds the <see cref="TRelationshipEntity"/> entities.
-        /// </summary>
-        public abstract Func<TParentEntity, ICollection<TRelationshipEntity>> EntityCollectionFunc { get; }
-
-        public abstract Expression<Func<TParentEntity, object>> Includes { get; }
+        // TODO: Tom slibil dodat comment
+        public abstract Expression<Func<TParentEntity, ICollection<TRelationshipEntity>>> ChildEntityCollectionSelector { get; }
+        // TODO: uplne zrusit propertu a nahradit ji propertou ChildEntityCollectionSelector
+        public abstract Expression<Func<TParentEntity, object>> ChildEntityCollectionExpression { get; }
+        // TODO: Tom slibil dodat comment
+        public virtual Expression<Func<TParentEntity, object>>[] AdditionalParentIncludes => new Expression<Func<TParentEntity, object>>[0];
 
         protected TemporalRelationshipCrudFacade(Func<IFilteredQuery<TRelationshipDTO, TFilterDTO>> queryFactory,
                                                  IEntityDTOMapper<TRelationshipEntity, TRelationshipDTO> entityMapper,
@@ -87,15 +84,16 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                     return default(TRelationshipDTO);
                 }
 
-                var parentId = ParentIdValueEntityFunc(entity);
-                var parentEntity = ParentRepository.GetById(parentId, Includes);
+                var parentId = ParentEntityKeySelector(entity);
+                var includes = AdditionalParentIncludes.Concat(new [] { ChildEntityCollectionExpression }).ToArray();
+                var parentEntity = ParentRepository.GetById(parentId, includes);
                 ValidateReadPermissions(parentEntity);
                 return entityMapper.MapToDTO(entity);
             }
         }
 
         /// <summary>
-        /// Adds a new member to the relationship. All current members received by <see cref="IdentifierValueDtoFunc" /> will be invalidated.
+        /// Adds a new member to the relationship. All current members received by <see cref="ChildDTOKeySelector" /> will be invalidated.
         /// </summary>
         public TRelationshipDTO Save(TRelationshipDTO relationship)
         {
@@ -103,7 +101,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
             {
                 // get the entity collection in parent
                 var relationshipCollection = GetRelationshipCollection(relationship);
-                var identifierPropertyValue = IdentifierValueDtoFunc(relationship);
+                var identifierPropertyValue = ChildDTOKeySelector(relationship);
 
                 // invalidate all current records
                 var now = dateTimeProvider.Now;
@@ -125,7 +123,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         }
 
         /// <summary>
-        /// Removes a member from the relationship. All current members received by <see cref="IdentifierValueDtoFunc" /> will be invalidated.
+        /// Removes a member from the relationship. All current members received by <see cref="ChildDTOKeySelector" /> will be invalidated.
         /// </summary>
         public void Delete(TKey id)
         {
@@ -144,7 +142,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         }
 
         /// <summary>
-        /// Removes a member from the relationship. All current members received by <see cref="IdentifierValueDtoFunc" /> will be invalidated.
+        /// Removes a member from the relationship. All current members received by <see cref="ChildDTOKeySelector" /> will be invalidated.
         /// </summary>
         public void Delete(TRelationshipDTO relationship)
         {
@@ -153,7 +151,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 // get the entity collection in parent
                 var now = dateTimeProvider.Now;
                 var relationshipCollection = GetRelationshipCollection(relationship);
-                var identifierPropertyValue = IdentifierValueDtoFunc(relationship);
+                var identifierPropertyValue = ChildDTOKeySelector(relationship);
 
                 // invalidate all current records
                 InvalidateEntities(relationshipCollection, identifierPropertyValue, now);
@@ -164,11 +162,12 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
 
         private ICollection<TRelationshipEntity> GetRelationshipCollection(TRelationshipDTO relationship)
         {
-            var parentId = ParentIdValueDtoFunc(relationship);
-            var parentEntity = ParentRepository.GetById(parentId, Includes);
+            var parentId = ParentDTOKeySelector(relationship);
+            var includes = AdditionalParentIncludes.Concat(new[] { ChildEntityCollectionExpression }).ToArray();
+            var parentEntity = ParentRepository.GetById(parentId, includes);
             ValidateModifyPermissions(parentEntity);
 
-            var relationshipCollection = EntityCollectionFunc(parentEntity);
+            var relationshipCollection = ChildEntityCollectionSelector.Compile()(parentEntity);
             return relationshipCollection;
         }
         
@@ -176,7 +175,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         {
             foreach (var entity in relationshipCollection)
             {
-                if (Equals(IdentifierValueEntityFunc(entity), identifierPropertyValue))
+                if (Equals(ChildEntityKeySelector(entity), identifierPropertyValue))
                 {
                     if (entity.ValidityEndDate > now)
                     {
