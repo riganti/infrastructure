@@ -197,7 +197,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
             {
                 if (Equals(SecondaryEntityKeySelector(entity), identifierPropertyValue))
                 {
-                    if (entity.ValidityEndDate > now)
+                    if (entity.ValidityEndDate == null || entity.ValidityEndDate > now)
                     {
                         EndEntityValidityPeriod(entity, now);
                     }

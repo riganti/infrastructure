@@ -105,7 +105,7 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
         }
 
         [Theory]
-        //[InlineData(100)]
+        [InlineData(100)]
         [InlineData(901)]
         public void Delete_ByDto_InvalidesItem(int employeeProjectId)
         {
