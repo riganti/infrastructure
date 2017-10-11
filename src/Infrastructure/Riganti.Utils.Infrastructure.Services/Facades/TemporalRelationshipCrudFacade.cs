@@ -145,7 +145,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// </summary>
         public void Delete(TKey id)
         {
-            using (UnitOfWorkProvider.Create())
+            using (var uow = UnitOfWorkProvider.Create())
             {
                 var entity = Repository.GetById(id);
                 if (entity == null)
@@ -156,6 +156,8 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
 
                 var relationshipDto = entityMapper.MapToDTO(entity);
                 Delete(relationshipDto);
+
+                uow.Commit();
             }
         }
 
