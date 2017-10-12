@@ -64,6 +64,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".misc", ".misc", "{19CE4683
 		..\..\README.md = ..\..\README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".tools", ".tools", "{F22743CB-D4F1-4B34-B467-0ABB205DDB36}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{48BAF6F4-8138-4846-BE9C-1231078126D5}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\deploy\CleanOldGeneratedPackages.ps1 = Tools\deploy\CleanOldGeneratedPackages.ps1
+		Tools\deploy\GitCheckout.ps1 = Tools\deploy\GitCheckout.ps1
+		Tools\deploy\GitTagVersion.ps1 = Tools\deploy\GitTagVersion.ps1
+		Tools\deploy\Invoke-Git.ps1 = Tools\deploy\Invoke-Git.ps1
+		Tools\deploy\PackPackages.ps1 = Tools\deploy\PackPackages.ps1
+		Tools\deploy\ProjectList.ps1 = Tools\deploy\ProjectList.ps1
+		Tools\deploy\PushPackages.ps1 = Tools\deploy\PushPackages.ps1
+		Tools\deploy\SetVersion.ps1 = Tools\deploy\SetVersion.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -390,6 +404,7 @@ Global
 		{7EFFD697-35E1-4A38-9E80-5710DC8601D2} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{D9F42460-F252-4992-8957-CABEC0F86572} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{50E2C699-6B7B-44EF-A0D2-F5F9427E6691} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
+		{48BAF6F4-8138-4846-BE9C-1231078126D5} = {F22743CB-D4F1-4B34-B467-0ABB205DDB36}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8E96C65E-1C48-4FDC-84AF-298014ABB360}
