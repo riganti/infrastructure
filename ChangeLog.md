@@ -1,6 +1,6 @@
 # Change Log
 
-## vNext (2.1.3)
+## 2.1.3
 - Added facade interfaces ([5676d58](https://github.com/riganti/infrastructure/commit/5676d5859e6da394c2da86f807b7f64ca7e099e5)):
   - [ICrudDetailFacade](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services/Facades/ICrudDetailFacade.cs)
   - [ICrudFacade](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services/Facades/ICrudFacade.cs)

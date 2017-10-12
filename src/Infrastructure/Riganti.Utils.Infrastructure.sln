@@ -55,7 +55,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Testing", "Riganti.Utils.Infrastructure.Testing\Riganti.Utils.Infrastructure.Testing.csproj", "{D9F42460-F252-4992-8957-CABEC0F86572}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.Services.Tests", "Tests\Riganti.Utils.Infrastructure.Services.Tests\Riganti.Utils.Infrastructure.Services.Tests.csproj", "{50E2C699-6B7B-44EF-A0D2-F5F9427E6691}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Services.Tests", "Tests\Riganti.Utils.Infrastructure.Services.Tests\Riganti.Utils.Infrastructure.Services.Tests.csproj", "{50E2C699-6B7B-44EF-A0D2-F5F9427E6691}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".misc", ".misc", "{19CE4683-B182-4534-934C-E0DF551B4308}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\ChangeLog.md = ..\..\ChangeLog.md
+		..\..\LICENSE = ..\..\LICENSE
+		..\..\README.md = ..\..\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
