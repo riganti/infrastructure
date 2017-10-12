@@ -12,14 +12,14 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
     /// <typeparam name="TListDTO">The type of the DTO used in the list of records, e.g. in the GridView control.</typeparam>
     /// <typeparam name="TDetailDTO">The type of the DTO used in the detail form.</typeparam>
     /// <typeparam name="TFilterDTO">The type of the DTO used for filtering the list.</typeparam>
-    public abstract class FilteredCrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO, TFilterDTO> : CrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO>
+    public abstract class FilteredCrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO, TFilterDTO> : CrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO>, ICrudFilteredFacade<TListDTO, TDetailDTO, TFilterDTO, TKey>
         where TEntity : IEntity<TKey> 
         where TDetailDTO : IEntity<TKey>
     {
 
         public new Func<IFilteredQuery<TListDTO, TFilterDTO>> QueryFactory => (Func<IFilteredQuery<TListDTO, TFilterDTO>>) base.QueryFactory;
 
-        public FilteredCrudFacadeBase(Func<IFilteredQuery<TListDTO, TFilterDTO>> queryFactory, IRepository<TEntity, TKey> repository, IEntityDTOMapper<TEntity, TDetailDTO> mapper) 
+        protected FilteredCrudFacadeBase(Func<IFilteredQuery<TListDTO, TFilterDTO>> queryFactory, IRepository<TEntity, TKey> repository, IEntityDTOMapper<TEntity, TDetailDTO> mapper) 
             : base(queryFactory, repository, mapper)
         {
         }
