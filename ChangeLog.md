@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.1.5
+- Added icon for NuGet packages.
+
 ## 2.1.4
 - Fixed NuGet package Id for [Riganti.Utils.Infrastructure.Azure.TableStorage](https://www.nuget.org/packages/Riganti.Utils.Infrastructure.Azure.TableStorage)
   (old Id: [Riganti.Utils.Infrastructure.**Services**.Azure.TableStorage](https://www.nuget.org/packages/Riganti.Utils.Infrastructure.Services.Azure.TableStorage)).
