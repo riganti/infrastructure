@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.1.4</VersionPrefix>
+    <VersionPrefix>0.0.22-pre03</VersionPrefix>
     <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Services</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Services</PackageId>
