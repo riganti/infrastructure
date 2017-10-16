@@ -19,7 +19,8 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/riganti/infrastructure</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/riganti/infrastructure.git</RepositoryUrl>    
+    <RepositoryUrl>https://github.com/riganti/infrastructure.git</RepositoryUrl>   
+    <PackageIconUrl>https://raw.githubusercontent.com/riganti/infrastructure/master/img/logo_64x64_transparent.png</PackageIconUrl> 
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
