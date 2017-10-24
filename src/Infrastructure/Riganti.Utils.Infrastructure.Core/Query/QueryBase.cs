@@ -89,7 +89,15 @@ namespace Riganti.Utils.Infrastructure.Core
         /// </summary>
         public virtual IList<TResult> Execute()
         {
-            var query = PreProcessQuery();
+            return Execute(null);
+        }
+
+        /// <summary>
+        ///     Executes the query with the filter and returns the results.
+        /// </summary>
+        public virtual IList<TResult> Execute(FilterDTOBase filter)
+        {
+            var query = PreProcessQuery(filter);
             var queryResults = query.ToList();
             var results = PostProcessResults(queryResults);
             return results;
@@ -100,13 +108,21 @@ namespace Riganti.Utils.Infrastructure.Core
         /// </summary>
         public virtual async Task<IList<TResult>> ExecuteAsync()
         {
-            return await ExecuteAsync(default(CancellationToken));
+            return await ExecuteAsync(null);
         }
 
         /// <summary>
         ///     Asynchronously executes the query and returns the results.
         /// </summary>
-        public virtual async Task<IList<TResult>> ExecuteAsync(CancellationToken cancellationToken)
+        public virtual Task<IList<TResult>> ExecuteAsync(CancellationToken cancellationToken)
+        {
+            return ExecuteAsync(null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously executes the query with the filter and returns the results.
+        /// </summary>
+        public async Task<IList<TResult>> ExecuteAsync(FilterDTOBase filter, CancellationToken cancellationToken = default(CancellationToken))
         {
             var query = PreProcessQuery();
             var queryResults = await ExecuteQueryAsync(query, cancellationToken);
@@ -146,9 +162,12 @@ namespace Riganti.Utils.Infrastructure.Core
         protected abstract Task<IList<TQueryableResult>> ExecuteQueryAsync(IQueryable<TQueryableResult> query,
             CancellationToken cancellationToken);
 
-        private IQueryable<TQueryableResult> PreProcessQuery()
+        private IQueryable<TQueryableResult> PreProcessQuery(FilterDTOBase filter = null)
         {
             var query = GetQueryable();
+
+            if (filter != null)
+                query = query.Where(filter);
 
             for (var i = SortCriteria.Count - 1; i >= 0; i--)
                 query = SortCriteria[i](query);
@@ -157,6 +176,7 @@ namespace Riganti.Utils.Infrastructure.Core
                 query = query.Skip(Skip.Value);
             if (Take != null)
                 query = query.Take(Take.Value);
+
             return query;
         }
 

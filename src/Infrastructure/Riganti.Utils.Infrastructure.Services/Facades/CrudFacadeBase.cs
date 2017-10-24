@@ -124,8 +124,18 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 return query.Execute();
             }
         }
-        
-        
+
+        public IEnumerable<TListDTO> GetList(FilterDTOBase filter, Action<IQuery<TListDTO>> queryConfiguration = null)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                var query = QueryFactory();
+                queryConfiguration?.Invoke(query);
+                return query.Execute(filter);
+            }
+        }
+
+
         /// <summary>
         /// Transfers the changes on DTO made by the user to the corresponding database entity.
         /// </summary>

@@ -7,5 +7,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
     public interface ICrudListFacade<TListDTO>
     {
         IEnumerable<TListDTO> GetList(Action<IQuery<TListDTO>> queryConfiguration = null);
+
+        IEnumerable<TListDTO> GetList(FilterDTOBase filter, Action<IQuery<TListDTO>> queryConfiguration = null);
     }
 }

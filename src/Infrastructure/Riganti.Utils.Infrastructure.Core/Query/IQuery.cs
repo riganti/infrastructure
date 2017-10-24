@@ -9,11 +9,15 @@ namespace Riganti.Utils.Infrastructure.Core
     /// </summary>
     public interface IQuery<TResult> : IPageableQuery, ISortableQuery
     {
-
         /// <summary>
         /// Executes the query and returns the results.
         /// </summary>
         IList<TResult> Execute();
+
+        /// <summary>
+        /// Executes the query with the filter and returns the results.
+        /// </summary>
+        IList<TResult> Execute(FilterDTOBase filter);
 
         /// <summary>
         /// Asynchronously executes the query and returns the results.
@@ -26,6 +30,10 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <param name="cancellationToken"></param>
         Task<IList<TResult>> ExecuteAsync(CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Asynchronously executes the query with the filter and returns the results.
+        /// </summary>
+        Task<IList<TResult>> ExecuteAsync(FilterDTOBase filter, CancellationToken cancellationToken = default(CancellationToken));
     }
 
     /// <summary>

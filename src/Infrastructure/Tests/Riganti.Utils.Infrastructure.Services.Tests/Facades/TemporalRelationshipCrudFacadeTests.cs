@@ -10,11 +10,19 @@ using Riganti.Utils.Infrastructure.Core;
 using Riganti.Utils.Infrastructure.EntityFrameworkCore;
 using Riganti.Utils.Infrastructure.Services.Facades;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
 {
     public class TemporalRelationshipCrudFacadeTests
     {
+        private readonly ITestOutputHelper output;
+
+        public TemporalRelationshipCrudFacadeTests(ITestOutputHelper output)
+        {
+            this.output = output;
+        }
+
         [Fact]
         public void GetDetail_Mocks_ForDebug()
         {
@@ -36,14 +44,14 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
 
             Func <IFilteredQuery<EmployeeProjectDTO, EmployeeProjectFilterDTO>> queryFactory = () => new Mock<IFilteredQuery<EmployeeProjectDTO, EmployeeProjectFilterDTO>>().Object;
             var entityMapper = new Mock<IEntityDTOMapper<EmployeeProject, EmployeeProjectDTO>>().Object;
-            var respositoryMock = new Mock<IRepository<EmployeeProject, int>>();
-            respositoryMock.Setup(r => r.GetById(It.IsAny<int>(), It.IsAny<Expression<Func<EmployeeProject, object>>[]>())).Returns<int, Expression<Func<EmployeeProject, object>>[]>((id, x) => employeeProject);
+            var repositoryMock = new Mock<IRepository<EmployeeProject, int>>();
+            repositoryMock.Setup(r => r.GetById(It.IsAny<int>(), It.IsAny<Expression<Func<EmployeeProject, object>>[]>())).Returns<int, Expression<Func<EmployeeProject, object>>[]>((id, x) => employeeProject);
             var parentRepositoryMock = new Mock<IRepository<Employee, int>>();
             parentRepositoryMock.Setup(r => r.GetById(It.IsAny<int>())).Returns<int>(id => employee);
             var dateTimeProvider = new LocalDateTimeProvider();
             var unitOfWorkProviderMock = new Mock<IUnitOfWorkProvider>();
             unitOfWorkProviderMock.Setup(p => p.Create()).Returns(() => new Mock<IUnitOfWork>().Object);
-            var facade = new EmployeeProjectsFacade(queryFactory, entityMapper, respositoryMock.Object, parentRepositoryMock.Object, dateTimeProvider, unitOfWorkProviderMock.Object);
+            var facade = new EmployeeProjectsFacade(queryFactory, entityMapper, repositoryMock.Object, parentRepositoryMock.Object, dateTimeProvider, unitOfWorkProviderMock.Object);
 
             // Act - only for debug
             facade.GetDetail(1);     
@@ -173,21 +181,17 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
             Assert.True(employeeProjects.All(ep => ep.ValidityEndDate < DateTime.Now));
         }
 
-        private static EmployeeProjectsFacade GetFacade(DbContextOptions<EmployeeProjectDbContext> options)
+        private EmployeeProjectsFacade GetFacade(DbContextOptions<EmployeeProjectDbContext> options)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<EmployeeProjectDTO, EmployeeProject>();
-                cfg.CreateMap<EmployeeProject, EmployeeProjectDTO>();
-            });
-
+            MappingHelper.Config();
+            
             var dateTimeProvider = new LocalDateTimeProvider();
             IUnitOfWorkProvider unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(new AsyncLocalUnitOfWorkRegistry(), () => new EmployeeProjectDbContext(options));
             Func<IFilteredQuery<EmployeeProjectDTO, EmployeeProjectFilterDTO>> queryFactory = () => new Mock<IFilteredQuery<EmployeeProjectDTO, EmployeeProjectFilterDTO>>().Object;
             var entityMapper = new EntityDTOMapper<EmployeeProject, EmployeeProjectDTO>();
-            var respository = new EntityFrameworkRepository<EmployeeProject, int>(unitOfWorkProvider, dateTimeProvider);
+            var repository = new EntityFrameworkRepository<EmployeeProject, int>(unitOfWorkProvider, dateTimeProvider);
             var parentRepository = new EntityFrameworkRepository<Employee, int>(unitOfWorkProvider, dateTimeProvider);
-            var facade = new EmployeeProjectsFacade(queryFactory, entityMapper, respository, parentRepository, dateTimeProvider, unitOfWorkProvider);
+            var facade = new EmployeeProjectsFacade(queryFactory, entityMapper, repository, parentRepository, dateTimeProvider, unitOfWorkProvider);
             return facade;
         }
 
