@@ -11,8 +11,8 @@ namespace Riganti.Utils.Infrastructure
         /// <summary>
         /// Fills the data set using the query specified in the facade.
         /// </summary>
-        public static void FillDataSet<TEntity, TKey, TListDTO, TDetailDTO>(this CrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO> facade, GridViewDataSet<TListDTO> dataSet) 
-            where TEntity : IEntity<TKey> where TDetailDTO : IEntity<TKey>
+        public static void FillDataSet<TKey, TListDTO, TDetailDTO>(this ICrudFacade<TListDTO, TDetailDTO, TKey> facade, GridViewDataSet<TListDTO> dataSet) 
+            where TDetailDTO : IEntity<TKey>
         {
             using (facade.UnitOfWorkProvider.Create())
             {
@@ -24,8 +24,7 @@ namespace Riganti.Utils.Infrastructure
         /// <summary>
         /// Fills the data set using the query specified in the facade.
         /// </summary>
-        public static void FillDataSet<TEntity, TKey, TListDTO, TDetailDTO, TFilterDTO>(this FilteredCrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO, TFilterDTO> facade, GridViewDataSet<TListDTO> dataSet, TFilterDTO filter)
-            where TEntity : IEntity<TKey> where TDetailDTO : IEntity<TKey>
+        public static void FillDataSet<TKey, TListDTO, TDetailDTO, TFilterDTO>(this ICrudFilteredFacade<TListDTO, TDetailDTO, TFilterDTO, TKey> facade, GridViewDataSet<TListDTO> dataSet, TFilterDTO filter) where TDetailDTO : IEntity<TKey>
         {
             using (facade.UnitOfWorkProvider.Create())
             {
