@@ -1,6 +1,9 @@
 # Change Log
 
 ## 2.1.5
+- DotvvmFacadeExtensions use interfaces instead of implementation now.
+
+## 2.1.5
 - Added icon for NuGet packages.
 
 ## 2.1.4
