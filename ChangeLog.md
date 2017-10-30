@@ -1,6 +1,6 @@
 # Change Log
 
-## 2.1.5
+## 2.1.6
 - DotvvmFacadeExtensions use interfaces instead of implementation now.
 
 ## 2.1.5
