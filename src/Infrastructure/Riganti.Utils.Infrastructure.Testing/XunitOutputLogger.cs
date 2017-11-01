@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Riganti.Utils.Infrastructure.Core;
 using Xunit.Abstractions;
@@ -42,7 +43,8 @@ namespace Riganti.Utils.Infrastructure.Testing
 
         public void LogException(Exception exception, IDictionary<string, string> additionalData = null, Severity severity = Severity.Error)
         {
-            throw new NotImplementedException();
+            var addMsg = additionalData != null ? String.Join(" | ", additionalData.Select(x => $"{x.Key}={x.Value}")) : "";
+            output.WriteLine($"{GetTime()} {GetThreadId()} {severity}: {exception}, Additional data: {addMsg}");
         }
 
         public void LogMessage(string message, IDictionary<string, string> additionalData = null, Severity severity = Severity.Info)
