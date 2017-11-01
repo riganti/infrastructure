@@ -1,7 +1,10 @@
 # Change Log
 
+## 2.1.7
+- Added missing implemntation of `LogException` in [XunitOutputLogger](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Testing/XunitOutputLogger.cs).
+
 ## 2.1.6
-- DotvvmFacadeExtensions use interfaces instead of implementation now.
+- `DotvvmFacadeExtensions` use interfaces instead of implementation now.
 
 ## 2.1.5
 - Added icon for NuGet packages.
