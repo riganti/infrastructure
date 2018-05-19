@@ -35,6 +35,14 @@ namespace Riganti.Utils.Infrastructure.Services.SendGrid.Mailing
                 StreamedAttachments = message.Attachments.ToDictionary(a => a.Name, a => GetMemoryStream(a.Stream))
             };
 
+            if (message.CustomHeaders != null)
+            {
+                foreach (var item in message.CustomHeaders)
+                {
+                    msg.Headers.Add(item.Key, item.Value);
+                }
+            }
+
             OnMessageSending(msg);
             return web.DeliverAsync(msg);
         }
