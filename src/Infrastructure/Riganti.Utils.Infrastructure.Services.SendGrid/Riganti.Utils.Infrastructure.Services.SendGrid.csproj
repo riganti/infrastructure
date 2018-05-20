@@ -27,10 +27,6 @@
     <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="SendGrid.NetCore" Version="1.0.0-rtm-00002" />
-  </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
@@ -38,6 +34,10 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Sendgrid" Version="9.9.0" />
   </ItemGroup>
 
 </Project>
