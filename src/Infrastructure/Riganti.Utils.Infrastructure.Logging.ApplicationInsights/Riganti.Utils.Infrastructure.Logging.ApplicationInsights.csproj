@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.1.8</VersionPrefix>
+    <VersionPrefix>2.1.9</VersionPrefix>
     <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Logging.ApplicationInsights</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Logging.ApplicationInsights</PackageId>
