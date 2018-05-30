@@ -80,7 +80,7 @@ namespace Riganti.Utils.Infrastructure.Services.SendGrid.Mailing
                 message.SetTemplateId(template.TemplateId);
                 foreach (var substitution in template.Substitution)
                 {
-                    message.AddSubstitution(substitution.Key, substitution.Value.ToString());
+                    message.AddSubstitution(substitution.Key, substitution.Value?.ToString() ?? "");
                 }
             }
         }
