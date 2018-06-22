@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.Services.Facades
@@ -46,15 +47,23 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// </summary>
         public virtual TDetailDTO GetDetail(TKey id)
         {
+            return GetDetailAsync(id).RunSync();
+        }
+
+        /// <summary>
+        /// Gets the detail DTO for an entity with the specified ID.
+        /// </summary>
+        public virtual async Task<TDetailDTO> GetDetailAsync(TKey id)
+        {
             using (UnitOfWorkProvider.Create())
             {
-                var entity = Repository.GetById(id, EntityIncludes);
-                ValidateReadPermissions(entity);
+                var entity = await Repository.GetByIdAsync(id, EntityIncludes);
+                await ValidateReadPermissions(entity);
                 var detail = Mapper.MapToDTO(entity);
                 return detail;
             }
         }
-        
+
         /// <summary>
         /// Gets a new detail DTO with default values.
         /// </summary>
@@ -74,6 +83,15 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <returns>New instance of DTO with changes reflected during saving.</returns>
         public virtual TDetailDTO Save(TDetailDTO detail)
         {
+            return SaveAsync(detail).RunSync();
+        }
+
+        /// <summary>
+        /// Saves the changes on the specified DTO to the database.
+        /// </summary>
+        /// <returns>New instance of DTO with changes reflected during saving.</returns>
+        public virtual async Task<TDetailDTO> SaveAsync(TDetailDTO detail)
+        {
             using (var uow = UnitOfWorkProvider.Create())
             {
                 TEntity entity;
@@ -86,17 +104,17 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 }
                 else
                 {
-                    entity = Repository.GetById(detail.Id, EntityIncludes);
-                    ValidateModifyPermissions(entity, ModificationStage.BeforeMap);
+                    entity = await Repository.GetByIdAsync(detail.Id, EntityIncludes);
+                    await ValidateModifyPermissions(entity, ModificationStage.BeforeMap);
                 }
 
                 // populate the entity
                 PopulateDetailToEntity(detail, entity);
 
-                ValidateModifyPermissions(entity, ModificationStage.AfterMap);
+                await ValidateModifyPermissions(entity, ModificationStage.AfterMap);
 
                 // save
-                return Save(entity, isNew, detail, uow);
+                return await SaveAsync(entity, isNew, detail, uow);
             }
         }
 
@@ -105,10 +123,18 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// </summary>
         public virtual void Delete(TKey id)
         {
+            DeleteAsync(id).RunSync();
+        }
+
+        /// <summary>
+        /// Deletes the entity with the specified ID.
+        /// </summary>
+        public virtual async Task DeleteAsync(TKey id)
+        {
             using (var uow = UnitOfWorkProvider.Create())
             {
                 Repository.Delete(id);
-                uow.Commit();
+                await uow.CommitAsync();
             }
         }
 
@@ -117,15 +143,23 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// </summary>
         public virtual IEnumerable<TListDTO> GetList(Action<IQuery<TListDTO>> queryConfiguration = null)
         {
+            return GetListAsync(queryConfiguration).RunSync();
+        }
+
+        /// <summary>
+        /// Gets the list of the DTOs using the Query object.
+        /// </summary>
+        public virtual async Task<IEnumerable<TListDTO>> GetListAsync(Action<IQuery<TListDTO>> queryConfiguration = null)
+        {
             using (UnitOfWorkProvider.Create())
             {
                 var query = QueryFactory();
                 queryConfiguration?.Invoke(query);
-                return query.Execute();
+                return await query.ExecuteAsync();
             }
         }
-        
-        
+
+
         /// <summary>
         /// Transfers the changes on DTO made by the user to the corresponding database entity.
         /// </summary>
@@ -138,7 +172,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// Saves the changes made to the entity in the database, and if the entity was inserted, updates the DTO with its ID.
         /// </summary>
         /// <returns>New instance of DTO with changes reflected during saving.</returns>
-        protected virtual TDetailDTO Save(TEntity entity, bool isNew, TDetailDTO detail, IUnitOfWork uow)
+        protected virtual async Task<TDetailDTO> SaveAsync(TEntity entity, bool isNew, TDetailDTO detail, IUnitOfWork uow)
         {
             // insert or update
             if (isNew)
@@ -151,7 +185,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
             }
 
             // save
-            uow.Commit();
+            await uow.CommitAsync();
             detail.Id = entity.Id;
             var savedDetail = Mapper.MapToDTO(entity);
             return savedDetail;
@@ -167,8 +201,9 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// Validates that the entity detail can be displayed by the user. If the user does not have permissions, the method should throw an exception.
         /// </summary>
         /// <param name="entity"></param>
-        protected virtual void ValidateReadPermissions(TEntity entity)
+        protected virtual Task ValidateReadPermissions(TEntity entity)
         {
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -179,8 +214,9 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         ///     The BeforeMap stage is called when an existing entity is loaded from the database and is about to be mapped. 
         ///     The AfterMap stage is called when the DTO was mapped to the entity and the entity is about to be saved.
         /// </param>
-        protected virtual void ValidateModifyPermissions(TEntity entity, ModificationStage stage)
+        protected virtual Task ValidateModifyPermissions(TEntity entity, ModificationStage stage)
         {
+            return Task.CompletedTask;
         }
 
     }

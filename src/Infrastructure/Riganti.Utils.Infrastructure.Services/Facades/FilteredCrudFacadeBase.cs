@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.Services.Facades
@@ -29,14 +30,21 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// </summary>
         public virtual IEnumerable<TListDTO> GetList(TFilterDTO filter, Action<IFilteredQuery<TListDTO, TFilterDTO>> queryConfiguration = null)
         {
+            return GetListAsync(filter, queryConfiguration).RunSync();
+        }
+
+        /// <summary>
+        /// Gets the list of the DTOs using the Query object and filter.
+        /// </summary>
+        public virtual async Task<IEnumerable<TListDTO>> GetListAsync(TFilterDTO filter, Action<IFilteredQuery<TListDTO, TFilterDTO>> queryConfiguration = null)
+        {
             using (UnitOfWorkProvider.Create())
             {
                 var query = QueryFactory();
                 query.Filter = filter;
                 queryConfiguration?.Invoke(query);
-                return query.Execute();
+                return await query.ExecuteAsync();
             }
         }
-
     }
 }
