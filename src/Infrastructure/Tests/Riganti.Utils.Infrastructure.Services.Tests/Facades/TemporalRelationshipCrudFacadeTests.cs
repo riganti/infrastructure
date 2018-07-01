@@ -54,10 +54,7 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
         public void GetDetail_Returns_CorrectValue()
         {
             // Arrange
-            var options = new DbContextOptionsBuilder<EmployeeProjectDbContext>()
-                .UseInMemoryDatabase(databaseName: "EmployeesAndProjects" + Guid.NewGuid().ToString().Substring(10))
-                .Options;
-            PrepareInMemoryDbContext(options);
+            var options = CreateInMemoryDatabase();
             var facade = GetFacade(options);
 
             // Act
@@ -67,15 +64,34 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
             Assert.NotNull(detail);
             Assert.Equal(100, detail.Id);
         }
+        [Fact]
+        public void GetDetail_NonExistingValue()
+        {
+            // Arrange
+            var options = CreateInMemoryDatabase();
+            var facade = GetFacade(options);
+
+            // Act
+            var detail = facade.GetDetail(-1);
+
+            // Assert
+            Assert.Null(detail);
+        }
+
+        protected DbContextOptions<EmployeeProjectDbContext> CreateInMemoryDatabase()
+        {
+            var options = new DbContextOptionsBuilder<EmployeeProjectDbContext>()
+                .UseInMemoryDatabase(databaseName: "EmployeesAndProjects" + Guid.NewGuid().ToString().Substring(10))
+                .Options;
+            PrepareInMemoryDbContext(options);
+            return options;
+        }
 
         [Fact]
         public void Save_Invalidates_PreviousRelationship()
         {
             // Arrange
-            var options = new DbContextOptionsBuilder<EmployeeProjectDbContext>()
-                .UseInMemoryDatabase(databaseName: "EmployeesAndProjects" + Guid.NewGuid().ToString().Substring(10))
-                .Options;
-            PrepareInMemoryDbContext(options);
+            var options = CreateInMemoryDatabase();
             var facade = GetFacade(options);
             var employeeId = 1; // has only one project
             EmployeeProject employeeProject;
@@ -107,13 +123,10 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
         [Theory]
         [InlineData(100)]
         [InlineData(901)]
-        public void Delete_ByDto_InvalidesItem(int employeeProjectId)
+        public void Delete_ByDto_InvalidateItem(int employeeProjectId)
         {
             // Arrange
-            var options = new DbContextOptionsBuilder<EmployeeProjectDbContext>()
-                .UseInMemoryDatabase(databaseName: "EmployeesAndProjects" + Guid.NewGuid().ToString().Substring(10))
-                .Options;
-            PrepareInMemoryDbContext(options);
+            var options = CreateInMemoryDatabase();
             var facade = GetFacade(options);
             EmployeeProject employeeProject;
             // get the EmployeeProject
@@ -142,13 +155,10 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
         [Theory]
         [InlineData(100)]
         [InlineData(901)]
-        public void Delete_ById_InvalidesItem(int employeeProjectId)
+        public void Delete_ById_InvalidateItem(int employeeProjectId)
         {
             // Arrange
-            var options = new DbContextOptionsBuilder<EmployeeProjectDbContext>()
-                .UseInMemoryDatabase(databaseName: "EmployeesAndProjects" + Guid.NewGuid().ToString().Substring(10))
-                .Options;
-            PrepareInMemoryDbContext(options);
+            var options = CreateInMemoryDatabase();
             var facade = GetFacade(options);
             EmployeeProject employeeProject;
             // get the EmployeeProject
