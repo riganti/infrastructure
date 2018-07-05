@@ -114,7 +114,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         ///     Asynchronously gets a list of entities with specified IDs.
         /// </summary>
         /// <remarks>This method is not suitable for large amounts of entities - the reasonable limit of number of IDs is 30.</remarks>
-        public async Task<IList<TEntity>> GetByIdsAsync(CancellationToken cancellationToken, IEnumerable<TKey> ids, params Expression<Func<TEntity, object>>[] includes)
+        public virtual async Task<IList<TEntity>> GetByIdsAsync(CancellationToken cancellationToken, IEnumerable<TKey> ids, params Expression<Func<TEntity, object>>[] includes)
         {
             return await GetByIdsCore(ids, includes).ToListAsync(cancellationToken);
         }
@@ -169,7 +169,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         ///     Asynchronously gets a list of entities with specified IDs.
         /// </summary>
         /// <remarks>This method is not suitable for large amounts of entities - the reasonable limit of number of IDs is 30.</remarks>
-        public async Task<IList<TEntity>> GetByIdsAsync(CancellationToken cancellationToken, IEnumerable<TKey> ids, IIncludeDefinition<TEntity>[] includes)
+        public virtual async Task<IList<TEntity>> GetByIdsAsync(CancellationToken cancellationToken, IEnumerable<TKey> ids, IIncludeDefinition<TEntity>[] includes)
         {
             return await GetByIdsCore(ids, includes).ToListAsync(cancellationToken);
         }
