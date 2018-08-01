@@ -14,13 +14,13 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
     /// <typeparam name="TDetailDTO">The type of the DTO used in the detail form.</typeparam>
     /// <typeparam name="TFilterDTO">The type of the DTO used for filtering the list.</typeparam>
     public abstract class FilteredCrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO, TFilterDTO> : CrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO>, ICrudFilteredFacade<TListDTO, TDetailDTO, TFilterDTO, TKey>
-        where TEntity : IEntity<TKey> 
+        where TEntity : IEntity<TKey>
         where TDetailDTO : IEntity<TKey>
     {
 
-        public new Func<IFilteredQuery<TListDTO, TFilterDTO>> QueryFactory => (Func<IFilteredQuery<TListDTO, TFilterDTO>>) base.QueryFactory;
+        public new Func<IFilteredQuery<TListDTO, TFilterDTO>> QueryFactory => (Func<IFilteredQuery<TListDTO, TFilterDTO>>)base.QueryFactory;
 
-        protected FilteredCrudFacadeBase(Func<IFilteredQuery<TListDTO, TFilterDTO>> queryFactory, IRepository<TEntity, TKey> repository, IEntityDTOMapper<TEntity, TDetailDTO> mapper) 
+        protected FilteredCrudFacadeBase(Func<IFilteredQuery<TListDTO, TFilterDTO>> queryFactory, IRepository<TEntity, TKey> repository, IEntityDTOMapper<TEntity, TDetailDTO> mapper)
             : base(queryFactory, repository, mapper)
         {
         }
@@ -30,7 +30,13 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// </summary>
         public virtual IEnumerable<TListDTO> GetList(TFilterDTO filter, Action<IFilteredQuery<TListDTO, TFilterDTO>> queryConfiguration = null)
         {
-            return GetListAsync(filter, queryConfiguration).RunSync();
+            using (UnitOfWorkProvider.Create())
+            {
+                var query = QueryFactory();
+                query.Filter = filter;
+                queryConfiguration?.Invoke(query);
+                return query.Execute();
+            }
         }
 
         /// <summary>
@@ -41,7 +47,6 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
             using (UnitOfWorkProvider.Create())
             {
                 var query = QueryFactory();
-                query.Filter = filter;
                 queryConfiguration?.Invoke(query);
                 return await query.ExecuteAsync();
             }
