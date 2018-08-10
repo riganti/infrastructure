@@ -1,6 +1,6 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using Riganti.Utils.Infrastructure.Core;
+using System;
 
 namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
 {
@@ -17,13 +17,18 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
     /// <summary>
     /// An implementation of unit of work provider in Entity Framework.
     /// </summary>
-    public class EntityFrameworkUnitOfWorkProvider<TDbContext> : UnitOfWorkProviderBase, IEntityFrameworkUnitOfWorkProvider<TDbContext>
+    public class EntityFrameworkUnitOfWorkProvider<TDbContext> : UnitOfWorkProviderBase, IEntityFrameworkUnitOfWorkProvider<TDbContext>, ICheckChildCommitUnitOfWorkProvider
         where TDbContext : DbContext
     {
         private readonly Func<TDbContext> dbContextFactory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWorkProvider"/> class.
+        /// <inheritdoc cref="ICheckChildCommitUnitOfWorkProvider.CommitRequested" />
+        /// </summary>
+        public bool CommitRequested { get; private set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWorkProvider" /> class.
         /// </summary>
         public EntityFrameworkUnitOfWorkProvider(IUnitOfWorkRegistry registry, Func<TDbContext> dbContextFactory) : base(registry)
         {
@@ -36,6 +41,14 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         public IUnitOfWork Create(DbContextOptions options)
         {
             return CreateCore(options);
+        }
+
+        /// <summary>
+        /// <inheritdoc cref="ICheckChildCommitUnitOfWorkProvider.CommitAttempt" />
+        /// </summary>
+        public void CommitAttempt(bool commitAttemptSuccess)
+        {
+            CommitRequested = !commitAttemptSuccess;
         }
 
         /// <summary>
