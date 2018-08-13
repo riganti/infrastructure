@@ -87,8 +87,10 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Gets a list of records in the relationship.
         /// </summary>
-        public async Task<IEnumerable<TRelationshipDTO>> GetListAsync(CancellationToken cancellationToken, TFilterDTO filter, Action<IFilteredQuery<TRelationshipDTO, TFilterDTO>> queryConfiguration = null)
+        public async Task<IEnumerable<TRelationshipDTO>> GetListAsync(TFilterDTO filter, Action<IFilteredQuery<TRelationshipDTO, TFilterDTO>> queryConfiguration = null, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             using (UnitOfWorkProvider.Create())
             {
                 var query = QueryFactory();
@@ -96,14 +98,6 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 queryConfiguration?.Invoke(query);
                 return await query.ExecuteAsync(cancellationToken);
             }
-        }
-
-        /// <summary>
-        /// Gets a list of records in the relationship.
-        /// </summary>
-        public Task<IEnumerable<TRelationshipDTO>> GetListAsync(TFilterDTO filter, Action<IFilteredQuery<TRelationshipDTO, TFilterDTO>> queryConfiguration = null)
-        {
-            return GetListAsync(default(CancellationToken), filter, queryConfiguration);
         }
 
         public TRelationshipDTO InitializeNew()
@@ -118,7 +112,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 var entity = Repository.GetById(id);
                 if (entity == null)
                 {
-                    return default(TRelationshipDTO);
+                    return default;
                 }
 
                 var parentId = ParentEntityKeySelector(entity);
@@ -129,28 +123,25 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
             }
         }
 
-        public async Task<TRelationshipDTO> GetDetailAsync(CancellationToken cancellationToken, TKey id)
+        public async Task<TRelationshipDTO> GetDetailAsync(TKey id, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             using (UnitOfWorkProvider.Create())
             {
                 var entity = await Repository.GetByIdAsync(cancellationToken, id);
                 if (entity == null)
                 {
-                    return default(TRelationshipDTO);
+                    return default;
                 }
 
                 var parentId = ParentEntityKeySelector(entity);
                 var includes = AdditionalParentIncludes.Concat(new[] { ConvertToIncludesExpression(RelationshipCollectionSelector) }).ToArray();
                 var parentEntity = await ParentRepository.GetByIdAsync(cancellationToken, parentId, includes);
-                await ValidateReadPermissionsAsync(cancellationToken, parentEntity);
+                await ValidateReadPermissionsAsync(parentEntity, cancellationToken);
                 return entityMapper.MapToDTO(entity);
             }
         }
-
-        public Task<TRelationshipDTO> GetDetailAsync(TKey id)
-        {
-            return GetDetailAsync(default(CancellationToken), id);
-        }       
 
         /// <summary>
         /// Adds a new member to the relationship. All current members received by <see cref="SecondaryDTOKeySelector" /> will be invalidated.
@@ -170,7 +161,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 // insert a new entity
                 var entity = Repository.InitializeNew();
                 entityMapper.PopulateEntity(relationship, entity);
-                entity.Id = default(TKey);
+                entity.Id = default;
                 BeginEntityValidityPeriod(entity, now);
                 relationshipCollection.Add(entity);
 
@@ -185,12 +176,14 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Adds a new member to the relationship. All current members received by <see cref="SecondaryDTOKeySelector" /> will be invalidated.
         /// </summary>
-        public async Task<TRelationshipDTO> SaveAsync(CancellationToken cancellationToken, TRelationshipDTO relationship)
+        public async Task<TRelationshipDTO> SaveAsync(TRelationshipDTO relationship, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 // get the entity collection in parent
-                var relationshipCollection = await GetRelationshipCollectionAsync(cancellationToken, relationship);
+                var relationshipCollection = await GetRelationshipCollectionAsync(relationship, cancellationToken);
                 var identifierPropertyValue = SecondaryDTOKeySelector(relationship);
 
                 // invalidate all current records
@@ -200,7 +193,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 // insert a new entity
                 var entity = Repository.InitializeNew();
                 entityMapper.PopulateEntity(relationship, entity);
-                entity.Id = default(TKey);
+                entity.Id = default;
                 BeginEntityValidityPeriod(entity, now);
                 relationshipCollection.Add(entity);
 
@@ -210,11 +203,6 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 var savedrelationship = entityMapper.MapToDTO(entity);
                 return savedrelationship;
             }
-        }
-
-        public Task<TRelationshipDTO> SaveAsync(TRelationshipDTO relationship)
-        {
-            return SaveAsync(default(CancellationToken), relationship);
         }
 
         /// <summary>
@@ -260,8 +248,10 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Removes a member from the relationship. All current members received by <see cref="SecondaryDTOKeySelector" /> will be invalidated.
         /// </summary>
-        public async Task DeleteAsync(CancellationToken cancellationToken, TKey id)
+        public async Task DeleteAsync(TKey id, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var entity = Repository.GetById(id);
@@ -272,7 +262,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 }
 
                 var relationshipDto = entityMapper.MapToDTO(entity);
-                await DeleteAsync(cancellationToken, relationshipDto);
+                await DeleteAsync(relationshipDto, cancellationToken);
 
                 await uow.CommitAsync(cancellationToken);
             }
@@ -281,21 +271,15 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Removes a member from the relationship. All current members received by <see cref="SecondaryDTOKeySelector" /> will be invalidated.
         /// </summary>
-        public Task DeleteAsync(TKey id)
+        public async Task DeleteAsync(TRelationshipDTO relationship, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(default(CancellationToken), id);
-        }
+            cancellationToken.ThrowIfCancellationRequested();
 
-        /// <summary>
-        /// Removes a member from the relationship. All current members received by <see cref="SecondaryDTOKeySelector" /> will be invalidated.
-        /// </summary>
-        public async Task DeleteAsync(CancellationToken cancellationToken, TRelationshipDTO relationship)
-        {
             using (var uow = UnitOfWorkProvider.Create())
             {
                 // get the entity collection in parent
                 var now = dateTimeProvider.Now;
-                var relationshipCollection = await GetRelationshipCollectionAsync(cancellationToken, relationship);
+                var relationshipCollection = await GetRelationshipCollectionAsync(relationship, cancellationToken);
                 var identifierPropertyValue = SecondaryDTOKeySelector(relationship);
 
                 // invalidate all current records
@@ -305,20 +289,14 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
             }
         }
 
-        /// <summary>
-        /// Removes a member from the relationship. All current members received by <see cref="SecondaryDTOKeySelector" /> will be invalidated.
-        /// </summary>
-        public Task DeleteAsync(TRelationshipDTO relationship)
+        private async Task<ICollection<TRelationshipEntity>> GetRelationshipCollectionAsync(TRelationshipDTO relationship, CancellationToken cancellationToken = default)
         {
-            return DeleteAsync(default(CancellationToken), relationship);
-        }
+            cancellationToken.ThrowIfCancellationRequested();
 
-        private async Task<ICollection<TRelationshipEntity>> GetRelationshipCollectionAsync(CancellationToken cancellationToken, TRelationshipDTO relationship)
-        {
             var parentId = ParentDTOKeySelector(relationship);
             var includes = AdditionalParentIncludes.Concat(new[] { ConvertToIncludesExpression(RelationshipCollectionSelector) }).ToArray();
             var parentEntity = ParentRepository.GetById(parentId, includes);
-            await ValidateModifyPermissionsAsync(cancellationToken, parentEntity);
+            await ValidateModifyPermissionsAsync(parentEntity, cancellationToken);
 
             var relationshipCollection = RelationshipCollectionSelector.Compile()(parentEntity);
             return relationshipCollection;
@@ -387,28 +365,28 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         protected virtual bool HasModifyPermissions(TParentEntity entity) => true;
 
 
-        protected virtual async Task ValidateReadPermissionsAsync(CancellationToken cancellationToken, TParentEntity entity)
+        protected virtual async Task ValidateReadPermissionsAsync(TParentEntity entity, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (!await HasReadPermissionsAsync(entity))
+            if (!await HasReadPermissionsAsync(entity, cancellationToken))
             {
                 throw new UnauthorizedAccessException();
             }
         }
 
-        protected virtual Task<bool> HasReadPermissionsAsync(TParentEntity entity) => Task.FromResult(true);
+        protected virtual Task<bool> HasReadPermissionsAsync(TParentEntity entity, CancellationToken cancellationToken = default) => cancellationToken.IsCancellationRequested ? Task.FromCanceled<bool>(cancellationToken) : Task.FromResult(true);
 
-        protected virtual async Task ValidateModifyPermissionsAsync(CancellationToken cancellationToken, TParentEntity entity)
+        protected virtual async Task ValidateModifyPermissionsAsync(TParentEntity entity, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (!await HasModifyPermissionsAsync(entity))
+            if (!await HasModifyPermissionsAsync(entity, cancellationToken))
             {
                 throw new UnauthorizedAccessException();
             }
         }
 
-        protected virtual Task<bool> HasModifyPermissionsAsync(TParentEntity entity) => Task.FromResult(true);
+        protected virtual Task<bool> HasModifyPermissionsAsync(TParentEntity entity, CancellationToken cancellationToken = default) => cancellationToken.IsCancellationRequested ? Task.FromCanceled<bool>(cancellationToken) : Task.FromResult(true);
     }
 }
