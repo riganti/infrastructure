@@ -12,8 +12,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
 
         IEnumerable<TListDTO> GetList(Action<IQuery<TListDTO>> queryConfiguration = null);
 
-        Task<IEnumerable<TListDTO>> GetListAsync(CancellationToken cancellationToken, Action<IQuery<TListDTO>> queryConfiguration = null);
-
-        Task<IEnumerable<TListDTO>> GetListAsync(Action<IQuery<TListDTO>> queryConfiguration = null);
+        Task<IEnumerable<TListDTO>> GetListAsync(Action<IQuery<TListDTO>> queryConfiguration = null, CancellationToken cancellationToken = default);
+       
     }
 }

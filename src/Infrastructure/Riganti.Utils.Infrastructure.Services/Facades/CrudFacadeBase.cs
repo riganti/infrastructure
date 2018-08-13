@@ -59,23 +59,17 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Gets the detail DTO for an entity with the specified ID.
         /// </summary>
-        public virtual async Task<TDetailDTO> GetDetailAsync(CancellationToken cancellationToken, TKey id)
+        public virtual async Task<TDetailDTO> GetDetailAsync(TKey id, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             using (UnitOfWorkProvider.Create())
             {
                 var entity = await Repository.GetByIdAsync(cancellationToken, id, EntityIncludes);
-                await ValidateReadPermissionsAsync(cancellationToken, entity);
+                await ValidateReadPermissionsAsync(entity, cancellationToken);
                 var detail = Mapper.MapToDTO(entity);
                 return detail;
             }
-        }
-
-        /// <summary>
-        /// Gets the detail DTO for an entity with the specified ID.
-        /// </summary>
-        public virtual Task<TDetailDTO> GetDetailAsync(TKey id)
-        {
-            return GetDetailAsync(default(CancellationToken), id);
         }
 
         /// <summary>
@@ -127,8 +121,10 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// Saves the changes on the specified DTO to the database.
         /// </summary>
         /// <returns>New instance of DTO with changes reflected during saving.</returns>
-        public virtual async Task<TDetailDTO> SaveAsync(CancellationToken cancellationToken, TDetailDTO detail)
+        public virtual async Task<TDetailDTO> SaveAsync(TDetailDTO detail, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 TEntity entity;
@@ -142,26 +138,17 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 else
                 {
                     entity = await Repository.GetByIdAsync(cancellationToken, detail.Id, EntityIncludes);
-                    await ValidateModifyPermissionsAsync(cancellationToken, entity, ModificationStage.BeforeMap);
+                    await ValidateModifyPermissionsAsync(entity, ModificationStage.BeforeMap, cancellationToken);
                 }
 
                 // populate the entity
                 PopulateDetailToEntity(detail, entity);
 
-                await ValidateModifyPermissionsAsync(cancellationToken, entity, ModificationStage.AfterMap);
+                await ValidateModifyPermissionsAsync(entity, ModificationStage.AfterMap, cancellationToken);
 
                 // save
-                return await SaveAsync(cancellationToken, entity, isNew, detail, uow);
+                return await SaveAsync(entity, isNew, detail, uow, cancellationToken);
             }
-        }
-
-        /// <summary>
-        /// Saves the changes on the specified DTO to the database.
-        /// </summary>
-        /// <returns>New instance of DTO with changes reflected during saving.</returns>
-        public virtual Task<TDetailDTO> SaveAsync(TDetailDTO detail)
-        {
-            return SaveAsync(default(CancellationToken), detail);
         }
 
         /// <summary>
@@ -179,21 +166,15 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Deletes the entity with the specified ID.
         /// </summary>
-        public virtual async Task DeleteAsync(CancellationToken cancellationToken, TKey id)
+        public virtual async Task DeleteAsync(TKey id, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 Repository.Delete(id);
                 await uow.CommitAsync(cancellationToken);
             }
-        }
-
-        /// <summary>
-        /// Deletes the entity with the specified ID.
-        /// </summary>
-        public virtual Task DeleteAsync(TKey id)
-        {
-            return DeleteAsync(default(CancellationToken), id);
         }
 
         /// <summary>
@@ -212,22 +193,16 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Gets the list of the DTOs using the Query object.
         /// </summary>
-        public virtual async Task<IEnumerable<TListDTO>> GetListAsync(CancellationToken cancellationToken, Action<IQuery<TListDTO>> queryConfiguration = null)
+        public virtual async Task<IEnumerable<TListDTO>> GetListAsync(Action<IQuery<TListDTO>> queryConfiguration = null, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             using (UnitOfWorkProvider.Create())
             {
                 var query = QueryFactory();
                 queryConfiguration?.Invoke(query);
                 return await query.ExecuteAsync(cancellationToken);
             }
-        }
-
-        /// <summary>
-        /// Gets the list of the DTOs using the Query object.
-        /// </summary>
-        public virtual Task<IEnumerable<TListDTO>> GetListAsync(Action<IQuery<TListDTO>> queryConfiguration = null)
-        {
-            return GetListAsync(default(CancellationToken), queryConfiguration);
         }
 
         /// <summary>
@@ -265,8 +240,10 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// Saves the changes made to the entity in the database, and if the entity was inserted, updates the DTO with its ID.
         /// </summary>
         /// <returns>New instance of DTO with changes reflected during saving.</returns>
-        protected virtual async Task<TDetailDTO> SaveAsync(CancellationToken cancellationToken, TEntity entity, bool isNew, TDetailDTO detail, IUnitOfWork uow)
+        protected virtual async Task<TDetailDTO> SaveAsync(TEntity entity, bool isNew, TDetailDTO detail, IUnitOfWork uow, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             // insert or update
             if (isNew)
             {
@@ -287,7 +264,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Gets a list of navigation property expressions that should be included when the facade loads the entity.
         /// </summary>
-        protected virtual Expression<Func<TEntity, object>>[] EntityIncludes => new Expression<Func<TEntity, object>>[] { };       
+        protected virtual Expression<Func<TEntity, object>>[] EntityIncludes => new Expression<Func<TEntity, object>>[] { };
 
         /// <summary>
         /// Validates that the entity detail can be displayed by the user. If the user does not have permissions, the method should throw an exception.
@@ -302,7 +279,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <param name="entity"></param>
-        protected virtual Task ValidateReadPermissionsAsync(CancellationToken cancellationToken, TEntity entity)
+        protected virtual Task ValidateReadPermissionsAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             return cancellationToken.IsCancellationRequested ? Task.FromCanceled(cancellationToken) : Task.CompletedTask;
         }
@@ -328,8 +305,8 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         ///     The BeforeMap stage is called when an existing entity is loaded from the database and is about to be mapped. 
         ///     The AfterMap stage is called when the DTO was mapped to the entity and the entity is about to be saved.
         /// </param>
-        protected virtual Task ValidateModifyPermissionsAsync(CancellationToken cancellationToken, TEntity entity, ModificationStage stage)
-        { 
+        protected virtual Task ValidateModifyPermissionsAsync(TEntity entity, ModificationStage stage, CancellationToken cancellationToken = default)
+        {
             return cancellationToken.IsCancellationRequested ? Task.FromCanceled(cancellationToken) : Task.CompletedTask;
         }
 
