@@ -43,7 +43,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Gets the list of the DTOs using the Query object and filter.
         /// </summary>
-        public virtual async Task<IEnumerable<TListDTO>> GetListAsync(CancellationToken cancellationToken, TFilterDTO filter, Action<IFilteredQuery<TListDTO, TFilterDTO>> queryConfiguration = null)
+        public virtual async Task<IEnumerable<TListDTO>> GetListAsync(TFilterDTO filter, Action<IFilteredQuery<TListDTO, TFilterDTO>> queryConfiguration = null, CancellationToken cancellationToken = default)
         {
             using (UnitOfWorkProvider.Create())
             {
@@ -52,14 +52,6 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 queryConfiguration?.Invoke(query);
                 return await query.ExecuteAsync(cancellationToken);
             }
-        }
-
-        /// <summary>
-        /// Gets the list of the DTOs using the Query object and filter.
-        /// </summary>
-        public virtual Task<IEnumerable<TListDTO>> GetListAsync(TFilterDTO filter, Action<IFilteredQuery<TListDTO, TFilterDTO>> queryConfiguration = null)
-        { 
-            return GetListAsync(default(CancellationToken), filter, queryConfiguration);
         }
     }
 }
