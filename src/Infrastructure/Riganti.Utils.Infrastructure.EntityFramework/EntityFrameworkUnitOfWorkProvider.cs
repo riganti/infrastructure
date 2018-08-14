@@ -17,15 +17,10 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
     /// <summary>
     /// An implementation of unit of work provider in Entity Framework.
     /// </summary>
-    public class EntityFrameworkUnitOfWorkProvider<TDbContext> : UnitOfWorkProviderBase, IEntityFrameworkUnitOfWorkProvider<TDbContext>, ICheckChildCommitUnitOfWorkProvider
+    public class EntityFrameworkUnitOfWorkProvider<TDbContext> : UnitOfWorkProviderBase, IEntityFrameworkUnitOfWorkProvider<TDbContext>
         where TDbContext : DbContext
     {
         private readonly Func<TDbContext> dbContextFactory;
-
-        /// <summary>
-        /// <inheritdoc cref="ICheckChildCommitUnitOfWorkProvider.CommitRequested" />
-        /// </summary>
-        public bool CommitRequested { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWorkProvider" /> class.
@@ -41,14 +36,6 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         public IUnitOfWork Create(DbContextOptions options)
         {
             return CreateCore(options);
-        }
-
-        /// <summary>
-        /// <inheritdoc cref="ICheckChildCommitUnitOfWorkProvider.CommitAttempt" />
-        /// </summary>
-        public void CommitAttempt(bool commitAttemptSuccess)
-        {
-            CommitRequested = !commitAttemptSuccess;
         }
 
         /// <summary>

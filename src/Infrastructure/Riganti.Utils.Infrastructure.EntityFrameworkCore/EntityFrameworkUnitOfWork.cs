@@ -1,8 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using Riganti.Utils.Infrastructure.Core;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
 {
@@ -50,16 +50,10 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
     /// <summary>
     /// An implementation of unit of work in Entity ramework.
     /// </summary>
-    public class EntityFrameworkUnitOfWork<TDbContext> : UnitOfWorkBase
+    public class EntityFrameworkUnitOfWork<TDbContext> : UnitOfWorkBase, ICheckChildCommitUnitOfWork
         where TDbContext : DbContext
     {
-        private readonly ICheckChildCommitUnitOfWorkProvider checkChildCommitProvider;
         private readonly bool hasOwnContext;
-
-        /// <summary>
-        /// Gets the <see cref="DbContext" />.
-        /// </summary>
-        public TDbContext Context { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork{TDbContext}" /> class.
@@ -74,7 +68,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         /// </summary>
         protected EntityFrameworkUnitOfWork(IUnitOfWorkProvider unitOfWorkProvider, Func<TDbContext> dbContextFactory, DbContextOptions options)
         {
-            this.checkChildCommitProvider = unitOfWorkProvider as ICheckChildCommitUnitOfWorkProvider;
+            Parent = unitOfWorkProvider.GetCurrent();
 
             if (options == DbContextOptions.ReuseParentContext)
             {
@@ -85,42 +79,59 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
                     return;
                 }
             }
-
             Context = dbContextFactory();
             hasOwnContext = true;
         }
 
         /// <summary>
-        /// Commits this instance when we have to. Report to provider, whether commit went through or
-        /// got skipped.
+        /// Gets the <see cref="DbContext" />.
+        /// </summary>
+        public TDbContext Context { get; }
+
+        /// <inheritdoc cref="ICheckChildCommitUnitOfWork.Parent"/>
+        public IUnitOfWork Parent { get; }
+
+        /// <inheritdoc cref="ICheckChildCommitUnitOfWork.CommitRequested"/>
+        public bool CommitRequested { get; private set; }
+
+        /// <summary>
+        /// Commits this instance when we have to. Skip and request from parent, if we don't own the context.
         /// </summary>
         public override void Commit()
         {
             if (HasOwnContext())
             {
-                checkChildCommitProvider?.CommitAttempt(true);
+                CommitRequested = false;
                 base.Commit();
             }
             else
             {
-                checkChildCommitProvider?.CommitAttempt(false);
+                TryRequestParentCommit();
             }
         }
 
         /// <summary>
-        /// Commits this instance when we have to. Report to provider, whether commit went through or
-        /// got skipped.
+        /// Commits this instance when we have to. Skip and request from parent, if we don't own the context.
         /// </summary>
         public override Task CommitAsync()
         {
             if (HasOwnContext())
             {
-                checkChildCommitProvider?.CommitAttempt(true);
+                CommitRequested = false;
                 return base.CommitAsync();
             }
+            else
+            {
+                TryRequestParentCommit();
+            }
 
-            checkChildCommitProvider?.CommitAttempt(false);
             return Task.FromResult(true);
+        }
+
+        /// <inheritdoc cref="ICheckChildCommitUnitOfWork.RequestCommit"/>
+        public void RequestCommit()
+        {
+            CommitRequested = true;
         }
 
         /// <summary>
@@ -143,17 +154,24 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         {
             if (HasOwnContext())
             {
-                if (checkChildCommitProvider?.CommitRequested == true)
-                {
-                    // Clear the commit requested flag on unit of work provider.
-                    // Reason: just in case that user catches following exception and keeps using the same
-                    // unit of work provider - origin of exception would be hard to find.
-                    checkChildCommitProvider.CommitAttempt(true);
+                Context.Dispose();
 
+                if (CommitRequested)
+                {
                     throw new InvalidOperationException("Some of the unit of works requested commit! Ensure that commit is called on root unit of work as well.");
                 }
+            }
+            else if (CommitRequested)
+            {
+                TryRequestParentCommit();
+            }
+        }
 
-                Context.Dispose();
+        private void TryRequestParentCommit()
+        {
+            if (Parent is ICheckChildCommitUnitOfWork uow)
+            {
+                uow.RequestCommit();
             }
         }
 
