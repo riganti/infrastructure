@@ -6,6 +6,7 @@
 
   <PropertyGroup>
     <DefineConstants>EFCORE</DefineConstants>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

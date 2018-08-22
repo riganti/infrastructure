@@ -1,8 +1,14 @@
 # Change Log
 
 
-## 2.1.13
+## 2.2.0
 - Implement facades async.
+- Added checking for child UoW commit request
+
+## 2.1.8
+- Added `virtual` to async methods in repository
+- Added [ITemplate](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services.Mailing/ITemplate.cs) in [MailMessageDTO](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services.Mailing/MailMessageDTO.cs)
+- Added substitution feature to [SendGridMailSender](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services.SendGrid/Mailing/SendGridMailSender.cs)
 
 ## 2.1.7
 - Added missing implemntation of `LogException` in [XunitOutputLogger](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Testing/XunitOutputLogger.cs).
