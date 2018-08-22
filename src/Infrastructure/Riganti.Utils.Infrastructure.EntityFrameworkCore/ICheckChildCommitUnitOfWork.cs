@@ -16,7 +16,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         /// <summary>
         /// Flag used to track the children commit requests.
         /// </summary>
-        bool CommitRequested { get; }
+        bool CommitPending { get; }
 
         /// <summary>
         /// Called by child unit of work with reused resources on commit.

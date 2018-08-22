@@ -56,6 +56,17 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         private readonly bool hasOwnContext;
 
         /// <summary>
+        /// Gets the <see cref="DbContext" />.
+        /// </summary>
+        public TDbContext Context { get; }
+
+        /// <inheritdoc cref="ICheckChildCommitUnitOfWork.Parent" />
+        public IUnitOfWork Parent { get; }
+
+        /// <inheritdoc cref="ICheckChildCommitUnitOfWork.CommitPending" />
+        public bool CommitPending { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork{TDbContext}" /> class.
         /// </summary>
         public EntityFrameworkUnitOfWork(IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider, Func<TDbContext> dbContextFactory, DbContextOptions options)
@@ -85,24 +96,13 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         }
 
         /// <summary>
-        /// Gets the <see cref="DbContext" />.
-        /// </summary>
-        public TDbContext Context { get; }
-
-        /// <inheritdoc cref="ICheckChildCommitUnitOfWork.Parent"/>
-        public IUnitOfWork Parent { get; }
-
-        /// <inheritdoc cref="ICheckChildCommitUnitOfWork.CommitRequested"/>
-        public bool CommitRequested { get; private set; }
-
-        /// <summary>
         /// Commits this instance when we have to. Skip and request from parent, if we don't own the context.
         /// </summary>
         public override void Commit()
         {
             if (HasOwnContext())
             {
-                CommitRequested = false;
+                CommitPending = false;
                 base.Commit();
             }
             else
@@ -118,7 +118,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         {
             if (HasOwnContext())
             {
-                CommitRequested = false;
+                CommitPending = false;
                 return base.CommitAsync();
             }
             else
@@ -126,13 +126,13 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
                 TryRequestParentCommit();
             }
 
-            return Task.FromResult(true);
+            return Task.CompletedTask;
         }
 
-        /// <inheritdoc cref="ICheckChildCommitUnitOfWork.RequestCommit"/>
+        /// <inheritdoc cref="ICheckChildCommitUnitOfWork.RequestCommit" />
         public void RequestCommit()
         {
-            CommitRequested = true;
+            CommitPending = true;
         }
 
         /// <summary>
@@ -157,12 +157,12 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
             {
                 Context.Dispose();
 
-                if (CommitRequested)
+                if (CommitPending)
                 {
-                    throw new InvalidOperationException("Some of the unit of works requested commit! Ensure that commit is called on root unit of work as well.");
+                    throw new ChildCommitPendingException();
                 }
             }
-            else if (CommitRequested)
+            else if (CommitPending)
             {
                 TryRequestParentCommit();
             }

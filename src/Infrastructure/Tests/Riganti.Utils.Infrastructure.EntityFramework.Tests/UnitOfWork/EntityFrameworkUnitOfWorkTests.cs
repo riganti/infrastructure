@@ -58,7 +58,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
 
             var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub, dbContextFactory);
 
-            Assert.Throws<InvalidOperationException>(() =>
+            Assert.Throws<ChildCommitPendingException>(() =>
             {
                 using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
                 {
@@ -89,30 +89,38 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
 
             using (var unitOfWorkParent = unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
             {
-                using (var unitOfWorkChild1 = unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                // 1st level, context 1
+                using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
                 {
+                    // 2nd level, context 1
                     using (unitOfWorkProvider.Create(DbContextOptions.AlwaysCreateOwnContext))
                     {
+                        // 3rd level, context 2
                         using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
                         {
-                            using (var unitOfWorkParent2 = unitOfWorkProvider.Create(DbContextOptions.AlwaysCreateOwnContext))
+                            // 4th level, context 2
+                            using (var unitOfWorkParent3 = unitOfWorkProvider.Create(DbContextOptions.AlwaysCreateOwnContext))
                             {
+                                // 5th level, context 3
                                 using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
                                 {
+                                    // 6th level, context 3
                                     using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
                                     {
                                     }
-                                    using (var unitOfWorkChild2 = unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                                    using (var unitOfWorkChild3 = unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
                                     {
-                                        unitOfWorkChild2.Commit();
+                                        // 7th level, context 3 commit requested
+                                        unitOfWorkChild3.Commit();
                                     }
                                 }
-                                unitOfWorkParent2.Commit();
+                                // commit mandatory, context 3 commit pending
+                                unitOfWorkParent3.Commit();
                             }
                         }
                     }
-                    unitOfWorkChild1.Commit();
                 }
+                // commit optional, no reusing child commit pending
                 unitOfWorkParent.Commit();
             }
         }
@@ -193,7 +201,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
 
             var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub, dbContextFactory);
 
-            await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+            await Assert.ThrowsAsync<ChildCommitPendingException>(async () =>
             {
                 using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
                 {
@@ -224,30 +232,38 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
 
             using (var unitOfWorkParent = unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
             {
-                using (var unitOfWorkChild1 = unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                // 1st level, context 1
+                using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
                 {
+                    // 2nd level, context 1
                     using (unitOfWorkProvider.Create(DbContextOptions.AlwaysCreateOwnContext))
                     {
+                        // 3rd level, context 2
                         using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
                         {
-                            using (var unitOfWorkParent2 = unitOfWorkProvider.Create(DbContextOptions.AlwaysCreateOwnContext))
+                            // 4th level, context 2
+                            using (var unitOfWorkParent3 = unitOfWorkProvider.Create(DbContextOptions.AlwaysCreateOwnContext))
                             {
+                                // 5th level, context 3
                                 using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
                                 {
+                                    // 6th level, context 3
                                     using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
                                     {
                                     }
-                                    using (var unitOfWorkChild2 = unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                                    using (var unitOfWorkChild3 = unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
                                     {
-                                        await unitOfWorkChild2.CommitAsync();
+                                        // 7th level, context 3 commit requested
+                                        await unitOfWorkChild3.CommitAsync();
                                     }
                                 }
-                                await unitOfWorkParent2.CommitAsync();
+                                // commit mandatory, context 3 commit pending
+                                await unitOfWorkParent3.CommitAsync();
                             }
                         }
                     }
-                    await unitOfWorkChild1.CommitAsync();
                 }
+                // commit optional, no reusing child commit pending
                 await unitOfWorkParent.CommitAsync();
             }
         }
