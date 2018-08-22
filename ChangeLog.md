@@ -3,6 +3,7 @@
 
 ## 2.2.0
 - Implement facades async.
+- Added checking for child UoW commit request
 
 ## 2.1.8
 - Added `virtual` to async methods in repository
