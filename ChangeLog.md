@@ -5,9 +5,9 @@
 - Implement facades async.
 
 ## 2.1.8
-- add virtual to async methods in repository
-- add ITemplate in MailMessageDTO
-- add substitution feature to SendGridMailSender
+- add `virtual` to async methods in repository
+- add [ITemplate](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services.Mailing/ITemplate.cs) in [MailMessageDTO](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services.Mailing/MailMessageDTO.cs)
+- add substitution feature to [SendGridMailSender](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services.SendGrid/Mailing/SendGridMailSender.cs)
 
 ## 2.1.7
 - Added missing implemntation of `LogException` in [XunitOutputLogger](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Testing/XunitOutputLogger.cs).
