@@ -1,6 +1,6 @@
+using Riganti.Utils.Infrastructure.Core;
 using System;
 using Microsoft.EntityFrameworkCore;
-using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
 {
@@ -23,7 +23,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         private readonly Func<TDbContext> dbContextFactory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWorkProvider"/> class.
+        /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWorkProvider" /> class.
         /// </summary>
         public EntityFrameworkUnitOfWorkProvider(IUnitOfWorkRegistry registry, Func<TDbContext> dbContextFactory) : base(registry)
         {

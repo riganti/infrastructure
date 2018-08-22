@@ -1,14 +1,13 @@
+using Riganti.Utils.Infrastructure.Core;
 using System;
 using System.Data.Entity;
 using System.Threading;
 using System.Threading.Tasks;
-using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.EntityFramework
 {
-
     /// <summary>
-    /// An implementation of unit of work in Entity ramework.
+    /// An implementation of unit of work in Entity Framework.
     /// </summary>
     public class EntityFrameworkUnitOfWork : EntityFrameworkUnitOfWork<DbContext>
     {
@@ -17,9 +16,8 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         {
         }
 
-
         /// <summary>
-        /// Tries to get the <see cref="DbContext"/> in the current scope.
+        /// Tries to get the <see cref="DbContext" /> in the current scope.
         /// </summary>
         public static DbContext TryGetDbContext(IUnitOfWorkProvider unitOfWorkProvider)
         {
@@ -27,7 +25,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         }
 
         /// <summary>
-        /// Tries to get the <see cref="DbContext"/> in the current scope.
+        /// Tries to get the <see cref="DbContext" /> in the current scope.
         /// </summary>
         public static TDbContext TryGetDbContext<TDbContext>(IUnitOfWorkProvider unitOfWorkProvider)
             where TDbContext : DbContext
@@ -52,18 +50,24 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
     /// <summary>
     /// An implementation of unit of work in Entity ramework.
     /// </summary>
-    public class EntityFrameworkUnitOfWork<TDbContext> : UnitOfWorkBase 
+    public class EntityFrameworkUnitOfWork<TDbContext> : UnitOfWorkBase, ICheckChildCommitUnitOfWork
         where TDbContext : DbContext
     {
         private readonly bool hasOwnContext;
 
         /// <summary>
-        /// Gets the <see cref="DbContext"/>.
+        /// Gets the <see cref="DbContext" />.
         /// </summary>
-        public TDbContext Context { get; private set; }
+        public TDbContext Context { get; }
+
+        /// <inheritdoc cref="ICheckChildCommitUnitOfWork.Parent" />
+        public IUnitOfWork Parent { get; }
+
+        /// <inheritdoc cref="ICheckChildCommitUnitOfWork.CommitPending" />
+        public bool CommitPending { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork{TDbContext}"/> class.
+        /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork{TDbContext}" /> class.
         /// </summary>
         public EntityFrameworkUnitOfWork(IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider, Func<TDbContext> dbContextFactory, DbContextOptions options)
             : this((IUnitOfWorkProvider)unitOfWorkProvider, dbContextFactory, options)
@@ -71,10 +75,12 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork{TDbContext}"/> class.
+        /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork{TDbContext}" /> class.
         /// </summary>
         protected EntityFrameworkUnitOfWork(IUnitOfWorkProvider unitOfWorkProvider, Func<TDbContext> dbContextFactory, DbContextOptions options)
         {
+            Parent = unitOfWorkProvider.GetCurrent();
+
             if (options == DbContextOptions.ReuseParentContext)
             {
                 var parentContext = EntityFrameworkUnitOfWork.TryGetDbContext<TDbContext>(unitOfWorkProvider);
@@ -90,26 +96,43 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         }
 
         /// <summary>
-        /// Commits this instance when we have to.
+        /// Commits this instance when we have to. Skip and request from parent, if we don't own the context.
         /// </summary>
         public override void Commit()
         {
             if (HasOwnContext())
             {
+                CommitPending = false;
                 base.Commit();
             }
+            else
+            {
+                TryRequestParentCommit();
+            }
         }
-        
+
         /// <summary>
-        /// Commits this instance when we have to.
+        /// Commits this instance when we have to. Skip and request from parent, if we don't own the context.
         /// </summary>
         public override Task CommitAsync()
         {
             if (HasOwnContext())
             {
+                CommitPending = false;
                 return base.CommitAsync();
             }
-            return Task.FromResult(true);
+            else
+            {
+                TryRequestParentCommit();
+            }
+
+            return Task.CompletedTask;
+        }
+
+        /// <inheritdoc cref="ICheckChildCommitUnitOfWork.RequestCommit" />
+        public void RequestCommit()
+        {
+            CommitPending = true;
         }
 
         /// <summary>
@@ -133,14 +156,29 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
             if (HasOwnContext())
             {
                 Context.Dispose();
+
+                if (CommitPending)
+                {
+                    throw new ChildCommitPendingException();
+                }
+            }
+            else if (CommitPending)
+            {
+                TryRequestParentCommit();
             }
         }
 
+        private void TryRequestParentCommit()
+        {
+            if (Parent is ICheckChildCommitUnitOfWork uow)
+            {
+                uow.RequestCommit();
+            }
+        }
 
         private bool HasOwnContext()
         {
             return hasOwnContext;
         }
-
     }
 }

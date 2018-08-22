@@ -9,12 +9,15 @@ using Xunit;
 #if EFCORE
 using Microsoft.EntityFrameworkCore;
 #else
+
 using System.Data.Entity;
+
 #endif
 
 #if EFCORE
 namespace Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests.UnitOfWork
 #else
+
 namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
 #endif
 {
@@ -44,6 +47,82 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
                 unitOfWorkParent.Commit();
             }
             unitOfWorkParentMock.Protected().Verify("CommitCore", Times.Once());
+        }
+
+        [Fact]
+        public void Commit_CorrectChildRequestIgnoredBehavior()
+        {
+            Func<DbContext> dbContextFactory = () => new Mock<DbContext>().Object;
+
+            var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
+
+            var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub, dbContextFactory);
+
+            Assert.Throws<ChildCommitPendingException>(() =>
+            {
+                using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                {
+                    using (var unitOfWorkChild = unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                    {
+                        unitOfWorkChild.Commit();
+                    }
+                }
+            });
+
+            // test that unit of work provider keeps working after caught exception
+            using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+            {
+                using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                {
+                }
+            }
+        }
+
+        [Fact]
+        public void Commit_CorrectMultipleLayeredReuseParentBehavior()
+        {
+            Func<DbContext> dbContextFactory = () => new Mock<DbContext>().Object;
+
+            var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
+
+            var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub, dbContextFactory);
+
+            using (var unitOfWorkParent = unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+            {
+                // 1st level, context 1
+                using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                {
+                    // 2nd level, context 1
+                    using (unitOfWorkProvider.Create(DbContextOptions.AlwaysCreateOwnContext))
+                    {
+                        // 3rd level, context 2
+                        using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                        {
+                            // 4th level, context 2
+                            using (var unitOfWorkParent3 = unitOfWorkProvider.Create(DbContextOptions.AlwaysCreateOwnContext))
+                            {
+                                // 5th level, context 3
+                                using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                                {
+                                    // 6th level, context 3
+                                    using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                                    {
+                                    }
+                                    using (var unitOfWorkChild3 = unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                                    {
+                                        // 7th level, context 3 commit requested
+                                        unitOfWorkChild3.Commit();
+                                    }
+                                }
+                                // commit mandatory, context 3 commit pending
+                                unitOfWorkParent3.Commit();
+                            }
+                        }
+                    }
+                }
+                // commit optional, no reusing child commit pending
+                unitOfWorkParent.Commit();
+            }
         }
 
         [Fact]
@@ -114,6 +193,82 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
         }
 
         [Fact]
+        public async Task CommitAsync_ThrowIfChildCommitRequestedNotFulfilledByRoot()
+        {
+            Func<DbContext> dbContextFactory = () => new Mock<DbContext>().Object;
+
+            var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
+
+            var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub, dbContextFactory);
+
+            await Assert.ThrowsAsync<ChildCommitPendingException>(async () =>
+            {
+                using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                {
+                    using (var unitOfWorkChild = unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                    {
+                        await unitOfWorkChild.CommitAsync();
+                    }
+                }
+            });
+
+            // test that unit of work provider keeps working after caught exception
+            using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+            {
+                using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                {
+                }
+            }
+        }
+
+        [Fact]
+        public async Task CommitAsync_CorrectMultipleLayeredReuseParentBehavior()
+        {
+            Func<DbContext> dbContextFactory = () => new Mock<DbContext>().Object;
+
+            var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
+
+            var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub, dbContextFactory);
+
+            using (var unitOfWorkParent = unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+            {
+                // 1st level, context 1
+                using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                {
+                    // 2nd level, context 1
+                    using (unitOfWorkProvider.Create(DbContextOptions.AlwaysCreateOwnContext))
+                    {
+                        // 3rd level, context 2
+                        using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                        {
+                            // 4th level, context 2
+                            using (var unitOfWorkParent3 = unitOfWorkProvider.Create(DbContextOptions.AlwaysCreateOwnContext))
+                            {
+                                // 5th level, context 3
+                                using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                                {
+                                    // 6th level, context 3
+                                    using (unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                                    {
+                                    }
+                                    using (var unitOfWorkChild3 = unitOfWorkProvider.Create(DbContextOptions.ReuseParentContext))
+                                    {
+                                        // 7th level, context 3 commit requested
+                                        await unitOfWorkChild3.CommitAsync();
+                                    }
+                                }
+                                // commit mandatory, context 3 commit pending
+                                await unitOfWorkParent3.CommitAsync();
+                            }
+                        }
+                    }
+                }
+                // commit optional, no reusing child commit pending
+                await unitOfWorkParent.CommitAsync();
+            }
+        }
+
+        [Fact]
         public async Task CommitAsync_UOWHasNotParrent_CallCommitCore()
         {
             Func<DbContext> dbContextFactory = () => new Mock<DbContext>().Object;
@@ -153,7 +308,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
             }
             unitOfWorkParentMock.Protected().Verify("CommitAsyncCore", Times.Once(), new CancellationToken());
         }
-        
+
         [Fact]
         public void TryGetDbContext_UnitOfWorkRegistryHasUnitOfWork_ReturnCorrectDbContext()
         {
