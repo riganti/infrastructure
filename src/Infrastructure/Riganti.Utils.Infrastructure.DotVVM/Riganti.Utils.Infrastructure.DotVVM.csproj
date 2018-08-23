@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.1.13</VersionPrefix>
+    <VersionPrefix>2.2.0-rc1</VersionPrefix>
     <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.DotVVM</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.DotVVM</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <PackageVersion>2.1.13</PackageVersion>
+    <PackageVersion>2.2.0-rc1</PackageVersion>
     <Company>RIGANTI</Company>
     <Authors>RIGANTI</Authors>
     <Description>Infrastructure project setup for building modern enterprise applications using EntityFramework or Azure Table Storage.</Description>
