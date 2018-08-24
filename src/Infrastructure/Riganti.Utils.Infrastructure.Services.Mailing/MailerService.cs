@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Riganti.Utils.Infrastructure.Services.Mailing
@@ -131,7 +132,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
                 message.BodyHtml = string.Format(BodyHtmlFormatString, message.BodyHtml);
             }
 
-            if (OverrideToAddresses != null)
+            if (OverrideToAddresses != null && OverrideToAddresses.Any())
             {
                 message.To.Clear();
                 message.Cc.Clear();
