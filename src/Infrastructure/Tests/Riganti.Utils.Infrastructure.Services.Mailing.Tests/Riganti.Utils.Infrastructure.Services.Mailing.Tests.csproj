@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.0;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.0;net461</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Services.Mailing.Tests</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Riganti.Utils.Infrastructure.Services.Smtp.Tests</PackageId>
@@ -33,6 +33,7 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <PackageReference Include="moq" Version="4.7.145" />
     <Reference Include="System" />
+    <Reference Include="System.Net" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
