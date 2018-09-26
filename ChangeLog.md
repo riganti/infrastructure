@@ -4,7 +4,9 @@
 ## 2.2.0
 - Added async methods into facades.
 - Added checking for child UoW commit request.
-- Update SendGrid lib
+- Updated SendGrid lib.
+- Fixed bug in [MailerService](https://github.com/riganti/infrastructure/blob/e9e1a848ad492dbd4700dbfde2998f481c4bb287/src/Infrastructure/Riganti.Utils.Infrastructure.Services.Mailing/MailerService.cs).
+- Added EF-[ThenInclude](https://github.com/riganti/infrastructure/blob/a7895cce307d00fee515b90fa9742e58b1333164/src/Infrastructure/Riganti.Utils.Infrastructure.EntityFrameworkCore/IncludeExtensions.cs#L19) support for collections.
 
 ## 2.1.8
 - Added `virtual` to async methods in repository.
