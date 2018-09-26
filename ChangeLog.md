@@ -4,6 +4,7 @@
 ## 2.2.0
 - Added async methods into facades.
 - Added checking for child UoW commit request.
+- Update SendGrid lib
 
 ## 2.1.8
 - Added `virtual` to async methods in repository.
