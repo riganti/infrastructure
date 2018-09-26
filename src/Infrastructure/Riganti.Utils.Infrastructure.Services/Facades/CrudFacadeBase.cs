@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Riganti.Utils.Infrastructure.Core;
 
@@ -15,32 +14,32 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
     /// <typeparam name="TKey">The type of the entity primary key.</typeparam>
     /// <typeparam name="TListDTO">The type of the DTO used in the list of records, e.g. in the GridView control.</typeparam>
     /// <typeparam name="TDetailDTO">The type of the DTO used in the detail form.</typeparam>
-    public abstract class CrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO> : FacadeBase where TEntity : IEntity<TKey> where TDetailDTO : IEntity<TKey>
+    public abstract class CrudFacadeBase<TEntity, TKey, TListDTO, TDetailDTO> : FacadeBase, ICrudFacade<TListDTO, TDetailDTO, TKey> where TEntity : IEntity<TKey> where TDetailDTO : IEntity<TKey>
     {
         /// <summary>
         /// Gets the query object used to populate the list or records.
         /// </summary>
-        public IQuery<TListDTO> Query { get; private set; }
+        public Func<IQuery<TListDTO>> QueryFactory { get; }
 
         /// <summary>
         /// Gets the repository used to perform database operations with the entity.
         /// </summary>
-        public IRepository<TEntity, TKey> Repository { get; private set; }
+        public IRepository<TEntity, TKey> Repository { get; }
 
         /// <summary>
         /// Gets the service that can map entities to DTOs and populate entities with changes made on DTOs.
         /// </summary>
-        public IEntityDTOMapper<TEntity, TDetailDTO> Mapper { get; private set; }
+        public IEntityDTOMapper<TEntity, TDetailDTO> Mapper { get; }
 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CrudFacadeBase{TEntity, TKey, TListDTO, TDetailDTO}"/> class.
         /// </summary>
-        public CrudFacadeBase(IQuery<TListDTO> query, IRepository<TEntity, TKey> repository, IEntityDTOMapper<TEntity, TDetailDTO> mapper)
+        protected CrudFacadeBase(Func<IQuery<TListDTO>> queryFactory, IRepository<TEntity, TKey> repository, IEntityDTOMapper<TEntity, TDetailDTO> mapper)
         {
-            this.Query = query;
-            this.Repository = repository;
-            this.Mapper = mapper;
+            QueryFactory = queryFactory;
+            Repository = repository;
+            Mapper = mapper;
         }
 
         /// <summary>
@@ -51,6 +50,23 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
             using (UnitOfWorkProvider.Create())
             {
                 var entity = Repository.GetById(id, EntityIncludes);
+                ValidateReadPermissions(entity);
+                var detail = Mapper.MapToDTO(entity);
+                return detail;
+            }
+        }
+
+        /// <summary>
+        /// Gets the detail DTO for an entity with the specified ID.
+        /// </summary>
+        public virtual async Task<TDetailDTO> GetDetailAsync(TKey id, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using (UnitOfWorkProvider.Create())
+            {
+                var entity = await Repository.GetByIdAsync(cancellationToken, id, EntityIncludes);
+                await ValidateReadPermissionsAsync(entity, cancellationToken);
                 var detail = Mapper.MapToDTO(entity);
                 return detail;
             }
@@ -72,7 +88,8 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Saves the changes on the specified DTO to the database.
         /// </summary>
-        public virtual void Save(TDetailDTO detail)
+        /// <returns>New instance of DTO with changes reflected during saving.</returns>
+        public virtual TDetailDTO Save(TDetailDTO detail)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
@@ -87,13 +104,50 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 else
                 {
                     entity = Repository.GetById(detail.Id, EntityIncludes);
+                    ValidateModifyPermissions(entity, ModificationStage.BeforeMap);
                 }
 
                 // populate the entity
                 PopulateDetailToEntity(detail, entity);
 
+                ValidateModifyPermissions(entity, ModificationStage.AfterMap);
+
                 // save
-                Save(entity, isNew, detail, uow);
+                return Save(entity, isNew, detail, uow);
+            }
+        }
+
+        /// <summary>
+        /// Saves the changes on the specified DTO to the database.
+        /// </summary>
+        /// <returns>New instance of DTO with changes reflected during saving.</returns>
+        public virtual async Task<TDetailDTO> SaveAsync(TDetailDTO detail, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                TEntity entity;
+                var isNew = false;
+                if (detail.Id.Equals(default(TKey)))
+                {
+                    // the record is new
+                    entity = Repository.InitializeNew();
+                    isNew = true;
+                }
+                else
+                {
+                    entity = await Repository.GetByIdAsync(cancellationToken, detail.Id, EntityIncludes);
+                    await ValidateModifyPermissionsAsync(entity, ModificationStage.BeforeMap, cancellationToken);
+                }
+
+                // populate the entity
+                PopulateDetailToEntity(detail, entity);
+
+                await ValidateModifyPermissionsAsync(entity, ModificationStage.AfterMap, cancellationToken);
+
+                // save
+                return await SaveAsync(entity, isNew, detail, uow, cancellationToken);
             }
         }
 
@@ -110,13 +164,44 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         }
 
         /// <summary>
+        /// Deletes the entity with the specified ID.
+        /// </summary>
+        public virtual async Task DeleteAsync(TKey id, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                Repository.Delete(id);
+                await uow.CommitAsync(cancellationToken);
+            }
+        }
+
+        /// <summary>
         /// Gets the list of the DTOs using the Query object.
         /// </summary>
-        public virtual IEnumerable<TListDTO> GetList()
+        public virtual IEnumerable<TListDTO> GetList(Action<IQuery<TListDTO>> queryConfiguration = null)
         {
             using (UnitOfWorkProvider.Create())
             {
-                return Query.Execute();
+                var query = QueryFactory();
+                queryConfiguration?.Invoke(query);
+                return query.Execute();
+            }
+        }
+
+        /// <summary>
+        /// Gets the list of the DTOs using the Query object.
+        /// </summary>
+        public virtual async Task<IEnumerable<TListDTO>> GetListAsync(Action<IQuery<TListDTO>> queryConfiguration = null, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using (UnitOfWorkProvider.Create())
+            {
+                var query = QueryFactory();
+                queryConfiguration?.Invoke(query);
+                return await query.ExecuteAsync(cancellationToken);
             }
         }
 
@@ -131,7 +216,8 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// <summary>
         /// Saves the changes made to the entity in the database, and if the entity was inserted, updates the DTO with its ID.
         /// </summary>
-        protected virtual void Save(TEntity entity, bool isNew, TDetailDTO detail, IUnitOfWork uow)
+        /// <returns>New instance of DTO with changes reflected during saving.</returns>
+        protected virtual TDetailDTO Save(TEntity entity, bool isNew, TDetailDTO detail, IUnitOfWork uow)
         {
             // insert or update
             if (isNew)
@@ -146,6 +232,33 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
             // save
             uow.Commit();
             detail.Id = entity.Id;
+            var savedDetail = Mapper.MapToDTO(entity);
+            return savedDetail;
+        }
+
+        /// <summary>
+        /// Saves the changes made to the entity in the database, and if the entity was inserted, updates the DTO with its ID.
+        /// </summary>
+        /// <returns>New instance of DTO with changes reflected during saving.</returns>
+        protected virtual async Task<TDetailDTO> SaveAsync(TEntity entity, bool isNew, TDetailDTO detail, IUnitOfWork uow, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            // insert or update
+            if (isNew)
+            {
+                Repository.Insert(entity);
+            }
+            else
+            {
+                Repository.Update(entity);
+            }
+
+            // save
+            await uow.CommitAsync(cancellationToken);
+            detail.Id = entity.Id;
+            var savedDetail = Mapper.MapToDTO(entity);
+            return savedDetail;
         }
 
         /// <summary>
@@ -153,6 +266,49 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         /// </summary>
         protected virtual Expression<Func<TEntity, object>>[] EntityIncludes => new Expression<Func<TEntity, object>>[] { };
 
+        /// <summary>
+        /// Validates that the entity detail can be displayed by the user. If the user does not have permissions, the method should throw an exception.
+        /// </summary>
+        /// <param name="entity"></param>
+        protected virtual void ValidateReadPermissions(TEntity entity)
+        {
+        }
+
+        /// <summary>
+        /// Validates that the entity detail can be displayed by the user. If the user does not have permissions, the method should throw an exception.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <param name="entity"></param>
+        protected virtual Task ValidateReadPermissionsAsync(TEntity entity, CancellationToken cancellationToken = default)
+        {
+            return cancellationToken.IsCancellationRequested ? Task.FromCanceled(cancellationToken) : Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Validates that the entity can be modified by the current user. If the user does not have permissions, the method should throw an exception.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="stage">
+        ///     The BeforeMap stage is called when an existing entity is loaded from the database and is about to be mapped. 
+        ///     The AfterMap stage is called when the DTO was mapped to the entity and the entity is about to be saved.
+        /// </param>
+        protected virtual void ValidateModifyPermissions(TEntity entity, ModificationStage stage)
+        {
+        }
+
+        /// <summary>
+        /// Validates that the entity can be modified by the current user. If the user does not have permissions, the method should throw an exception.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <param name="entity"></param>
+        /// <param name="stage">
+        ///     The BeforeMap stage is called when an existing entity is loaded from the database and is about to be mapped. 
+        ///     The AfterMap stage is called when the DTO was mapped to the entity and the entity is about to be saved.
+        /// </param>
+        protected virtual Task ValidateModifyPermissionsAsync(TEntity entity, ModificationStage stage, CancellationToken cancellationToken = default)
+        {
+            return cancellationToken.IsCancellationRequested ? Task.FromCanceled(cancellationToken) : Task.CompletedTask;
+        }
 
     }
 }

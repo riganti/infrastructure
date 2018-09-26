@@ -18,6 +18,7 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <summary>
         /// Gets the unit of work in the current scope.
         /// </summary>
-        IUnitOfWork GetCurrent();
+        /// <param name="ancestorLevel">0 means current unit of work, 1 means parent unit of work and so on.</param>
+        IUnitOfWork GetCurrent(int ancestorLevel = 0);
     }
 }

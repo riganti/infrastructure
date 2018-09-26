@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Riganti.Utils.Infrastructure.Core
 {
@@ -16,8 +13,8 @@ namespace Riganti.Utils.Infrastructure.Core
 
         static QueryFilterExtensions()
         {
-            containsMethod = typeof(string).GetMethod("Contains", new [] { typeof(string) });
-            startsWithMethod = typeof(string).GetMethod("StartsWith", new [] { typeof(string) });
+            containsMethod = typeof(string).GetTypeInfo().GetMethod("Contains", new [] { typeof(string) });
+            startsWithMethod = typeof(string).GetTypeInfo().GetMethod("StartsWith", new [] { typeof(string) });
         }
 
 
@@ -71,7 +68,7 @@ namespace Riganti.Utils.Infrastructure.Core
 
         public static IQueryable<T> FilterRequired<T, TValue>(this IQueryable<T> data, Expression<Func<T, TValue>> fieldSelector, TValue valueToFilter)
         {
-            var body = Expression.Equal(fieldSelector.Body, Expression.Constant(valueToFilter));
+            var body = Expression.Equal(fieldSelector.Body, Expression.Constant(valueToFilter, typeof(TValue)));
             return data.Where(Expression.Lambda<Func<T, bool>>(body, fieldSelector.Parameters));
         }
 

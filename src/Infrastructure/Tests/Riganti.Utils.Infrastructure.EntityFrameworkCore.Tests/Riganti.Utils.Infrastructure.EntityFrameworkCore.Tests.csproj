@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>    
+    <TargetFrameworks>netcoreapp1.0;net461</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>EFCORE</DefineConstants>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Riganti.Utils.Infrastructure.EntityFramework.Tests\Repository\DbContextMockFactory.cs">
+      <Link>Repository\DbContextMockFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Riganti.Utils.Infrastructure.EntityFramework.Tests\Repository\EntityFrameworkUnitOfProviderTests.cs">
+      <Link>Repository\EntityFrameworkUnitOfProviderTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Riganti.Utils.Infrastructure.EntityFramework.Tests\Repository\EpisodeEntity.cs">
+      <Link>Repository\EpisodeEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\Riganti.Utils.Infrastructure.EntityFramework.Tests\Repository\QuoteEntity.cs">
+      <Link>Repository\QuoteEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\Riganti.Utils.Infrastructure.EntityFramework.Tests\Repository\YesMinisterDbContext.cs">
+      <Link>Repository\YesMinisterDbContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Riganti.Utils.Infrastructure.EntityFramework.Tests\UnitOfWork\EntityFrameworkUnitOfWorkTests.cs">
+      <Link>UnitOfWork\EntityFrameworkUnitOfWorkTests.cs</Link>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.0" />
+    <PackageReference Include="moq" Version="4.7.145" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UnitOfWork\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj" />
+    <ProjectReference Include="..\..\Riganti.Utils.Infrastructure.EntityFrameworkCore\Riganti.Utils.Infrastructure.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+
+</Project>

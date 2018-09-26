@@ -2,7 +2,7 @@
 
 namespace Riganti.Utils.Infrastructure.Services.Facades
 {
-    public class FacadeBase
+    public class FacadeBase : IFacade
     {
 
         public IUnitOfWorkProvider UnitOfWorkProvider { get; set; }
