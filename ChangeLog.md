@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.2.2
+- Fix for Table Storage treating two different entities with same partition and row keys as one record.
+
 ## 2.2.1
 - Fix for Table Storage not returning all entities correctly when browsing through storage with over 1,000 items.
 
