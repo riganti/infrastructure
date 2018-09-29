@@ -33,6 +33,21 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.StorageContext
         }
 
         [Fact]
+        public void RegisterMultipleDifferentEntitiesWithSameKeys_Should_AddRecordsInEntityMap()
+        {
+            var mockContext = new StorageContextMockFactory().CreateStorageContextMock();
+            var context = mockContext.Object;
+            var musician = new Musician("John Doe", "Anonymous", "john.doe@riganti.cz");
+            var bandTeacher = new BandTeacher("John Doe", "Anonymous", "john.doe@riganti.cz");
+            Assert.DoesNotContain(musician, context.Entities);
+            Assert.DoesNotContain(bandTeacher, context.Entities);
+            context.RegisterNew(musician);
+            context.RegisterNew(bandTeacher);
+            Assert.Contains(musician, context.Entities);
+            Assert.Contains(bandTeacher, context.Entities);
+        }
+
+        [Fact]
         public void RegisterNew_WhenObjectIsInCleanEntities_ShouldThrowException()
         {
             var mockContext = new StorageContextMockFactory().CreateStorageContextMock();
