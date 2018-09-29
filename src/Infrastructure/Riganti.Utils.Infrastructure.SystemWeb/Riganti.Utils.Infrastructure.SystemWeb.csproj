@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.2.0-rc3</VersionPrefix>
+    <VersionPrefix>2.2.1</VersionPrefix>
     <TargetFramework>net461</TargetFramework>
     <AssemblyName>Riganti.Utils.Infrastructure.SystemWeb</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.SystemWeb</PackageId>
