@@ -20,7 +20,8 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 
             return
                 entity1.PartitionKey.Equals(entity2.PartitionKey) 
-                && entity1.RowKey.Equals(entity2.RowKey);
+                && entity1.RowKey.Equals(entity2.RowKey)
+                && entity1.GetType() == entity2.GetType();
         }
 
         public int GetHashCode(TEntity entity)
@@ -28,7 +29,8 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             unchecked
             {
                 return (entity.PartitionKey?.GetHashCode() ?? 0) 
-                    ^ (entity.RowKey?.GetHashCode() ?? 0);
+                    ^ (entity.RowKey?.GetHashCode() ?? 0)
+                    ^ typeof(TEntity).GetHashCode();
             }
         }
 
@@ -40,19 +42,12 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
             var entity2 = y as TEntity;
             if (entity2 == null) return false;
 
-            return
-                entity1.PartitionKey.Equals(entity2.PartitionKey)
-                && entity1.RowKey.Equals(entity2.RowKey);
+            return Equals(entity1, entity2);
         }
 
         public int GetHashCode(object obj)
         {
-            unchecked
-            {
-                var entity = (TEntity) obj;
-                return (entity.PartitionKey?.GetHashCode() ?? 0)
-                    ^ (entity.RowKey?.GetHashCode() ?? 0);
-            }
+            return GetHashCode((TEntity)obj);
         }
     }
 }
