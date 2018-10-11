@@ -50,6 +50,7 @@ namespace Riganti.Utils.Infrastructure
 
             dataSet.PagingOptions.TotalItemsCount = query.GetTotalRowCount();
             dataSet.Items = query.Execute();
+            dataSet.IsRefreshRequired = false;
         }
 
     }
