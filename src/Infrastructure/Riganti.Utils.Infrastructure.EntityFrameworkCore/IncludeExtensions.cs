@@ -17,7 +17,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         }
 
         public static NextExpressionIncludeCollectionDefinition<TEntity, IEnumerable<TResult>, TResult, TNextResult> Then<TEntity, TResult, TNextResult>(
-            ExpressionIncludeDefinition<TEntity, IEnumerable<TResult>> target,
+            this ExpressionIncludeDefinition<TEntity, IEnumerable<TResult>> target,
             Expression<Func<TResult, TNextResult>> expression
         )
             where TEntity : class where TResult : class where TNextResult : class
