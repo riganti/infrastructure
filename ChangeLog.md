@@ -2,6 +2,7 @@
 
 ## 2.2.3
 - Fix - added missing `this` keyword for [Then overload in IncludeExtensions](https://github.com/riganti/infrastructure/blob/8055ea6ee4da68276f0429baa674356e3f6ecc64/src/Infrastructure/Riganti.Utils.Infrastructure.EntityFrameworkCore/IncludeExtensions.cs#L19).
+- Fix - added missing [`IsRefreshRequired` assignment in `LoadFromQuery` extension method](https://github.com/riganti/infrastructure/blob/8055ea6ee4da68276f0429baa674356e3f6ecc64/src/Infrastructure/Riganti.Utils.Infrastructure.DotVVM/DotvvmFacadeExtensions.cs#L53).
 
 ## 2.2.2
 - Fix for Table Storage treating two different entities with same partition and row keys as one record.
