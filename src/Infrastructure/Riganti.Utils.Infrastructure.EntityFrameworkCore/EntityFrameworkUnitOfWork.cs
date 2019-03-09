@@ -113,19 +113,22 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         /// <summary>
         /// Commits this instance when we have to. Skip and request from parent, if we don't own the context.
         /// </summary>
-        public override Task CommitAsync()
+        public override Task CommitAsync(CancellationToken cancellationToken)
         {
             if (HasOwnContext())
             {
                 CommitPending = false;
-                return base.CommitAsync();
-            }
-            else
-            {
-                TryRequestParentCommit();
+                return base.CommitAsync(cancellationToken);
             }
 
+            TryRequestParentCommit();
+
             return Task.CompletedTask;
+        }
+
+        public override async Task CommitAsync()
+        {
+            await CommitAsync(default(CancellationToken));
         }
 
         /// <inheritdoc cref="ICheckChildCommitUnitOfWork.RequestCommit" />
