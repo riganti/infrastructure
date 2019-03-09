@@ -336,5 +336,71 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
             var value = EntityFrameworkUnitOfWork.TryGetDbContext(unitOfWorkProvider);
             Assert.Null(value);
         }
+
+        [Fact]
+        public async Task CommitAsyncWithToken_CommitInParentScopeContextTest()
+        {
+            var dbContext = new Mock<DbContext>();
+            dbContext.Setup(context => context.SaveChangesAsync(new CancellationToken())).Throws(new SaveChangesException());
+            Func<DbContext> dbContextFactory = () => dbContext.Object;
+
+
+            var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
+
+            var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub, dbContextFactory);
+
+            using(var uow = unitOfWorkProvider.Create())
+            {
+                using (var nested = unitOfWorkProvider.Create())
+                {
+                    await nested.CommitAsync(new CancellationToken());
+                }
+
+                try
+                {
+                    await uow.CommitAsync(new CancellationToken());
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+        }
+
+        [Fact]
+        public async Task CommitAsync_CommitInParentScopeContextTest()
+        {
+            var dbContext = new Mock<DbContext>();
+            dbContext.Setup(context => context.SaveChangesAsync(new CancellationToken())).Throws(new SaveChangesException());
+            Func<DbContext> dbContextFactory = () => dbContext.Object;
+
+
+            var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
+
+            var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub, dbContextFactory);
+
+            using (var uow = unitOfWorkProvider.Create())
+            {
+                using (var nested = unitOfWorkProvider.Create())
+                {
+                    await nested.CommitAsync();
+                }
+
+                try
+                {
+                    await uow.CommitAsync();
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+        }
+
+
+        public class SaveChangesException : Exception
+        {
+
+        }
     }
 }
