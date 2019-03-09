@@ -379,7 +379,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
                     await nested.CommitAsync();
                 }
 
-                await Assert.ThrowsAsync<SaveChangesException>(() => uow.CommitAsync(new CancellationToken()));
+                await Assert.ThrowsAsync<SaveChangesException>(() => uow.CommitAsync());
             }
         }
 
