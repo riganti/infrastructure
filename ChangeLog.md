@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.2.5
+- Fix insidious bug in EFCore and EF unit of work which appear after added async methods to facades(v2.2.0). In `CrudFacadeBase` inside in `SaveAsync` is `uow.CommitAsync(cancellationToken)` and no matter what it calls `Context.SaveChanges` although it will be in parent `uow` scope. **So this fix does cause breaking change.**
+
 ## 2.2.4
  Add asynchronous metod in `DotvvmFacadeExtensions`.
 
