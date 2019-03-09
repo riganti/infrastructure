@@ -356,14 +356,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
                     await nested.CommitAsync(new CancellationToken());
                 }
 
-                try
-                {
-                    await uow.CommitAsync(new CancellationToken());
-                }
-                catch
-                {
-                    // ignored
-                }
+                await Assert.ThrowsAsync<SaveChangesException>(() => uow.CommitAsync(new CancellationToken()));
             }
         }
 
@@ -386,14 +379,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
                     await nested.CommitAsync();
                 }
 
-                try
-                {
-                    await uow.CommitAsync();
-                }
-                catch
-                {
-                    // ignored
-                }
+                await Assert.ThrowsAsync<SaveChangesException>(() => uow.CommitAsync(new CancellationToken()));
             }
         }
 
