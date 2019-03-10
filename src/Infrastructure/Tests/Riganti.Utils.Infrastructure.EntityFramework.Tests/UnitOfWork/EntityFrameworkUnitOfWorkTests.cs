@@ -338,7 +338,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
         }
 
         [Fact]
-        public async Task Call_CommitAsync_With_Token_In_Nested_Uow_SavesChanges_In_Parent_Uow()
+        public async Task CommitAsync_WithTokenInNestedUow_SavedChangesInParentUow()
         {
             var dbContext = new Mock<DbContext>();
             Func<DbContext> dbContextFactory = () => dbContext.Object;
@@ -366,7 +366,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
         }
 
         [Fact]
-        public async Task Call_CommitAsync_In_Nested_Uow_SavesChanges_In_Parent_Uow()
+        public async Task CommitAsync_InNestedUow_SavedChangesInParentUow()
         {
             var dbContext = new Mock<DbContext>();
             Func<DbContext> dbContextFactory = () => dbContext.Object;
