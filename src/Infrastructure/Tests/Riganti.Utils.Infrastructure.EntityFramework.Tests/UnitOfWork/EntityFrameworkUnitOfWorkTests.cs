@@ -392,11 +392,5 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
                 dbContext.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
             }
         }
-
-
-        public class SaveChangesException : Exception
-        {
-
-        }
     }
 }
