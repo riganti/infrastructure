@@ -18,14 +18,24 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
                 FirstName = "Jim",
                 LastName = "Hacker",
                 CategoryId = 1,
-                Truthful = false
+                Truthful = false,
+                Address = new Address()
+                {
+                    City = "New York",
+                    Street = "BigStreet"
+                }
             },
             new CustomerTestData()
             {
                 FirstName = "Bernard",
                 LastName = "Woolley",
                 CategoryId = 2,
-                Truthful = true
+                Truthful = true,
+                Address = new Address()
+                {
+                    City = "Prague",
+                    Street = "BigStreet"
+                }
             }
         }.AsQueryable();
     }
