@@ -58,6 +58,22 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
             Assert.Equal(customers.OrderByDescending(sortExpression), queryResult);
         }
 
+        [Fact]
+        public void AddSortCriteria_ChangeSortCriteriaManualy()
+        {
+            var querySUT = CreateQueryBaseStub();
+            Expression<Func<CustomerTestData, string>> orderByFirstName = customer => customer.FirstName;
+            Expression<Func<CustomerTestData, string>> orderBySecondName = customer => customer.LastName;
+            
+            querySUT.AddSortCriteria(orderByFirstName);
+            querySUT.SortCriteria.Add(x=>x.OrderBy(orderBySecondName));
+            
+            var queryResult = querySUT.Execute();
+
+            Assert.Equal(customers.OrderBy(orderBySecondName).OrderBy(orderByFirstName), queryResult);
+        }
+        
+        
         
         [Fact]
         public void AddSortCriteriaLambda_SortByFirstnameAscending()

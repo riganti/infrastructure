@@ -1,0 +1,83 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
+using Riganti.Utils.Infrastructure.Core;
+
+namespace Test
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+            Console.WriteLine("Hello World!");
+            
+            
+            using (var context = new Context())
+            {
+                var query = new Query(context);
+                
+                query.AddSortCriteria(x=>x.Name);
+                query.AddSortCriteria(x=>x.SequenceNumber);
+                
+                //query.SortCriteria.Add(x=>x.OrderBy(y=>y.SequenceNumber));
+
+                //await context.Users.OrderBy(x => x.Name).OrderBy(x => x.SequenceNumber).ToListAsync();
+                
+                var result = query.Execute();
+            }
+        }
+    }
+
+    
+    
+    
+    
+    public class Query : QueryBase<User>
+    {
+        private readonly Context context;
+
+        public Query(Context context)
+        {
+            this.context = context;
+        }
+        
+        public override Task<int> GetTotalRowCountAsync(CancellationToken cancellationToken)
+        {
+            return context.Users.CountAsync(cancellationToken);
+        }
+
+        protected override async Task<IList<User>> ExecuteQueryAsync(IQueryable<User> query, CancellationToken cancellationToken)
+        {
+            var listAsync = await query.ToListAsync(cancellationToken);
+            return listAsync;
+        }
+
+        protected override IQueryable<User> GetQueryable()
+        {
+            return context.Users;
+        }
+    }
+
+    public class Context : DbContext
+    {
+        public DbSet<User> Users { get; set; }
+
+        public Context() : base("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=InfrastructureTest;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False")
+        {
+            
+        }
+    }
+    
+    
+
+    public class User
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int SequenceNumber { get; set; }
+    }
+}
