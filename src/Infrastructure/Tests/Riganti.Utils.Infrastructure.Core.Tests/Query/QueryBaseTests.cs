@@ -73,8 +73,6 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
             Assert.Equal(customers.OrderBy(orderBySecondName).OrderBy(orderByFirstName), queryResult);
         }
         
-        
-        
         [Fact]
         public void AddSortCriteriaLambda_SortByFirstnameAscending()
         {

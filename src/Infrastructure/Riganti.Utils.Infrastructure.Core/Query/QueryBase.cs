@@ -117,7 +117,7 @@ namespace Riganti.Utils.Infrastructure.Core
 
         public void ClearSortCriteria()
         {
-            SortCriteria.Clear();
+            sortCriteriaHandler.Clear();
         }
 
         /// <summary>
