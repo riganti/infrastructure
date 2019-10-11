@@ -37,6 +37,7 @@ namespace Riganti.Utils.Infrastructure.Core
         protected QueryBase()
         {
             SortCriteria = new List<Func<IQueryable<TQueryableResult>, IOrderedQueryable<TQueryableResult>>>();
+            sortCriteriaHandler = new SortCriteriaHandler();
         }
 
         /// <summary>
@@ -49,12 +50,15 @@ namespace Riganti.Utils.Infrastructure.Core
         /// </summary>
         public int? Take { get; set; }
 
-
         /// <summary>
         ///     Gets a list of sort criteria applied on this query.
         /// </summary>
+        [Obsolete("This property is not used anymore.")]
         public IList<Func<IQueryable<TQueryableResult>, IOrderedQueryable<TQueryableResult>>> SortCriteria { get; }
 
+        private SortCriteriaHandler sortCriteriaHandler;
+        
+        
         /// <summary>
         ///     Adds a specified sort criteria to the query.
         /// </summary>
@@ -106,9 +110,9 @@ namespace Riganti.Utils.Infrastructure.Core
         
         private void InvokeAddSortCriteriaCore(Type tKey, LambdaExpression expression, SortDirection direction)
         {
-            typeof(QueryBase<TQueryableResult, TResult>).GetTypeInfo().GetMethod(nameof(AddSortCriteriaCore),
-                    BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(tKey)
-                .Invoke(this, new object[] {expression, direction});
+            typeof(SortCriteriaHandler).GetTypeInfo().GetMethod(nameof(sortCriteriaHandler.AddCriterion),
+                    BindingFlags.Instance | BindingFlags.Public).MakeGenericMethod(tKey)
+                .Invoke(sortCriteriaHandler, new object[] { expression, direction });
         }
 
 
@@ -182,6 +186,8 @@ namespace Riganti.Utils.Infrastructure.Core
                 SortCriteria.Add(x => x.OrderBy(sortExpression));
             else
                 SortCriteria.Add(x => x.OrderByDescending(sortExpression));
+            
+            sortCriteriaHandler.AddCriterion(sortExpression,direction);
         }
 
         protected abstract Task<IList<TQueryableResult>> ExecuteQueryAsync(IQueryable<TQueryableResult> query,
@@ -189,11 +195,12 @@ namespace Riganti.Utils.Infrastructure.Core
 
         private IQueryable<TQueryableResult> PreProcessQuery()
         {
-            var query = GetQueryable();
+            var orderedQuery = sortCriteriaHandler.ApplyCriteria(GetQueryable());
+            return ApplySkipAndTake(orderedQuery);
+        }
 
-            for (var i = SortCriteria.Count - 1; i >= 0; i--)
-                query = SortCriteria[i](query);
-
+        private IQueryable<TQueryableResult> ApplySkipAndTake(IQueryable<TQueryableResult> query)
+        {
             if (Skip != null)
                 query = query.Skip(Skip.Value);
             if (Take != null)
@@ -208,5 +215,52 @@ namespace Riganti.Utils.Infrastructure.Core
         protected abstract IList<TResult> PostProcessResults(IList<TQueryableResult> results);
 
         protected abstract IQueryable<TQueryableResult> GetQueryable();
+
+        private class SortCriteriaHandler
+        {
+            private Func<IQueryable<TQueryableResult>, IOrderedQueryable<TQueryableResult>> FirstSortCriteriaUnOrdered;
+
+            private IList<Func<IOrderedQueryable<TQueryableResult>, IOrderedQueryable<TQueryableResult>>>
+                OrderedCriteria = new List<Func<IOrderedQueryable<TQueryableResult>, IOrderedQueryable<TQueryableResult>>>();
+
+
+            public void AddCriterion<TKey>(Expression<Func<TQueryableResult, TKey>> sortExpression, SortDirection direction)
+            {
+                if (direction == SortDirection.Ascending)
+                {
+                    FirstSortCriteriaUnOrdered = x => x.OrderBy(sortExpression);
+                    OrderedCriteria.Insert(0,x=>x.ThenBy(sortExpression));
+                }
+                else
+                {
+                    FirstSortCriteriaUnOrdered = x => x.OrderByDescending(sortExpression);
+                    OrderedCriteria.Insert(0,x=>x.ThenByDescending(sortExpression));
+                }
+            }
+
+            public IQueryable<TQueryableResult> ApplyCriteria(IQueryable<TQueryableResult> query)
+            {
+                if (FirstSortCriteriaUnOrdered == null)
+                {
+                    return query;
+                }
+                
+                var orderedQuery = FirstSortCriteriaUnOrdered(query);
+
+                //Skip first because we already applied this criterion using FirstSortCriteriaUnOrdered
+                foreach (var criteria in OrderedCriteria.Skip(1))
+                {
+                    orderedQuery = criteria(orderedQuery);
+                }
+
+                return orderedQuery;
+            }
+
+            public void Clear()
+            {
+                OrderedCriteria.Clear();
+                FirstSortCriteriaUnOrdered = null;
+            }
+        }
     }
 }
