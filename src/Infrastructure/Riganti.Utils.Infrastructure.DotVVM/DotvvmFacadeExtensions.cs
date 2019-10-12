@@ -12,6 +12,36 @@ namespace Riganti.Utils.Infrastructure
         /// <summary>
         /// Fills the data set using the query specified in the facade.
         /// </summary>
+        public static void FillDataSet<TListDTO>(this ICrudListFacade<TListDTO> facade,
+            GridViewDataSet<TListDTO> dataSet,
+            IUnitOfWorkProvider unitOfWorkProvider)
+        {
+            using (unitOfWorkProvider.Create())
+            {
+                var query = facade.QueryFactory();
+                dataSet.LoadFromQuery(query);
+            }
+        }
+        
+        /// <summary>
+        /// Fills the data set using the query specified in the facade.
+        /// </summary>
+        public static void FillDataSet<TListDTO, TFilterDTO>(this ICrudFilteredListFacade<TListDTO, TFilterDTO> facade,
+            GridViewDataSet<TListDTO> dataSet,
+            TFilterDTO filter,
+            IUnitOfWorkProvider unitOfWorkProvider)
+        {
+            using (unitOfWorkProvider.Create())
+            {
+                var query = facade.QueryFactory();
+                query.Filter = filter;
+                dataSet.LoadFromQuery(query);
+            }
+        }
+        
+        /// <summary>
+        /// Fills the data set using the query specified in the facade.
+        /// </summary>
         public static void FillDataSet<TKey, TListDTO, TDetailDTO>(this ICrudFacade<TListDTO, TDetailDTO, TKey> facade,
             GridViewDataSet<TListDTO> dataSet)
             where TDetailDTO : IEntity<TKey>
