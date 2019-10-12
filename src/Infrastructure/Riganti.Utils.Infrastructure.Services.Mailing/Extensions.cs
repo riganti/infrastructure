@@ -1,60 +1,83 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MimeKit;
+using System.Net.Mail;
 
 namespace Riganti.Utils.Infrastructure.Services.Mailing
 {
     public static class Extensions
     {
 
-        public static MimeMessage ToMimeMessage(this MailMessageDTO dto)
+        public static MailMessage ToMailMessage(this MailMessageDTO message)
         {
-            var msg = new MimeMessage();
-
-            // Add standard header fields
-            msg.From.Add(dto.From.ToMailboxAddress());
-            msg.To.AddRange(dto.To.ToMailboxAddress());
-            msg.Cc.AddRange(dto.Cc.ToMailboxAddress());
-            msg.Bcc.AddRange(dto.Bcc.ToMailboxAddress());
-            msg.Sender = dto.Sender.ToMailboxAddress();
-            msg.ReplyTo.AddRange(dto.ReplyTo.ToMailboxAddress());
-            msg.Subject = dto.Subject;
-
-            // Add custom header fields
-            foreach (var item in dto.CustomHeaders)
+            var mailMessage = new MailMessage()
             {
-                msg.Headers.Add(item.Key, item.Value);
-            }
-
-            // Construct body
-            var bb = new BodyBuilder
-            {
-                TextBody = dto.BodyText,
-                HtmlBody = dto.BodyHtml
+                Sender = message.Sender.ToMailAddress(),
+                Subject = message.Subject
             };
 
-            // Add attachments
-            foreach (var item in dto.Attachments)
+            // set body
+            if (message.BodyHtml != null)
             {
-                ContentType ct;
-                var r = ContentType.TryParse(item.MimeType, out ct);
-                if (!r) ct = new ContentType("application", "octet-stream");
-                bb.Attachments.Add(item.Name, item.Stream, ct);
+                mailMessage.Body = message.BodyHtml;
+                mailMessage.IsBodyHtml = true;
+
+                if (message.BodyText != null)
+                {
+                    var plainTextView = AlternateView.CreateAlternateViewFromString(message.BodyText, null, "text/plain");
+                    mailMessage.AlternateViews.Add(plainTextView);
+                }
+            }
+            else
+            {
+                mailMessage.Body = message.BodyText;
+                mailMessage.IsBodyHtml = false;
             }
 
-            msg.Body = bb.ToMessageBody();
-            return msg;
+            // set contacts
+            if (message.From != null)
+            {
+                mailMessage.From = message.From.ToMailAddress();
+            }
+            foreach (var address in message.To)
+            {
+                mailMessage.To.Add(address.ToMailAddress());
+            }
+            foreach (var address in message.Bcc)
+            {
+                mailMessage.Bcc.Add(address.ToMailAddress());
+            }
+            foreach (var attachment in message.Attachments)
+            {
+                mailMessage.Attachments.Add(attachment.ToAttachment());
+            }
+            foreach (var address in message.Cc)
+            {
+                mailMessage.CC.Add(address.ToMailAddress());
+            }
+            foreach (var address in message.ReplyTo)
+            {
+                mailMessage.ReplyToList.Add(address.ToMailAddress());
+            }
+            foreach (var header in message.CustomHeaders)
+            {
+                mailMessage.Headers.Add(header.Key, header.Value);
+            }
+
+            return mailMessage;
         }
 
-        public static IEnumerable<MailboxAddress> ToMailboxAddress(this IEnumerable<MailAddressDTO> dto)
+        public static MailAddress ToMailAddress(this MailAddressDTO dto)
         {
-            return dto.Select(x => ToMailboxAddress((MailAddressDTO) x));
+            if (dto == null)
+                return (MailAddress)null;
+            return new MailAddress(dto.Address, dto.DisplayName);
         }
 
-        public static MailboxAddress ToMailboxAddress(this MailAddressDTO dto)
+        public static Attachment ToAttachment(this AttachmentDTO dto)
         {
-            if (dto == null) return null;
-            return new MailboxAddress(dto.DisplayName, dto.Address);
+            if (dto == null)
+                return (Attachment)null;
+            return new Attachment(dto.Stream, dto.Name, dto.MimeType);
         }
 
     }
