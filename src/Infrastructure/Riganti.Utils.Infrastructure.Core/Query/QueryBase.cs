@@ -60,16 +60,57 @@ namespace Riganti.Utils.Infrastructure.Core
         /// </summary>
         public void AddSortCriteria(string fieldName, SortDirection direction = SortDirection.Ascending)
         {
-            // create the expression
-            var prop = typeof(TQueryableResult).GetTypeInfo().GetProperty(fieldName);
-            var param = Expression.Parameter(typeof(TQueryableResult), "i");
-            var expr = Expression.Lambda(Expression.Property(param, prop), param);
+            var propertyNames = fieldName.Split('.');
+            
+            Type lastSearchedPropertyType;
+            var expressionParameter = Expression.Parameter(typeof(TQueryableResult), "i");
+            
+            var resultExpressions = CreateExpression(propertyNames.First(),
+                                                                  expressionParameter,
+                                                                  out lastSearchedPropertyType);
+            
+            var objectBeingSearchedForProperty = lastSearchedPropertyType.GetTypeInfo();
+            
+            foreach (var propertyName in propertyNames.Skip(1))
+            {
+                resultExpressions = AddPropertyToExpression(propertyName,
+                    objectBeingSearchedForProperty,
+                    out lastSearchedPropertyType,
+                    resultExpressions);
+                
+                objectBeingSearchedForProperty = lastSearchedPropertyType.GetTypeInfo();
+            }
+             
+            var resultLambda = Expression.Lambda(resultExpressions, expressionParameter);
 
-            // call the method
-            typeof(QueryBase<TQueryableResult, TResult>).GetTypeInfo().GetMethod(nameof(AddSortCriteriaCore),
-                    BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(prop.PropertyType)
-                .Invoke(this, new object[] { expr, direction });
+            InvokeAddSortCriteriaCore(lastSearchedPropertyType, resultLambda, direction);
         }
+
+        private MemberExpression CreateExpression(string propertyName, Expression expressionParameter, out Type addedPropertyType)
+        {
+            var property = typeof(TQueryableResult).GetTypeInfo().GetProperty(propertyName);
+            addedPropertyType = property.PropertyType;
+            return Expression.Property(expressionParameter, property);
+        }
+
+        private MemberExpression AddPropertyToExpression(string propertyName,
+            TypeInfo objectBeingSearchedForProperty,
+            out Type addedPropertyType,
+            MemberExpression expression)
+        {
+            var property = objectBeingSearchedForProperty.GetProperty(propertyName);
+            expression = Expression.Property(expression, property);
+            addedPropertyType = property.PropertyType;
+            return expression;
+        }
+        
+        private void InvokeAddSortCriteriaCore(Type tKey, LambdaExpression expression, SortDirection direction)
+        {
+            typeof(QueryBase<TQueryableResult, TResult>).GetTypeInfo().GetMethod(nameof(AddSortCriteriaCore),
+                    BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(tKey)
+                .Invoke(this, new object[] {expression, direction});
+        }
+
 
         public void ClearSortCriteria()
         {

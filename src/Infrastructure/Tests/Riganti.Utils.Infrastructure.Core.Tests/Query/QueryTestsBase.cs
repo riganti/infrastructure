@@ -11,7 +11,12 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
                 FirstName = "Humphrey",
                 LastName = "Appleby",
                 CategoryId = 2,
-                Truthful = false
+                Truthful = false,
+                Address = new Address()
+                {
+                    City = "Small City",
+                    Street = "Short Street"
+                }
             },
             new CustomerTestData()
             {
@@ -22,7 +27,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
                 Address = new Address()
                 {
                     City = "New York",
-                    Street = "BigStreet"
+                    Street = "Big Street"
                 }
             },
             new CustomerTestData()
@@ -34,7 +39,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
                 Address = new Address()
                 {
                     City = "Prague",
-                    Street = "BigStreet"
+                    Street = "Big Street"
                 }
             }
         }.AsQueryable();
