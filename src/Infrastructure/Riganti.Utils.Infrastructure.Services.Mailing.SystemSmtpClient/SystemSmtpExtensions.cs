@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 
-namespace Riganti.Utils.Infrastructure.Services.Mailing
+namespace Riganti.Utils.Infrastructure.Services.Mailing.SystemSmtpClient
 {
-    public static class Extensions
+    public static class SystemSmtpExtensions
     {
-
         public static MailMessage ToMailMessage(this MailMessageDTO message)
         {
             var mailMessage = new MailMessage()

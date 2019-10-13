@@ -23,4 +23,13 @@
         <LangVersion>7.1</LangVersion>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="MailKit" Version="1.10.2" />
+        <PackageReference Include="MimeKit" Version="1.10.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj" />
+    </ItemGroup>
+
 </Project>

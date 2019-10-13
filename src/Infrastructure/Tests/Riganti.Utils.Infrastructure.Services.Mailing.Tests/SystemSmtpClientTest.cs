@@ -3,18 +3,19 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Riganti.Utils.Infrastructure.Services.Mailing.SystemSmtpClient;
 using Xunit;
 
 namespace Riganti.Utils.Infrastructure.Services.Mailing.Tests
 {
-    public class PickupFolderMailSenderTest
+    public class SystemSmtpClientTest
     {
 
         [Fact]
         public async Task SendPlainTextMail_Test()
         {
             var tempFolder = CreateTempFolder("plain");
-            var mx = new SmtpClientMailSender(CreateSmtpClient(tempFolder));
+            var mx = new SystemSmtpClientMailSender(CreateSmtpClient(tempFolder));
             var msg = new MailMessageDTO
             {
                 From = new MailAddressDTO("sender@example.com", "Example Sender"),
@@ -31,7 +32,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing.Tests
         public async Task SendHtmlMail_Test()
         {
             var tempFolder = CreateTempFolder("html");
-            var mx = new SmtpClientMailSender(CreateSmtpClient(tempFolder));
+            var mx = new SystemSmtpClientMailSender(CreateSmtpClient(tempFolder));
             var msg = new MailMessageDTO
             {
                 From = new MailAddressDTO("sender@example.com", "Example Sender"),
@@ -48,7 +49,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing.Tests
         public async Task SendAlternateMail_Test()
         {
             var tempFolder = CreateTempFolder("alternate");
-            var mx = new SmtpClientMailSender(CreateSmtpClient(tempFolder));
+            var mx = new SystemSmtpClientMailSender(CreateSmtpClient(tempFolder));
             var msg = new MailMessageDTO
             {
                 From = new MailAddressDTO("sender@example.com", "Example Sender"),
@@ -66,7 +67,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing.Tests
         public async Task SendMailWithAttachment_Test()
         {
             var tempFolder = CreateTempFolder("attachment");
-            var mx = new SmtpClientMailSender(CreateSmtpClient(tempFolder));
+            var mx = new SystemSmtpClientMailSender(CreateSmtpClient(tempFolder));
             var msg = new MailMessageDTO
             {
                 From = new MailAddressDTO("sender@example.com", "Example Sender"),

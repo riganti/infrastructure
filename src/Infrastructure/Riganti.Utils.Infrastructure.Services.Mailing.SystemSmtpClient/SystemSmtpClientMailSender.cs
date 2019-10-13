@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Riganti.Utils.Infrastructure.Services.Mailing
+namespace Riganti.Utils.Infrastructure.Services.Mailing.SystemSmtpClient
 {
-    public class SmtpClientMailSender : IMailSender
+    public class SystemSmtpClientMailSender : IMailSender
     {
         private SmtpClient SmtpClient { get; }
 
 
-        public SmtpClientMailSender(SmtpClient smtpClient)
+        public SystemSmtpClientMailSender(SmtpClient smtpClient)
         {
             SmtpClient = smtpClient;
         }

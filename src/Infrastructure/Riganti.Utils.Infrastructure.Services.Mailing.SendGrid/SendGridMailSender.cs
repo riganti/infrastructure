@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Riganti.Utils.Infrastructure.Services.Mailing;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace Riganti.Utils.Infrastructure.Services.Mailing.SendGrid.Mailing
+namespace Riganti.Utils.Infrastructure.Services.Mailing.SendGrid
 {
     public class SendGridMailSender : IMailSender
     {
@@ -55,7 +53,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing.SendGrid.Mailing
                 msg.HtmlContent = message.BodyHtml;
             }
 
-            ProcessTemplate(msg, message.Template);
+            ProcessTemplate(msg, message.MailingTemplate);
 
             OnMessageSending(msg);
             return web.SendEmailAsync(msg);
@@ -73,12 +71,12 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing.SendGrid.Mailing
             return ms;
         }
 
-        private void ProcessTemplate(SendGridMessage message, ITemplate template)
+        private void ProcessTemplate(SendGridMessage message, IMailingTemplate mailingTemplate)
         {
-            if (template != null)
+            if (mailingTemplate != null)
             {
-                message.SetTemplateId(template.TemplateId);
-                foreach (var substitution in template.Substitution)
+                message.SetTemplateId(mailingTemplate.TemplateId);
+                foreach (var substitution in mailingTemplate.Substitution)
                 {
                     message.AddSubstitution(substitution.Key, substitution.Value?.ToString() ?? "");
                 }

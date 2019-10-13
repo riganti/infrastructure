@@ -39,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Riganti.Utils.Infrastructure.Services.Mailing.MailKit\Riganti.Utils.Infrastructure.Services.Mailing.MailKit.csproj" />
     <ProjectReference Include="..\..\Riganti.Utils.Infrastructure.Services.Mailing.SystemSmtpClient\Riganti.Utils.Infrastructure.Services.Mailing.SystemSmtpClient.csproj" />
     <ProjectReference Include="..\..\Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj" />
   </ItemGroup>
