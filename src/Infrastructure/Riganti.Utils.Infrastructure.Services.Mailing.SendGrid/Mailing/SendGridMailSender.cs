@@ -7,7 +7,7 @@ using Riganti.Utils.Infrastructure.Services.Mailing;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace Riganti.Utils.Infrastructure.Services.SendGrid.Mailing
+namespace Riganti.Utils.Infrastructure.Services.Mailing.SendGrid.Mailing
 {
     public class SendGridMailSender : IMailSender
     {

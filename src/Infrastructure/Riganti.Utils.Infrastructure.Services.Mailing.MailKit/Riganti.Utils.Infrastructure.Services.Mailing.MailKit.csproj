@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <VersionPrefix>2.2.0-rc2</VersionPrefix>
+        <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+        <PackageId>Riganti.Utils.Infrastructure.Services.Amazon.SES</PackageId>
+        <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
+        <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
+        <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+        <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+        <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+        <Company>RIGANTI</Company>
+        <Authors>RIGANTI</Authors>
+        <Description>Infrastructure project setup for building modern enterprise applications using EntityFramework or Azure Table Storage.</Description>
+        <Copyright>Copyright 2017 (c) Riganti s.r.o. - All rights reserved.</Copyright>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageTags>infrastructure utils enterprise services amazon</PackageTags>
+        <PackageLicenseUrl>https://github.com/riganti/infrastructure/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageProjectUrl>https://github.com/riganti/infrastructure</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/riganti/infrastructure.git</RepositoryUrl>
+        <PackageIconUrl>https://raw.githubusercontent.com/riganti/infrastructure/master/img/logo_64x64_transparent.png</PackageIconUrl>
+        <LangVersion>7.1</LangVersion>
+    </PropertyGroup>
+
+</Project>

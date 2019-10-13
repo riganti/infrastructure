@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Riganti.Utils.Infrastructure.Services.SendGrid.Mailing
+namespace Riganti.Utils.Infrastructure.Services.Mailing.SendGrid.Mailing
 {
     public class TemplateDTO : ITemplate
     {

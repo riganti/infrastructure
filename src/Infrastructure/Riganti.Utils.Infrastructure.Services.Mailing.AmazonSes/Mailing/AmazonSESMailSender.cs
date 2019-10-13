@@ -5,7 +5,7 @@ using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
 using Riganti.Utils.Infrastructure.Services.Mailing;
 
-namespace Riganti.Utils.Infrastructure.Services.Amazon.SES
+namespace Riganti.Utils.Infrastructure.Services.Mailing.AmazonSes
 {
     public class AmazonSESMailSender : IMailSender
     {
