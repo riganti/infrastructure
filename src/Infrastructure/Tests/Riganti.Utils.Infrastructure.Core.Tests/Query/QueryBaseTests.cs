@@ -84,6 +84,19 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
         }
 
         [Fact]
+        public void AddSortCriteriaString_SortUsingNestedEntity()
+        {
+            var querySUT = CreateQueryBaseStub();
+            Expression<Func<CustomerTestData, string>> sortExpression = customer => customer.Address.City;
+            querySUT.AddSortCriteria($"{nameof(Address)}.{nameof(Address.City)}", SortDirection.Descending);
+
+            var queryResult = querySUT.Execute();
+
+            Assert.Equal(customers.OrderByDescending(sortExpression), queryResult);
+        }
+        
+        
+        [Fact]
         public void GetTotalRowCount_ReturnsDataCount()
         {
             var querySUT = CreateQueryBaseStub();
