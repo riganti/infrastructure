@@ -2,11 +2,10 @@
 using System.Linq;
 using MimeKit;
 
-namespace Riganti.Utils.Infrastructure.Services.Mailing
+namespace Riganti.Utils.Infrastructure.Services.Mailing.MailKit
 {
-    public static class Extensions
+    public static class MailKitExtensions
     {
-
         public static MimeMessage ToMimeMessage(this MailMessageDTO dto)
         {
             var msg = new MimeMessage();

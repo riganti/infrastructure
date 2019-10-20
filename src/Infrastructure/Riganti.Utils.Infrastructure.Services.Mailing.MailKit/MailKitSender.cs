@@ -1,14 +1,15 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Net.Security;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 
-namespace Riganti.Utils.Infrastructure.Services.Mailing
+namespace Riganti.Utils.Infrastructure.Services.Mailing.MailKit
 {
-    public class SmtpMailSender : IMailSender
+    public class MailKitSender : IMailSender
     {
-
         public string HostName { get; }
 
         public int Port { get; }
@@ -21,7 +22,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
 
         public RemoteCertificateValidationCallback ServerCertificateValidationCallback { get; }
 
-        public SmtpMailSender(string hostName, int port, string userName, string password, bool allowSsl, RemoteCertificateValidationCallback sslCallback)
+        public MailKitSender(string hostName, int port, string userName, string password, bool allowSsl, RemoteCertificateValidationCallback sslCallback)
         {
             this.HostName = hostName;
             this.Port = port;
