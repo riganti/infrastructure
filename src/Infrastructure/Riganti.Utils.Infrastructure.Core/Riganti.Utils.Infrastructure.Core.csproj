@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>2.2.2</VersionPrefix>
-    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Core</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Core</PackageId>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>

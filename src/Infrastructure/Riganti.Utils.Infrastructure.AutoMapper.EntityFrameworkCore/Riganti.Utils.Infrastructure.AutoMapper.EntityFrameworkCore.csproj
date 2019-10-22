@@ -2,10 +2,9 @@
 
   <PropertyGroup>
     <VersionPrefix>2.2.2</VersionPrefix>
-    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore</PackageId>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -22,16 +21,6 @@
     <PackageIconUrl>https://raw.githubusercontent.com/riganti/infrastructure/master/img/logo_64x64_transparent.png</PackageIconUrl>
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
-
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
-    <PackageReference Include="System.Reflection" Version="4.3.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />

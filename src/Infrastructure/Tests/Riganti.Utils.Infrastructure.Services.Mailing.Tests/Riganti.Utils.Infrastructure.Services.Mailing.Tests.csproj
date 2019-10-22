@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.0;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.0</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Services.Mailing.Tests</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Riganti.Utils.Infrastructure.Services.Smtp.Tests</PackageId>
@@ -28,12 +28,6 @@
     <PackageReference Include="Moq" Version="4.7.145" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <PackageReference Include="moq" Version="4.7.145" />
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
   <ItemGroup>

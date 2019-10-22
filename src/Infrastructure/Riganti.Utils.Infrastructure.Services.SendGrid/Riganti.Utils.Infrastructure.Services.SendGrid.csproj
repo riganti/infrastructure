@@ -2,11 +2,9 @@
 
   <PropertyGroup>
     <VersionPrefix>2.2.2</VersionPrefix>
-    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Services.SendGrid</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Services.SendGrid</PackageId>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
-    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -26,11 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
   <ItemGroup>

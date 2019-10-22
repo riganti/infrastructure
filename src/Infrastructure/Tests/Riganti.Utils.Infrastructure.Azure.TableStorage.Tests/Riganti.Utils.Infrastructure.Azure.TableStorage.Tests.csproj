@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>    
-    <TargetFrameworks>netcoreapp1.0;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.0</TargetFrameworks>
     <Company>RIGANTI</Company>
     <AssemblyName>Riganti.Utils.Infrastructure.Azure.TableStorage.Tests</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Azure.TableStorage.Tests</PackageId>
