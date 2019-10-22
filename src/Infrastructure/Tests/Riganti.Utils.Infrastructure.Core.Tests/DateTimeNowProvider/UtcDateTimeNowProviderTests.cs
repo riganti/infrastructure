@@ -12,7 +12,14 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.DateTimeNowProvider
         {
             var utcDateTimeNowProviderValue = utcDateTimeProviderSUT.Now;
 
-            Assert.True(DateTime.Compare(utcDateTimeNowProviderValue, DateTime.UtcNow) == 0);
+            Assert.True(AreDateTimeClose(DateTime.Now, utcDateTimeNowProviderValue));
+        }
+
+        public bool AreDateTimeClose(DateTime time, DateTime time2)
+        {
+            if (time.AddSeconds(-2) > time2 && time2 < time.AddSeconds(2))
+                return true;
+            return false;
         }
     }
 }
