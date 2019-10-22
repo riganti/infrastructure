@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.0;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Core.Tests</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Riganti.Utils.Infrastructure.Core.Tests</PackageId>

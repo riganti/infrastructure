@@ -41,8 +41,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests", "Tests\Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests\Riganti.Utils.Infrastructure.EntityFrameworkCore.Tests.csproj", "{1373AA88-83A9-48E2-8C29-782135CB98AD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.AutoMapper.EntityFramework", "Riganti.Utils.Infrastructure.AutoMapper.EntityFramework\Riganti.Utils.Infrastructure.AutoMapper.EntityFramework.csproj", "{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore", "Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore\Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore.csproj", "{584AF547-0311-4EEA-AC86-83F082C0BFEA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Services.Mailing.Tests", "Tests\Riganti.Utils.Infrastructure.Services.Mailing.Tests\Riganti.Utils.Infrastructure.Services.Mailing.Tests.csproj", "{7EFFD697-35E1-4A38-9E80-5710DC8601D2}"
@@ -302,18 +300,6 @@ Global
 		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Release|x64.Build.0 = Release|Any CPU
 		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Release|x86.ActiveCfg = Release|Any CPU
 		{1373AA88-83A9-48E2-8C29-782135CB98AD}.Release|x86.Build.0 = Release|Any CPU
-		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Debug|x64.Build.0 = Debug|Any CPU
-		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Debug|x86.Build.0 = Debug|Any CPU
-		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Release|x64.ActiveCfg = Release|Any CPU
-		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Release|x64.Build.0 = Release|Any CPU
-		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Release|x86.ActiveCfg = Release|Any CPU
-		{EC3A0C41-9EED-45A8-8341-CAB17B11DD85}.Release|x86.Build.0 = Release|Any CPU
 		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{584AF547-0311-4EEA-AC86-83F082C0BFEA}.Debug|x64.ActiveCfg = Debug|Any CPU

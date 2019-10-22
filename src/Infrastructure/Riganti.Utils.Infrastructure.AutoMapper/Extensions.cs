@@ -20,7 +20,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Func<TDestinationItem, bool> destinationFilter = null
             )
         {
-            config.ResolveUsing(new DropAndCreateCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem>(projection, removeCallback, destinationFilter), sourceCollectionSelector);
+            config.MapFrom(new DropAndCreateCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem>(projection, removeCallback, destinationFilter), sourceCollectionSelector);
         }
 
         private static void SyncCollectionByKeyReflectionOnly<TSource, TSourceItem, TDestination, TDestinationItem, TKey>
@@ -29,6 +29,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
                 Expression<Func<TSourceItem, TKey>> sourceKeySelector,
                 Expression<Func<TDestinationItem, TKey>> destinationSelector,
+                IMapper mapper,
                 Func<TSourceItem, TDestinationItem> createFunction = null,
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
                 Action<TDestinationItem> removeFunction = null,
@@ -36,7 +37,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Func<TDestinationItem, bool> destinationFilter = null
             )
         {
-            SyncCollectionByKey(config, sourceCollectionSelector, sourceKeySelector.Compile(), destinationSelector.Compile(), createFunction, updateFunction, removeFunction, keepRemovedItemsInDestinationCollection, destinationFilter);
+            SyncCollectionByKey(config, sourceCollectionSelector, sourceKeySelector.Compile(), destinationSelector.Compile(), mapper, createFunction, updateFunction, removeFunction, keepRemovedItemsInDestinationCollection, destinationFilter);
         }
 
 
@@ -46,6 +47,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
                 Func<TSourceItem, TKey> sourceKeySelector,
                 Func<TDestinationItem, TKey> destinationSelector,
+                IMapper mapper,
                 Func<TSourceItem, TDestinationItem> createFunction = null,
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
                 Action<TDestinationItem> removeFunction = null,
@@ -53,12 +55,12 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Func<TDestinationItem, bool> destinationFilter = null
             )
         {
-            config.ResolveUsing(new SyncByKeyCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem, TKey>()
+            config.MapFrom(new SyncByKeyCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem, TKey>()
             {
                 SourceKeySelector = sourceKeySelector,
                 DestinationKeySelector = destinationSelector,
-                CreateFunction = createFunction ?? Mapper.Map<TSourceItem, TDestinationItem>,
-                UpdateFunction = updateFunction ?? ((s, d) => Mapper.Map(s, d)),
+                CreateFunction = createFunction ?? mapper.Map<TSourceItem, TDestinationItem>,
+                UpdateFunction = updateFunction ?? ((s, d) => mapper.Map(s, d)),
                 RemoveFunction = removeFunction ?? (d => { }),
                 KeepRemovedItemsInDestinationCollection = keepRemovedItemsInDestinationCollection,
                 DestinationFilter = destinationFilter ?? (e => true)
