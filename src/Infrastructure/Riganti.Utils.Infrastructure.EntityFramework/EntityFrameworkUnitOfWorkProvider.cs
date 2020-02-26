@@ -47,7 +47,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
 
         public IUnitOfWorkTransactionScope<TDbContext> CreateTransactionScope()
         {
-	        return new UnitOfWorkTransactionScope<TDbContext>(this, IsolationLevel.ReadCommitted);
+	        return new UnitOfWorkTransactionScope<TDbContext>(this);
         }
 
         /// <summary>

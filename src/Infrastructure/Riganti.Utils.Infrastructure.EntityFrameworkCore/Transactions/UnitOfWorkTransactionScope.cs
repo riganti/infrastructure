@@ -23,30 +23,33 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore.Transactions
 			this.unitOfWorkProvider = unitOfWorkProvider;
 		}
 
-		public async Task<UnitOfWorkTransactionScopeResult> ExecuteAsync(Func<EntityFrameworkUnitOfWork<TDbContext>, Task> transactionBody)
+		public async Task<TResult> ExecuteAsync<TResult>(Func<EntityFrameworkUnitOfWork<TDbContext>, Task<TResult>> transactionBody)
 		{
 			using (var uow = (EntityFrameworkUnitOfWork<TDbContext>)unitOfWorkProvider.Create(DbContextOptions.AlwaysCreateOwnContext))
 			using (var trans = uow.Context.Database.BeginTransaction())
 			{
-				UnitOfWorkTransactionScopeResult? result = null;
+				var committed = false;
+				TResult result;
 
 				try
 				{
 					uow.IsInTransaction = true;
 
-					await transactionBody(uow);
+					result = await transactionBody(uow);
 
 					if (uow.CommitsCount > 0 && !uow.CommitPending)
 					{
 						trans.Commit();
-						result = UnitOfWorkTransactionScopeResult.Commit;
+						AfterCommit();
+						committed = true;
 					}
 				}
 				catch (Exception e)
 				{
 					if (e is RollbackRequestedException)
 					{
-						// someone called rollback, no worries here, continue to finally
+						// someone called rollback, set result to default and continue to finally
+						result = default;
 					}
 					else
 					{
@@ -56,25 +59,42 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore.Transactions
 				}
 				finally
 				{
-					if (!result.HasValue)
+					if (!committed)
 					{
 						trans.Rollback();
-						result = UnitOfWorkTransactionScopeResult.Rollback;
+						AfterRollback();
 					}
 				}
 
-				return result.Value;
+				return result;
 			}
 		}
 
-		public UnitOfWorkTransactionScopeResult Execute(Action<EntityFrameworkUnitOfWork<TDbContext>> transactionBody)
+		protected virtual void AfterRollback()
 		{
-			// no issue with deadlock since it runs synchronously
-			return ExecuteAsync(uow =>
+		}
+
+		protected virtual void AfterCommit()
+		{
+		}
+
+		public Task ExecuteAsync(Func<EntityFrameworkUnitOfWork<TDbContext>, Task> transactionBody) =>
+			ExecuteAsync<object>(async uow =>
+			{
+				await transactionBody(uow);
+				return default;
+			});
+
+		public TResult Execute<TResult>(Func<EntityFrameworkUnitOfWork<TDbContext>, TResult> transactionBody) =>
+			ExecuteAsync(uow => Task.FromResult(transactionBody(uow)))
+				.GetAwaiter()
+				.GetResult();
+
+		public void Execute(Action<EntityFrameworkUnitOfWork<TDbContext>> transactionBody)
+			=> Execute<object>(uow =>
 			{
 				transactionBody(uow);
-				return Task.CompletedTask;
-			}).GetAwaiter().GetResult();
-		}
+				return default;
+			});
 	}
 }

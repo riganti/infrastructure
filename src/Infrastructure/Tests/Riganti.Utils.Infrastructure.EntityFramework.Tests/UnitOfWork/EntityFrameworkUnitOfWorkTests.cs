@@ -321,9 +321,10 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
 
             var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider<InMemoryDbContext>(unitOfWorkRegistryStub, dbContextFactory);
 
-            var scope = unitOfWorkProvider.CreateTransactionScope();
+            var scopeMock = new Mock<UnitOfWorkTransactionScope<InMemoryDbContext>>(unitOfWorkProvider);
+            var scope = scopeMock.Object;
 
-            var result = await scope.ExecuteAsync(async uowParent =>
+            await scope.ExecuteAsync(async uowParent =>
             {
                 Assert.True(uowParent.IsInTransaction);
 
@@ -348,7 +349,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
                 throw new Exception("Rollback exception not thrown!");
             });
 
-            Assert.Equal(UnitOfWorkTransactionScopeResult.Rollback, result);
+            scopeMock.Protected().Verify("AfterRollback", Times.Once());
         }
 
         [Fact]
@@ -380,7 +381,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
             }
 	        catch (Exception e) when (e.Message == exceptionKey)
 	        {
-		        
+		        // test exception caught, passed
 	        }
         }
 
@@ -392,10 +393,11 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
             var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
 
             var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider<InMemoryDbContext>(unitOfWorkRegistryStub, dbContextFactory);
+            
+            var scopeMock = new Mock<UnitOfWorkTransactionScope<InMemoryDbContext>>(unitOfWorkProvider);
+            var scope = scopeMock.Object;
 
-            var scope = unitOfWorkProvider.CreateTransactionScope();
-
-            var result = await scope.ExecuteAsync(async uowParent =>
+            await scope.ExecuteAsync(async uowParent =>
             {
                 Assert.True(uowParent.IsInTransaction);
 
@@ -405,7 +407,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
                 Assert.False(uowParent.CommitPending);
             });
 
-            Assert.Equal(UnitOfWorkTransactionScopeResult.Commit, result);
+            scopeMock.Protected().Verify("AfterCommit", Times.Once());
         }
 
         [Fact]
@@ -416,10 +418,11 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
 	        var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
 
 	        var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider<InMemoryDbContext>(unitOfWorkRegistryStub, dbContextFactory);
+            
+	        var scopeMock = new Mock<UnitOfWorkTransactionScope<InMemoryDbContext>>(unitOfWorkProvider);
+	        var scope = scopeMock.Object;
 
-	        var scope = unitOfWorkProvider.CreateTransactionScope();
-
-	        var result = await scope.ExecuteAsync(async uowParent =>
+	        await scope.ExecuteAsync(async uowParent =>
 	        {
 		        Assert.True(uowParent.IsInTransaction);
 
@@ -450,8 +453,8 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
 			        Assert.False(uowParent.CommitPending);
 		        }
 	        });
-
-	        Assert.Equal(UnitOfWorkTransactionScopeResult.Commit, result);
+            
+	        scopeMock.Protected().Verify("AfterCommit", Times.Once());
         }
 
         [Fact]
@@ -462,10 +465,11 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
             var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
 
             var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider<InMemoryDbContext>(unitOfWorkRegistryStub, dbContextFactory);
+            
+            var scopeMock = new Mock<UnitOfWorkTransactionScope<InMemoryDbContext>>(unitOfWorkProvider);
+            var scope = scopeMock.Object;
 
-            var scope = unitOfWorkProvider.CreateTransactionScope();
-
-            var result = scope.Execute(uowParent =>
+            scope.Execute(uowParent =>
             {
                 Assert.True(uowParent.IsInTransaction);
 
@@ -475,7 +479,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
                 Assert.False(uowParent.CommitPending);
             });
 
-            Assert.Equal(UnitOfWorkTransactionScopeResult.Commit, result);
+            scopeMock.Protected().Verify("AfterCommit", Times.Once());
         }
 
         [Fact]
