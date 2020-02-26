@@ -8,9 +8,12 @@ using Xunit;
 
 #if EFCORE
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Riganti.Utils.Infrastructure.EntityFrameworkCore.Transactions;
 #else
 
 using System.Data.Entity;
+using Riganti.Utils.Infrastructure.EntityFramework.Transactions;
 
 #endif
 
@@ -310,6 +313,172 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
         }
 
         [Fact]
+        public async Task Commit_Transaction_CallRollback()
+        {
+            var dbContextFactory = GetContextFactory();
+
+            var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
+
+            var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider<InMemoryDbContext>(unitOfWorkRegistryStub, dbContextFactory);
+
+            var scope = unitOfWorkProvider.CreateTransactionScope();
+
+            var result = await scope.ExecuteAsync(async uowParent =>
+            {
+                Assert.True(uowParent.IsInTransaction);
+
+                await uowParent.CommitAsync();
+
+                Assert.Equal(1, uowParent.CommitsCount);
+                Assert.False(uowParent.CommitPending);
+
+                using (var uowChild = (EntityFrameworkUnitOfWork<InMemoryDbContext>)unitOfWorkProvider.Create())
+                {
+                    await uowChild.CommitAsync();
+
+                    Assert.Equal(1, uowChild.CommitsCount);
+                    Assert.False(uowChild.CommitPending);
+
+	                Assert.Equal(2, uowParent.CommitsCount);
+	                Assert.False(uowParent.CommitPending);
+                }
+
+                uowParent.RollbackTransaction();
+	            
+                throw new Exception("Rollback exception not thrown!");
+            });
+
+            Assert.Equal(UnitOfWorkTransactionScopeResult.Rollback, result);
+        }
+
+        [Fact]
+        public async Task Commit_Transaction_CallRollback_OnException()
+        {
+	        var dbContextFactory = GetContextFactory();
+
+	        var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
+
+	        var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider<InMemoryDbContext>(unitOfWorkRegistryStub, dbContextFactory);
+
+	        var scope = unitOfWorkProvider.CreateTransactionScope();
+
+	        var exceptionKey = Guid.NewGuid().ToString();
+
+	        try
+	        {
+		        await scope.ExecuteAsync(async uowParent =>
+		        {
+			        Assert.True(uowParent.IsInTransaction);
+
+			        await uowParent.CommitAsync();
+
+			        Assert.Equal(1, uowParent.CommitsCount);
+			        Assert.False(uowParent.CommitPending);
+
+				    throw new Exception(exceptionKey);
+		        });
+            }
+	        catch (Exception e) when (e.Message == exceptionKey)
+	        {
+		        
+	        }
+        }
+
+        [Fact]
+        public async Task Commit_Transaction_CallCommit()
+        {
+            var dbContextFactory = GetContextFactory();
+
+            var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
+
+            var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider<InMemoryDbContext>(unitOfWorkRegistryStub, dbContextFactory);
+
+            var scope = unitOfWorkProvider.CreateTransactionScope();
+
+            var result = await scope.ExecuteAsync(async uowParent =>
+            {
+                Assert.True(uowParent.IsInTransaction);
+
+                await uowParent.CommitAsync();
+
+                Assert.Equal(1, uowParent.CommitsCount);
+                Assert.False(uowParent.CommitPending);
+            });
+
+            Assert.Equal(UnitOfWorkTransactionScopeResult.Commit, result);
+        }
+
+        [Fact]
+        public async Task Commit_Transaction_CallCommit_Nesting()
+        {
+	        var dbContextFactory = GetContextFactory();
+
+	        var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
+
+	        var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider<InMemoryDbContext>(unitOfWorkRegistryStub, dbContextFactory);
+
+	        var scope = unitOfWorkProvider.CreateTransactionScope();
+
+	        var result = await scope.ExecuteAsync(async uowParent =>
+	        {
+		        Assert.True(uowParent.IsInTransaction);
+
+		        await uowParent.CommitAsync();
+
+		        Assert.Equal(1, uowParent.CommitsCount);
+		        Assert.False(uowParent.CommitPending);
+
+		        using (var uowChild = (EntityFrameworkUnitOfWork<InMemoryDbContext>)unitOfWorkProvider.Create())
+		        {
+			        await uowChild.CommitAsync();
+
+			        Assert.Equal(1, uowChild.CommitsCount);
+			        Assert.False(uowChild.CommitPending);
+
+			        Assert.Equal(2, uowParent.CommitsCount);
+			        Assert.False(uowParent.CommitPending);
+
+			        using (var uowChildChild = (EntityFrameworkUnitOfWork<InMemoryDbContext>)unitOfWorkProvider.Create())
+			        {
+				        await uowChildChild.CommitAsync();
+			        }
+
+			        Assert.Equal(2, uowChild.CommitsCount);
+			        Assert.False(uowChild.CommitPending);
+
+			        Assert.Equal(3, uowParent.CommitsCount);
+			        Assert.False(uowParent.CommitPending);
+		        }
+	        });
+
+	        Assert.Equal(UnitOfWorkTransactionScopeResult.Commit, result);
+        }
+
+        [Fact]
+        public void Commit_Transaction_CallCommit_Sync()
+        {
+            var dbContextFactory = GetContextFactory();
+
+            var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
+
+            var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider<InMemoryDbContext>(unitOfWorkRegistryStub, dbContextFactory);
+
+            var scope = unitOfWorkProvider.CreateTransactionScope();
+
+            var result = scope.Execute(uowParent =>
+            {
+                Assert.True(uowParent.IsInTransaction);
+
+                uowParent.Commit();
+
+                Assert.Equal(1, uowParent.CommitsCount);
+                Assert.False(uowParent.CommitPending);
+            });
+
+            Assert.Equal(UnitOfWorkTransactionScopeResult.Commit, result);
+        }
+
+        [Fact]
         public void TryGetDbContext_UnitOfWorkRegistryHasUnitOfWork_ReturnCorrectDbContext()
         {
             var dbContext = new Mock<DbContext>().Object;
@@ -392,5 +561,30 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
                 dbContext.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
             }
         }
+
+        public class InMemoryDbContext : DbContext
+        {
+#if EFCORE
+			protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+			{
+				if (!optionsBuilder.IsConfigured)
+				{
+					optionsBuilder
+						.UseInMemoryDatabase(Guid.NewGuid().ToString())
+						.ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+				}
+			}
+#endif
+        }
+
+        private static Func<InMemoryDbContext> GetContextFactory()
+        {
+            return () =>
+                #if EFCORE
+            new InMemoryDbContext();
+#else
+            new Mock<InMemoryDbContext>().Object;
+#endif
+        } 
     }
 }
