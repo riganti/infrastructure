@@ -1,4 +1,4 @@
-![Build](https://rigantitfs.visualstudio.com/_apis/public/build/definitions/c822ec28-1813-4f5a-beb4-1017e12c262c/43/badge)
+![Build](https://rigantitfs.visualstudio.com/_apis/public/build/definitions/c822ec28-1813-4f5a-beb4-1017e12c262c/43/badge) ![NuGet](https://img.shields.io/nuget/v/Riganti.Utils.Infrastructure.Core.svg)
 # Riganti.Utils.Infrastructure
 Riganti.Utils.Infrastructure is an implementation of common enterprise architecture design patterns. This library can be used as a foundation of a business layer in your application.
 

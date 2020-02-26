@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.1.13</VersionPrefix>
+    <VersionPrefix>2.2.2</VersionPrefix>
     <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Services.Mailing</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Services.Mailing</PackageId>
@@ -32,10 +32,5 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
     <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MailKit" Version="1.10.2" />
-    <PackageReference Include="MimeKit" Version="1.10.1" />
   </ItemGroup>
 </Project>

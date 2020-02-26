@@ -19,7 +19,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
 
         public ICollection<KeyValuePair<string, string>> CustomHeaders { get; set; } = new List<KeyValuePair<string, string>>();
 
-        public ITemplate Template { get; set; }
+        public IMailingTemplate MailingTemplate { get; set; }
 
         public string Subject { get; set; }
 

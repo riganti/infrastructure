@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.1.13</VersionPrefix>
-    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
-    <AssemblyName>Riganti.Utils.Infrastructure.Services.SendGrid</AssemblyName>
-    <PackageId>Riganti.Utils.Infrastructure.Services.SendGrid</PackageId>
+    <VersionPrefix>2.2.0-rc2</VersionPrefix>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <AssemblyName>Riganti.Utils.Infrastructure.Services.Amazon.SES</AssemblyName>
+    <PackageId>Riganti.Utils.Infrastructure.Services.Amazon.SES</PackageId>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -15,7 +15,7 @@
     <Description>Infrastructure project setup for building modern enterprise applications using EntityFramework or Azure Table Storage.</Description>
     <Copyright>Copyright 2017 (c) Riganti s.r.o. - All rights reserved.</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageTags>infrastructure utils enterprise services sendgrid</PackageTags>
+    <PackageTags>infrastructure utils enterprise services amazon</PackageTags>
     <PackageLicenseUrl>https://github.com/riganti/infrastructure/blob/master/LICENSE</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/riganti/infrastructure</PackageProjectUrl>
@@ -26,6 +26,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj" />
+    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.SimpleEmail" Version="3.3.1.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
@@ -35,10 +40,6 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Sendgrid" Version="9.9.0" />
   </ItemGroup>
 
 </Project>

@@ -91,27 +91,29 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         public async Task<IEnumerable<TEntity>> GetAllAsync(string partitionKey)
         {
             TableContinuationToken continuationToken = null;
-            TableQuerySegment<TEntity> result;
+            var entities = new List<TEntity>();
             do
             {
-                result = await Context.GetAllAsync<TEntity>(partitionKey, continuationToken).ConfigureAwait(false);
+                var result = await Context.GetAllAsync<TEntity>(partitionKey, continuationToken).ConfigureAwait(false);
+                entities.AddRange(result.Results);
                 continuationToken = result.ContinuationToken;
             } while (continuationToken != null);
 
-            return result.Results;
+            return entities;
         }
 
         public async Task<IEnumerable<TEntity>> FindAllAsync(TableQuery<TEntity> query)
         {
             TableContinuationToken continuationToken = null;
-            TableQuerySegment<TEntity> result;
+            var entities = new List<TEntity>();
             do
             {
-                result = await Context.FindAsync(query, continuationToken).ConfigureAwait(false);
+                var result = await Context.FindAsync(query, continuationToken).ConfigureAwait(false);
+                entities.AddRange(result.Results);
                 continuationToken = result.ContinuationToken;
             } while (continuationToken != null);
 
-            return result.Results;
+            return entities;
         }
 
         public Task<TableQuerySegment<TEntity>> FindAsync(TableQuery<TEntity> query, TableContinuationToken continuationToken)

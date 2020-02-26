@@ -336,5 +336,61 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
             var value = EntityFrameworkUnitOfWork.TryGetDbContext(unitOfWorkProvider);
             Assert.Null(value);
         }
+
+        [Fact]
+        public async Task CommitAsync_WithCancellationTokenInNestedUow_SavedChangesInParentUow()
+        {
+            var dbContext = new Mock<DbContext>();
+            Func<DbContext> dbContextFactory = () => dbContext.Object;
+
+
+            var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
+
+            var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub, dbContextFactory);
+
+            using(var uow = unitOfWorkProvider.Create())
+            {
+                using (var nested = unitOfWorkProvider.Create())
+                {
+                    await nested.CommitAsync(new CancellationToken());
+
+                    // verify, that method has NEVER been called
+                    dbContext.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+                }
+
+                await uow.CommitAsync(new CancellationToken());
+
+                // verify, that method has been called ONCE
+                dbContext.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+            }
+        }
+
+        [Fact]
+        public async Task CommitAsync_WithoutCancellationTokenInNestedUow_SavedChangesInParentUow()
+        {
+            var dbContext = new Mock<DbContext>();
+            Func<DbContext> dbContextFactory = () => dbContext.Object;
+
+
+            var unitOfWorkRegistryStub = new ThreadLocalUnitOfWorkRegistry();
+
+            var unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(unitOfWorkRegistryStub, dbContextFactory);
+
+            using (var uow = unitOfWorkProvider.Create())
+            {
+                using (var nested = unitOfWorkProvider.Create())
+                {
+                    await nested.CommitAsync();
+
+                    // verify, that method has NEVER been called
+                    dbContext.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+                }
+
+                await uow.CommitAsync();
+
+                // verify, that method has been called ONCE
+                dbContext.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+            }
+        }
     }
 }

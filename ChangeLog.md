@@ -1,14 +1,32 @@
 # Change Log
 
+## 2.3.0
+- **Fix with breaking change!** Fixed insidious bug in EFCore and EF unit of work which appeared after async methods were added into facades (v2.2.0). In class `CrudFacadeBase` there is async method `SaveAsync` which calls `uow.CommitAsync(cancellationToken)`. If you called this in nested `uow` scope then it would raise `Context.SaveChanges` and that was wrong. PR [#43](https://github.com/riganti/infrastructure/pull/43)
+
+## 2.2.4
+ Add asynchronous metod in `DotvvmFacadeExtensions`.
+
+## 2.2.3
+- Fix - added missing `this` keyword for [Then overload in IncludeExtensions](https://github.com/riganti/infrastructure/blob/8055ea6ee4da68276f0429baa674356e3f6ecc64/src/Infrastructure/Riganti.Utils.Infrastructure.EntityFrameworkCore/IncludeExtensions.cs#L19).
+- Fix - added missing [`IsRefreshRequired` assignment in `LoadFromQuery` extension method](https://github.com/riganti/infrastructure/blob/8055ea6ee4da68276f0429baa674356e3f6ecc64/src/Infrastructure/Riganti.Utils.Infrastructure.DotVVM/DotvvmFacadeExtensions.cs#L53).
+
+## 2.2.2
+- Fix for Table Storage treating two different entities with same partition and row keys as one record.
+
+## 2.2.1
+- Fix for Table Storage not returning all entities correctly when browsing through storage with over 1,000 items.
 
 ## 2.2.0
-- Implement facades async.
-- Added checking for child UoW commit request
+- Added async methods into facades.
+- Added checking for child UoW commit request.
+- Updated SendGrid nuget.
+- Fixed bug in [MailerService](https://github.com/riganti/infrastructure/blob/e9e1a848ad492dbd4700dbfde2998f481c4bb287/src/Infrastructure/Riganti.Utils.Infrastructure.Services.Mailing/MailerService.cs) (empty `OverrideToAddresses`).
+- Added EF-[ThenInclude](https://github.com/riganti/infrastructure/blob/a7895cce307d00fee515b90fa9742e58b1333164/src/Infrastructure/Riganti.Utils.Infrastructure.EntityFrameworkCore/IncludeExtensions.cs#L19) support for collections.
 
 ## 2.1.8
-- Added `virtual` to async methods in repository
-- Added [ITemplate](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services.Mailing/ITemplate.cs) in [MailMessageDTO](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services.Mailing/MailMessageDTO.cs)
-- Added substitution feature to [SendGridMailSender](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services.SendGrid/Mailing/SendGridMailSender.cs)
+- Added `virtual` to async methods in repository.
+- Added [ITemplate](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services.Mailing/ITemplate.cs) in [MailMessageDTO](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services.Mailing/MailMessageDTO.cs).
+- Added substitution feature to [SendGridMailSender](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Services.SendGrid/Mailing/SendGridMailSender.cs).
 
 ## 2.1.7
 - Added missing implemntation of `LogException` in [XunitOutputLogger](https://github.com/riganti/infrastructure/blob/master/src/Infrastructure/Riganti.Utils.Infrastructure.Testing/XunitOutputLogger.cs).

@@ -31,7 +31,7 @@ namespace Riganti.Utils.Infrastructure.Core
             await CommitAsync(default(CancellationToken));
         }
 
-        public async Task CommitAsync(CancellationToken cancellationToken)
+        public virtual async Task CommitAsync(CancellationToken cancellationToken)
         {
             await CommitAsyncCore(cancellationToken);
 

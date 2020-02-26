@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.1.13</VersionPrefix>
+    <VersionPrefix>2.2.2</VersionPrefix>
     <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.AspNetCore</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.AspNetCore</PackageId>

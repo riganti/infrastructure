@@ -291,7 +291,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         /// </summary>
         private TEntity GetLocal<TEntity>(string partitionKey, string rowKey) where TEntity : ITableEntity
         {
-            return (TEntity)Entities.SingleOrDefault(x => x.PartitionKey == partitionKey && x.RowKey == rowKey);
+            return (TEntity)Entities.SingleOrDefault(x => x.PartitionKey == partitionKey && x.RowKey == rowKey && x.GetType() == typeof(TEntity));
         }
 
         private static void GuardObjectIsNotAlreadyIn(ITableEntity entity, HashSet<ITableEntity> entities)

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.1.13</VersionPrefix>
+    <VersionPrefix>2.2.2</VersionPrefix>
     <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Logging.ApplicationInsights</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Logging.ApplicationInsights</PackageId>
@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.4.0-beta2" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.4.0" />
   </ItemGroup>
 
 </Project>
