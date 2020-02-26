@@ -20,7 +20,7 @@
     <RepositoryUrl>https://github.com/riganti/infrastructure.git</RepositoryUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/riganti/infrastructure/master/img/logo_64x64_transparent.png</PackageIconUrl>
     <LangVersion>7.1</LangVersion>
-    <Version>2.3.1-pre02</Version>
+    <Version>2.3.1-pre03</Version>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
