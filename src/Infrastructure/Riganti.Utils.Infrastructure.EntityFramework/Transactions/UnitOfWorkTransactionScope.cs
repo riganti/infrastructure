@@ -79,11 +79,11 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Transactions
 			}
 		}
 
-		protected virtual void AfterRollback()
+		protected internal virtual void AfterRollback()
 		{
 		}
 
-		protected virtual void AfterCommit()
+		protected internal virtual void AfterCommit()
 		{
 		}
 
