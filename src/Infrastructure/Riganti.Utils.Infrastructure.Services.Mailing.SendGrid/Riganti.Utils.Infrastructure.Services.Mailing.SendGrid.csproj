@@ -3,8 +3,7 @@
   <PropertyGroup>
     <VersionPrefix>2.2.0-rc2</VersionPrefix>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
-    <AssemblyName>Riganti.Utils.Infrastructure.Services.SendGrid</AssemblyName>
-    <PackageId>Riganti.Utils.Infrastructure.Services.SendGrid</PackageId>
+    <PackageId>Riganti.Utils.Infrastructure.Services.Mailing.SendGrid</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>

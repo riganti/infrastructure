@@ -3,8 +3,8 @@
     <PropertyGroup>
         <VersionPrefix>2.2.0-rc2</VersionPrefix>
         <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
-        <PackageId>Riganti.Utils.Infrastructure.Services.Amazon.SES</PackageId>
-        <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+      <PackageId>Riganti.Utils.Infrastructure.Services.Mailing.MailKit</PackageId>
+      <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
         <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
         <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
         <Company>RIGANTI</Company>
