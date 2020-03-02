@@ -83,6 +83,8 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         /// <inheritdoc cref="ICheckChildCommitUnitOfWork.CommitPending" />
         public bool CommitPending { get; private set; }
 
+        public bool RollbackRequested { get; private set; }
+
         /// <summary>
         /// Count of full CommitCore calls.
         /// Informs that there were changes being saved.
@@ -172,6 +174,13 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         {
             if (IsInTransaction)
             {
+	            RollbackRequested = true;
+
+	            if (!HasOwnContext() && Parent is EntityFrameworkUnitOfWork<TDbContext> parentUow)
+	            {
+		            parentUow.RollbackRequested = true;
+	            }
+
                 throw new RollbackRequestedException();
             }
             else
@@ -184,9 +193,9 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         {
             CommitsCount++;
 
-            if (!HasOwnContext() && Parent is EntityFrameworkUnitOfWork<TDbContext> uow)
+            if (!HasOwnContext() && Parent is EntityFrameworkUnitOfWork<TDbContext> parentUow)
             {
-                uow.IncrementCommitsCount();
+	            parentUow.IncrementCommitsCount();
             }
         }
 

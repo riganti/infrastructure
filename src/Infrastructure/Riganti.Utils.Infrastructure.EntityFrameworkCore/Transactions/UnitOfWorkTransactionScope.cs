@@ -37,6 +37,12 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore.Transactions
 
 					result = await transactionBody(uow);
 
+					if (uow.RollbackRequested)
+					{
+						// user caught the exception, re-throw it here
+						throw new RollbackRequestedException();
+					}
+
 					if (uow.CommitsCount > 0 && !uow.CommitPending)
 					{
 						trans.Commit();
