@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks>net461</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Services.Mailing.Tests</AssemblyName>
-    <OutputType>Exe</OutputType>
     <PackageId>Riganti.Utils.Infrastructure.Services.Smtp.Tests</PackageId>
     <PackageVersion>2.0.0</PackageVersion>
     <Company>RIGANTI</Company>
@@ -24,11 +23,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="Moq" Version="4.7.145" />
-    <PackageReference Include="xunit" Version="2.2.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
-    <PackageReference Include="moq" Version="4.7.145" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="moq" Version="4.14.5" />
     <Reference Include="System" />
     <Reference Include="System.Net" />
     <Reference Include="Microsoft.CSharp" />

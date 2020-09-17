@@ -17,11 +17,11 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
             (
                 this IMemberConfigurationExpression<TSource, TDestination, ICollection<TDestinationItem>> config,
                 IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider,
+                IMapper provider,
                 Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
                 Func<TSourceItem, TDestinationItem> projection = null,
                 Action<TDestinationItem> removeCallback = null,
-                Func<TDestinationItem, bool> destinationFilter = null
-            )
+                Func<TDestinationItem, bool> destinationFilter = null)
             where TDbContext : DbContext
             where TDestinationItem : class
         {
@@ -34,7 +34,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 };
             }
 
-            Extensions.DropAndCreateCollection(config, sourceCollectionSelector, projection, removeCallback, destinationFilter);
+            Extensions.DropAndCreateCollection(config, provider, sourceCollectionSelector, projection, removeCallback, destinationFilter);
         }
 
 
@@ -93,6 +93,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
             (
                 this IMemberConfigurationExpression<TSource, TDestination, ICollection<TDestinationItem>> config,
                 IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider,
+                IMapper provider,
                 Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
                 Func<TSourceItem, TKey> sourceKeySelector,
                 Func<TDestinationItem, TKey> destinationKeySelector,
@@ -114,7 +115,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 };
             }
 
-            Extensions.SyncCollectionByKey(config, sourceCollectionSelector, sourceKeySelector, destinationKeySelector, createFunction, updateFunction, removeFunction, keepRemovedItemsInDestinationCollection, destinationFilter);
+            Extensions.SyncCollectionByKey(config, provider, sourceCollectionSelector, sourceKeySelector, destinationKeySelector, createFunction, updateFunction, removeFunction, keepRemovedItemsInDestinationCollection, destinationFilter);
         }
 
     }

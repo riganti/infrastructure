@@ -15,9 +15,9 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
 
         public Func<TDestinationItem, bool> DestinationFilter { get; }
 
-        public DropAndCreateCollectionResolver(Func<TSourceItem, TDestinationItem> projection = null, Action<TDestinationItem> removeCallback = null, Func<TDestinationItem, bool> destinationFilter = null)
+        public DropAndCreateCollectionResolver(IMapper mapper, Func<TSourceItem, TDestinationItem> projection = null, Action<TDestinationItem> removeCallback = null, Func<TDestinationItem, bool> destinationFilter = null)
         {
-            this.Projection = projection ?? Mapper.Map<TSourceItem, TDestinationItem>;
+            this.Projection = projection ?? mapper.Map<TSourceItem, TDestinationItem>;
             this.RemoveCallback = removeCallback ?? (_ => {});
             this.DestinationFilter = destinationFilter ?? (_ => true);
         }

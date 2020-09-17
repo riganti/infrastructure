@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>2.2.2</VersionPrefix>
-    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.DotVVM</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.DotVVM</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -28,7 +28,7 @@
     <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DotVVM.Core" Version="1.1.0" />
+    <PackageReference Include="DotVVM.Core" Version="2.4.0.1" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="System" />
