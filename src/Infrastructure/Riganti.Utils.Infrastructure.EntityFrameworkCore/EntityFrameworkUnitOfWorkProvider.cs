@@ -1,5 +1,6 @@
 using Riganti.Utils.Infrastructure.Core;
 using System;
+using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Riganti.Utils.Infrastructure.EntityFrameworkCore.Transactions;
 
@@ -37,6 +38,11 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         public IUnitOfWork Create(DbContextOptions options)
         {
             return CreateCore(options);
+        }
+
+        public IUnitOfWorkTransactionScope<TDbContext> CreateTransactionScope(IsolationLevel isolationLevel)
+        {
+            return new UnitOfWorkTransactionScope<TDbContext>(this, isolationLevel);
         }
 
         public IUnitOfWorkTransactionScope<TDbContext> CreateTransactionScope()

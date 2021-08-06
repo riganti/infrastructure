@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Data;
+using Microsoft.EntityFrameworkCore;
 using Riganti.Utils.Infrastructure.Core;
 using Riganti.Utils.Infrastructure.EntityFrameworkCore.Transactions;
 
@@ -16,6 +17,11 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         /// </summary>
         IUnitOfWork Create(DbContextOptions options);
 
+        /// <param name="isolationLevel">Isolation level of transactions.</param>
+        /// <returns>Object with Execute and ExecuteAsync methods.</returns>
+        IUnitOfWorkTransactionScope<TDbContext> CreateTransactionScope(IsolationLevel isolationLevel);
+
+        /// <returns>Object with Execute and ExecuteAsync methods.</returns>
         IUnitOfWorkTransactionScope<TDbContext> CreateTransactionScope();
     }
 }

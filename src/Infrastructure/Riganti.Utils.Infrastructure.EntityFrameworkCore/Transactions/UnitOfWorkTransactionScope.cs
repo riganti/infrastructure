@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore.Transactions
 {
     public class UnitOfWorkTransactionScope : UnitOfWorkTransactionScope<DbContext>
     {
-        public UnitOfWorkTransactionScope(IEntityFrameworkUnitOfWorkProvider<DbContext> unitOfWorkProvider) : base(unitOfWorkProvider)
+        public UnitOfWorkTransactionScope(IEntityFrameworkUnitOfWorkProvider<DbContext> unitOfWorkProvider, IsolationLevel isolationLevel) : base(unitOfWorkProvider, isolationLevel)
         {
         }
     }
@@ -17,16 +18,24 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore.Transactions
         where TDbContext : DbContext
     {
         private readonly IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider;
+        private readonly IsolationLevel isolationLevel;
 
         public UnitOfWorkTransactionScope(IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider)
+            : this(unitOfWorkProvider, IsolationLevel.ReadCommitted)
+        {
+        }
+
+        public UnitOfWorkTransactionScope(IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider, IsolationLevel isolationLevel)
         {
             this.unitOfWorkProvider = unitOfWorkProvider;
+            this.isolationLevel = isolationLevel;
         }
+
 
         public async Task<TResult> ExecuteAsync<TResult>(Func<EntityFrameworkUnitOfWork<TDbContext>, Task<TResult>> transactionBody)
         {
             using (var uow = (EntityFrameworkUnitOfWork<TDbContext>)unitOfWorkProvider.Create(DbContextOptions.AlwaysCreateOwnContext))
-            using (var trans = uow.Context.Database.BeginTransaction())
+            using (var trans = await uow.Context.Database.BeginTransactionAsync(isolationLevel))
             {
                 var committed = false;
                 TResult result;
