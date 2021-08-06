@@ -19,7 +19,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
     /// <summary>
     /// A base class for first level queries which return filtered entity sets based on user identity or other criteria.
     /// </summary>
-    public class EntityFrameworkFirstLevelQueryBase<TEntity, TDbContext> : IEntityFrameworkFirstLevelQuery<TEntity, TDbContext> 
+    public class EntityFrameworkFirstLevelQueryBase<TEntity, TDbContext> : IEntityFrameworkFirstLevelQuery<TEntity, TDbContext>
         where TEntity : class
         where TDbContext : DbContext
     {
@@ -30,7 +30,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// </summary>
         /// <param name="unitOfWorkProvider">The unit of work provider.</param>
         public EntityFrameworkFirstLevelQueryBase(IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider)
-            : this((IUnitOfWorkProvider) unitOfWorkProvider)
+            : this((IUnitOfWorkProvider)unitOfWorkProvider)
         {
         }
 
@@ -63,7 +63,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
 
             if (typeof(ISoftDeleteEntity).IsAssignableFrom(typeof(TEntity)))
             {
-                set = set.Where(t => ((ISoftDeleteEntity) t).DeletedDate == null);
+                set = set.Where(t => ((ISoftDeleteEntity)t).DeletedDate == null);
             }
 
             return set;

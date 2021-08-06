@@ -20,5 +20,5 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
             Mapper.Map(source, target);
         }
     }
-    
+
 }

@@ -47,7 +47,7 @@ namespace Riganti.Utils.Infrastructure.Core
         /// </summary>
         private void OnUnitOfWorkDisposing(object sender, EventArgs e)
         {
-            registry.UnregisterUnitOfWork((IUnitOfWork) sender);
+            registry.UnregisterUnitOfWork((IUnitOfWork)sender);
         }
 
 

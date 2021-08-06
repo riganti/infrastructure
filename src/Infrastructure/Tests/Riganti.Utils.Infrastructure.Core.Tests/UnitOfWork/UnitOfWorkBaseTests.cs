@@ -91,17 +91,17 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork
             Assert.Equal(1, afterCommitCallCount2);
             Assert.Equal(1, afterCommitCallCount3);
         }
-        
+
         [Fact]
         public void Disposable_HasIDisposableInterface()
         {
-            var unitOfWork  = CreateUnitOfWorkStub();
+            var unitOfWork = CreateUnitOfWorkStub();
 
             var disposable = unitOfWork as IDisposable;
 
             Assert.NotNull(disposable);
         }
-        
+
         [Fact]
         public void Disposable_Disposing_CallsRegisterDisposing()
         {

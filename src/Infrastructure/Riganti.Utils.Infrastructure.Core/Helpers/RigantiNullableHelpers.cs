@@ -15,7 +15,7 @@ namespace Riganti.Utils.Infrastructure.Core
         public static int? ToNullableInt(this string value)
         {
             int number;
-            return int.TryParse(value, out number) ? number : (int?) null;
+            return int.TryParse(value, out number) ? number : (int?)null;
         }
 
         /// <summary>

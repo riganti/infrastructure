@@ -15,7 +15,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Mapper
             var musician = new Musician("John Doe", "Anonymous", "john.doe@riganti.cz");
             Assert.Equal("Musician", registry.GetTable(musician));
         }
-        
+
 
         [Fact]
         public void CanAddMapperToRegistry()

@@ -34,7 +34,7 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
                 EmployeeProjects = new List<EmployeeProject> { employeeProject }
             };
 
-            Func <IFilteredQuery<EmployeeProjectDTO, EmployeeProjectFilterDTO>> queryFactory = () => new Mock<IFilteredQuery<EmployeeProjectDTO, EmployeeProjectFilterDTO>>().Object;
+            Func<IFilteredQuery<EmployeeProjectDTO, EmployeeProjectFilterDTO>> queryFactory = () => new Mock<IFilteredQuery<EmployeeProjectDTO, EmployeeProjectFilterDTO>>().Object;
             var entityMapper = new Mock<IEntityDTOMapper<EmployeeProject, EmployeeProjectDTO>>().Object;
             var respositoryMock = new Mock<IRepository<EmployeeProject, int>>();
             respositoryMock.Setup(r => r.GetById(It.IsAny<int>(), It.IsAny<Expression<Func<EmployeeProject, object>>[]>())).Returns<int, Expression<Func<EmployeeProject, object>>[]>((id, x) => employeeProject);
@@ -46,8 +46,8 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
             var facade = new EmployeeProjectsFacade(queryFactory, entityMapper, respositoryMock.Object, parentRepositoryMock.Object, dateTimeProvider, unitOfWorkProviderMock.Object);
 
             // Act - only for debug
-            facade.GetDetail(1);     
-            
+            facade.GetDetail(1);
+
         }
 
         [Fact]
@@ -101,7 +101,7 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
                 employeeProject = ctx.EmployeeProjects.Single(ep => ep.EmployeeId == employeeId);
             }
             var employeeProjectDTO = Mapper.Map<EmployeeProjectDTO>(employeeProject);
-            
+
             // Act
             var savedDTO = facade.Save(employeeProjectDTO);
 

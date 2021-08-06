@@ -6,7 +6,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
     {
         private readonly string tableName;
 
-        public CloudTableNotFoundException(string tableName) 
+        public CloudTableNotFoundException(string tableName)
             : base($"This cloud table isn't found: {tableName}")
         {
             this.tableName = tableName;

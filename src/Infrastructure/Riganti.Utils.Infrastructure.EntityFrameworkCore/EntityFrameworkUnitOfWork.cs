@@ -174,12 +174,12 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         {
             if (IsInTransaction)
             {
-	            RollbackRequested = true;
+                RollbackRequested = true;
 
-	            if (!HasOwnContext() && Parent is EntityFrameworkUnitOfWork<TDbContext> parentUow)
-	            {
-		            parentUow.RollbackRequested = true;
-	            }
+                if (!HasOwnContext() && Parent is EntityFrameworkUnitOfWork<TDbContext> parentUow)
+                {
+                    parentUow.RollbackRequested = true;
+                }
 
                 throw new RollbackRequestedException();
             }
@@ -195,7 +195,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
 
             if (!HasOwnContext() && Parent is EntityFrameworkUnitOfWork<TDbContext> parentUow)
             {
-	            parentUow.IncrementCommitsCount();
+                parentUow.IncrementCommitsCount();
             }
         }
 

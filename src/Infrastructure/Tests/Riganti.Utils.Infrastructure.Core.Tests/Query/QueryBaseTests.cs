@@ -33,7 +33,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
 
             Assert.Equal(customers.Take(1), queryResult);
         }
-        
+
         [Fact]
         public void AddSortCriteria_SortByFirstnameAscending()
         {
@@ -58,7 +58,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
             Assert.Equal(customers.OrderByDescending(sortExpression), queryResult);
         }
 
-        
+
         [Fact]
         public void AddSortCriteriaLambda_SortByFirstnameAscending()
         {
@@ -94,8 +94,8 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
 
             Assert.Equal(customers.OrderByDescending(sortExpression), queryResult);
         }
-        
-        
+
+
         [Fact]
         public void GetTotalRowCount_ReturnsDataCount()
         {
@@ -184,7 +184,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
             {
                 return customers;
             }
-            
+
             public override Task<int> GetTotalRowCountAsync(CancellationToken cancellationToken)
             {
                 return Task.FromResult(GetQueryable().Count());

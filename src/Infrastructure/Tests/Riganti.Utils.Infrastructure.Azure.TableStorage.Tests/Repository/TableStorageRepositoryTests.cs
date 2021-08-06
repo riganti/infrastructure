@@ -35,6 +35,6 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Repository
             Assert.NotNull(query);
         }
 
-        
+
     }
 }

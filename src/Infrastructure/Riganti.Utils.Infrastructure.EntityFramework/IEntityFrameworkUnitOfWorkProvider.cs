@@ -12,16 +12,16 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
     public interface IEntityFrameworkUnitOfWorkProvider<TDbContext> : IUnitOfWorkProvider
         where TDbContext : DbContext
     {
-	    /// <summary>
-	    /// Creates the unit of work with specified options.
-	    /// </summary>
-	    IUnitOfWork Create(DbContextOptions options);
+        /// <summary>
+        /// Creates the unit of work with specified options.
+        /// </summary>
+        IUnitOfWork Create(DbContextOptions options);
 
-		/// <param name="isolationLevel">Isolation level of transactions.</param>
-		/// <returns>Object with Execute and ExecuteAsync methods.</returns>
-		IUnitOfWorkTransactionScope<TDbContext> CreateTransactionScope(IsolationLevel isolationLevel);
+        /// <param name="isolationLevel">Isolation level of transactions.</param>
+        /// <returns>Object with Execute and ExecuteAsync methods.</returns>
+        IUnitOfWorkTransactionScope<TDbContext> CreateTransactionScope(IsolationLevel isolationLevel);
 
-		/// <returns>Object with Execute and ExecuteAsync methods.</returns>
-	    IUnitOfWorkTransactionScope<TDbContext> CreateTransactionScope();
+        /// <returns>Object with Execute and ExecuteAsync methods.</returns>
+        IUnitOfWorkTransactionScope<TDbContext> CreateTransactionScope();
     }
 }

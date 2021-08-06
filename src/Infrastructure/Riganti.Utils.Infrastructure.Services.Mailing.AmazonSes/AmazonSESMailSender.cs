@@ -54,6 +54,6 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing.AmazonSes
         protected virtual void OnMessageSending(SendEmailRequest message)
         {
         }
-        
+
     }
 }

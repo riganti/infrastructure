@@ -12,7 +12,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Entities
 
         public BandTeacher() { }
 
-        public BandTeacher(string name, string band, string email) 
+        public BandTeacher(string name, string band, string email)
             : base(band, email)
         {
             Name = name;

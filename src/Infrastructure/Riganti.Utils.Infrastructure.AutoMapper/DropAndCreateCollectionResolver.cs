@@ -5,8 +5,8 @@ using AutoMapper;
 
 namespace Riganti.Utils.Infrastructure.AutoMapper
 {
-    
-    public class DropAndCreateCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem> 
+
+    public class DropAndCreateCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem>
         : IMemberValueResolver<TSource, TDestination, ICollection<TSourceItem>, ICollection<TDestinationItem>>
     {
         public Action<TDestinationItem> RemoveCallback { get; }
@@ -18,7 +18,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
         public DropAndCreateCollectionResolver(Func<TSourceItem, TDestinationItem> projection = null, Action<TDestinationItem> removeCallback = null, Func<TDestinationItem, bool> destinationFilter = null)
         {
             this.Projection = projection ?? Mapper.Map<TSourceItem, TDestinationItem>;
-            this.RemoveCallback = removeCallback ?? (_ => {});
+            this.RemoveCallback = removeCallback ?? (_ => { });
             this.DestinationFilter = destinationFilter ?? (_ => true);
         }
 
@@ -37,9 +37,9 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 var destItem = Projection(item);
                 destMember.Add(destItem);
             }
-            
+
             return new List<TDestinationItem>(destMember);
         }
-        
+
     }
 }

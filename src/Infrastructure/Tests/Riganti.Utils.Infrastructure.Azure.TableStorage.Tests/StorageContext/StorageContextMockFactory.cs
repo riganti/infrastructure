@@ -8,7 +8,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.StorageContext
         {
             if (options == null)
                 options = new CreateOwnContextTableStorageOptions();
-            var storageContextMock = new Mock<TableStorageContext>(options, null) {CallBase = false};
+            var storageContextMock = new Mock<TableStorageContext>(options, null) { CallBase = false };
             return storageContextMock;
         }
     }

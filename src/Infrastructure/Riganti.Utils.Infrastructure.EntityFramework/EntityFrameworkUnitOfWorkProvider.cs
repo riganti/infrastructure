@@ -42,12 +42,12 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
 
         public IUnitOfWorkTransactionScope<TDbContext> CreateTransactionScope(IsolationLevel isolationLevel)
         {
-	        return new UnitOfWorkTransactionScope<TDbContext>(this, isolationLevel);
+            return new UnitOfWorkTransactionScope<TDbContext>(this, isolationLevel);
         }
 
         public IUnitOfWorkTransactionScope<TDbContext> CreateTransactionScope()
         {
-	        return new UnitOfWorkTransactionScope<TDbContext>(this);
+            return new UnitOfWorkTransactionScope<TDbContext>(this);
         }
 
         /// <summary>

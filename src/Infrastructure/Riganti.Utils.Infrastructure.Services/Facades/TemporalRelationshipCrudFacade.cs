@@ -267,7 +267,7 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
                 uow.Commit();
             }
         }
-        
+
         /// <summary>
         /// Removes a member from the relationship. All current members received by <see cref="SecondaryDTOKeySelector" /> will be invalidated.
         /// </summary>

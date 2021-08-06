@@ -29,11 +29,11 @@ namespace Riganti.Utils.Infrastructure.Core
             }
             else
             {
-                var stack = HttpContext.Current.Items[typeof (HttpContextUnitOfWorkRegistry)] as Stack<IUnitOfWork>;
+                var stack = HttpContext.Current.Items[typeof(HttpContextUnitOfWorkRegistry)] as Stack<IUnitOfWork>;
                 if (stack == null)
                 {
                     stack = new Stack<IUnitOfWork>();
-                    HttpContext.Current.Items[typeof (HttpContextUnitOfWorkRegistry)] = stack;
+                    HttpContext.Current.Items[typeof(HttpContextUnitOfWorkRegistry)] = stack;
                 }
                 return stack;
             }

@@ -85,7 +85,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing.Tests
 
             Assert.True(EmlFileExists(tempFolder));
         }
-        
+
         private static bool EmlFileExists(string folderName)
         {
             return Directory.EnumerateFiles(folderName, "*.eml").Count() == 1;

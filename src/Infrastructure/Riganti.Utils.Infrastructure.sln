@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}"
 EndProject
@@ -80,9 +80,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{48BAF6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mailing", "Mailing", "{34F8E8B6-20EB-4FB6-9A55-54D2D4F1AD1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.Services.Mailing.MailKit", "Riganti.Utils.Infrastructure.Services.Mailing.MailKit\Riganti.Utils.Infrastructure.Services.Mailing.MailKit.csproj", "{3E20FA00-BBF3-4E1F-A1B1-4F62BA576772}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Services.Mailing.MailKit", "Riganti.Utils.Infrastructure.Services.Mailing.MailKit\Riganti.Utils.Infrastructure.Services.Mailing.MailKit.csproj", "{3E20FA00-BBF3-4E1F-A1B1-4F62BA576772}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riganti.Utils.Infrastructure.Services.Mailing.SystemSmtpClient", "Riganti.Utils.Infrastructure.Services.Mailing.SystemSmtpClient\Riganti.Utils.Infrastructure.Services.Mailing.SystemSmtpClient.csproj", "{D3C0DE16-F2BC-4292-AD8E-F930962AA11B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Services.Mailing.SystemSmtpClient", "Riganti.Utils.Infrastructure.Services.Mailing.SystemSmtpClient\Riganti.Utils.Infrastructure.Services.Mailing.SystemSmtpClient.csproj", "{D3C0DE16-F2BC-4292-AD8E-F930962AA11B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C95B8244-DF34-4433-BD87-D2AABFA8AB43}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -429,15 +434,15 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{BFC74F73-FA8A-4D61-BA7D-E3D5476F6E87} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{08A731F6-DC7F-427E-9CBB-007D33CB4491} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
+		{B0AF00E5-54AF-4346-A03B-1018B8849691} = {34F8E8B6-20EB-4FB6-9A55-54D2D4F1AD1A}
+		{96C19D40-BFC9-43DD-8B8C-381F8EA894D6} = {34F8E8B6-20EB-4FB6-9A55-54D2D4F1AD1A}
 		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
+		{BDB3B6EA-1F85-468A-AB75-63576C0E87BA} = {34F8E8B6-20EB-4FB6-9A55-54D2D4F1AD1A}
 		{1373AA88-83A9-48E2-8C29-782135CB98AD} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{7EFFD697-35E1-4A38-9E80-5710DC8601D2} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{D9F42460-F252-4992-8957-CABEC0F86572} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{50E2C699-6B7B-44EF-A0D2-F5F9427E6691} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{48BAF6F4-8138-4846-BE9C-1231078126D5} = {F22743CB-D4F1-4B34-B467-0ABB205DDB36}
-		{BDB3B6EA-1F85-468A-AB75-63576C0E87BA} = {34F8E8B6-20EB-4FB6-9A55-54D2D4F1AD1A}
-		{B0AF00E5-54AF-4346-A03B-1018B8849691} = {34F8E8B6-20EB-4FB6-9A55-54D2D4F1AD1A}
-		{96C19D40-BFC9-43DD-8B8C-381F8EA894D6} = {34F8E8B6-20EB-4FB6-9A55-54D2D4F1AD1A}
 		{3E20FA00-BBF3-4E1F-A1B1-4F62BA576772} = {34F8E8B6-20EB-4FB6-9A55-54D2D4F1AD1A}
 		{D3C0DE16-F2BC-4292-AD8E-F930962AA11B} = {34F8E8B6-20EB-4FB6-9A55-54D2D4F1AD1A}
 	EndGlobalSection

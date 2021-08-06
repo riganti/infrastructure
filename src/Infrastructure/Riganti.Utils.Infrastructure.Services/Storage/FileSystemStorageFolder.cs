@@ -34,7 +34,7 @@ namespace Riganti.Utils.Infrastructure.Services.Storage
             var fullPath = GetFullPath(name);
             return Task.FromResult(File.Exists(fullPath));
         }
-        
+
         public async Task SaveFile(string name, Stream stream)
         {
             var fullPath = GetFullPath(name);

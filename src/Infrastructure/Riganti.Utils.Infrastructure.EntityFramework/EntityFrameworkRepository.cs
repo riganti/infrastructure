@@ -86,7 +86,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// </summary>
         public async Task<TEntity> GetByIdAsync(CancellationToken cancellationToken, TKey id, params Expression<Func<TEntity, object>>[] includes)
         {
-            var items = await GetByIdsAsync(cancellationToken, new[] {id}, includes);
+            var items = await GetByIdsAsync(cancellationToken, new[] { id }, includes);
             return items.FirstOrDefault();
         }
 

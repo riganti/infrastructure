@@ -47,7 +47,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing.MailKit
 
         public static IEnumerable<MailboxAddress> ToMailboxAddress(this IEnumerable<MailAddressDTO> dto)
         {
-            return dto.Select(x => ToMailboxAddress((MailAddressDTO) x));
+            return dto.Select(x => ToMailboxAddress((MailAddressDTO)x));
         }
 
         public static MailboxAddress ToMailboxAddress(this MailAddressDTO dto)

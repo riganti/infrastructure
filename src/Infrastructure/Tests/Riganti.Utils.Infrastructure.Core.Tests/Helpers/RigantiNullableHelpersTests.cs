@@ -73,7 +73,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Helpers
             string expectedValueString = expectedValue.ToString("r");
 
             double number;
-            double? convertedValue = double.TryParse(expectedValueString, out number) ? number : (double?) null;
+            double? convertedValue = double.TryParse(expectedValueString, out number) ? number : (double?)null;
 
             Assert.True(convertedValue.HasValue);
         }
@@ -156,7 +156,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Helpers
         {
             var expectedDateTime = new DateTime(2015, 11, 22, 22, 30, 00);
             var dateTimeStringformat = "dd.MM yyyy HH:mm";
-            string[] dateTimeStringformats = {"MM/dd/yyyy hh:mm", "M/dd/yyyy hh:mm", dateTimeStringformat};
+            string[] dateTimeStringformats = { "MM/dd/yyyy hh:mm", "M/dd/yyyy hh:mm", dateTimeStringformat };
             var expectedDateTimeString = expectedDateTime.ToString(dateTimeStringformat);
 
             var convertedDateTime = expectedDateTimeString.ToNullableDateTime(dateTimeStringformats,
@@ -169,7 +169,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Helpers
         [Fact]
         public void ToNullableDateTime_NonsenseInputStringFormats_ReturnsNull()
         {
-            string[] dateTimeStringformats = {"MM/dd/yyyy hh:mm", "M/dd/yyyy hh:mm", "dd.MM yyyy HH:mm"};
+            string[] dateTimeStringformats = { "MM/dd/yyyy hh:mm", "M/dd/yyyy hh:mm", "dd.MM yyyy HH:mm" };
 
             var convertedDateTime =
                 "as I was informed, that should return null".ToNullableDateTime(dateTimeStringformats,

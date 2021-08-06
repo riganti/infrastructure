@@ -7,7 +7,7 @@ namespace Riganti.Utils.Infrastructure.Services.Storage
     {
 
         Task<bool> FileExists(string name);
-        
+
         Task SaveFile(string name, Stream stream);
 
         Task<Stream> LoadFile(string name);

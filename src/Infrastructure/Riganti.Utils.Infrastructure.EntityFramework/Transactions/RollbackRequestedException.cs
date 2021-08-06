@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Riganti.Utils.Infrastructure.EntityFramework.Transactions
 {
-	public class RollbackRequestedException : Exception
-	{
-	}
+    public class RollbackRequestedException : Exception
+    {
+    }
 }

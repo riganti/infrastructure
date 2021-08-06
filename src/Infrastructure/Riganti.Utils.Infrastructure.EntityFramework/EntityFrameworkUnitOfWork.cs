@@ -53,29 +53,29 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
     /// </summary>
     public class EntityFrameworkUnitOfWork<TDbContext> : UnitOfWorkBase, ICheckChildCommitUnitOfWork where TDbContext : DbContext
     {
-	    private readonly bool hasOwnContext;
-	    private bool? isInTransaction;
+        private readonly bool hasOwnContext;
+        private bool? isInTransaction;
 
         /// <summary>
         /// Flag if UnitOfWork is in a tree that originates in UnitOfWorkTransactionScope.
         /// </summary>
 	    public bool IsInTransaction
-	    {
-		    get => isInTransaction ?? (Parent as EntityFrameworkUnitOfWork<TDbContext>)?.IsInTransaction ?? false;
-		    internal set
-		    {
-			    if (isInTransaction.HasValue)
-			    {
+        {
+            get => isInTransaction ?? (Parent as EntityFrameworkUnitOfWork<TDbContext>)?.IsInTransaction ?? false;
+            internal set
+            {
+                if (isInTransaction.HasValue)
+                {
                     throw new Exception("Cannot change IsInTransaction once set.");
-			    }
-			    isInTransaction = value;
-		    }
-	    }
+                }
+                isInTransaction = value;
+            }
+        }
 
-	    /// <summary>
-	    /// Gets the <see cref="DbContext" />.
-	    /// </summary>
-	    public TDbContext Context { get; }
+        /// <summary>
+        /// Gets the <see cref="DbContext" />.
+        /// </summary>
+        public TDbContext Context { get; }
 
         /// <inheritdoc cref="ICheckChildCommitUnitOfWork.Parent" />
         public IUnitOfWork Parent { get; }
@@ -105,8 +105,8 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// </summary>
         protected EntityFrameworkUnitOfWork(IUnitOfWorkProvider unitOfWorkProvider, Func<TDbContext> dbContextFactory, DbContextOptions options)
         {
-	        Parent = unitOfWorkProvider.GetCurrent();
-	        CommitsCount = 0;
+            Parent = unitOfWorkProvider.GetCurrent();
+            CommitsCount = 0;
 
             if (options == DbContextOptions.ReuseParentContext)
             {
@@ -172,31 +172,31 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// <exception cref="Exception">In case of calling this method when IsInTransaction is false</exception>
         public void RollbackTransaction()
         {
-	        if (IsInTransaction)
-	        {
-		        RollbackRequested = true;
+            if (IsInTransaction)
+            {
+                RollbackRequested = true;
 
-		        if (!HasOwnContext() && Parent is EntityFrameworkUnitOfWork<TDbContext> parentUow)
-		        {
-			        parentUow.RollbackRequested = true;
-		        }
+                if (!HasOwnContext() && Parent is EntityFrameworkUnitOfWork<TDbContext> parentUow)
+                {
+                    parentUow.RollbackRequested = true;
+                }
 
                 throw new RollbackRequestedException();
-	        }
-	        else
-	        {
+            }
+            else
+            {
                 throw new Exception("UnitOfWork - There is no transaction to roll back!");
-	        }
+            }
         }
 
         private void IncrementCommitsCount()
         {
-	        CommitsCount++;
+            CommitsCount++;
 
-	        if (!HasOwnContext() && Parent is EntityFrameworkUnitOfWork<TDbContext> parentUow)
-	        {
+            if (!HasOwnContext() && Parent is EntityFrameworkUnitOfWork<TDbContext> parentUow)
+            {
                 parentUow.IncrementCommitsCount();
-	        }
+            }
         }
 
         /// <summary>

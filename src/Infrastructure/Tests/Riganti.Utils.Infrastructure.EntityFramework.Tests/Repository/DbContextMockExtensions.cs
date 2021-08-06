@@ -30,13 +30,13 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.Repository
             dbContextMock.Setup(m => m.Set<TEntity>()).Returns(dbSet);
             return dbSetMock;
         }
-        
+
         private static Mock<IDbSet<TEntity>> CreateDbSetMock<TEntity, TKey>(IList<TEntity> data)
             where TEntity : class, IEntity<TKey>, new()
         {
             var queryableData = data.AsQueryable();
 
-            var dbSetMock = new Mock<TestDbSet<TEntity, TKey>> (data) {CallBase = true};
+            var dbSetMock = new Mock<TestDbSet<TEntity, TKey>>(data) { CallBase = true };
             dbSetMock.As<IDbAsyncEnumerable<TEntity>>()
                 .Setup(m => m.GetAsyncEnumerator())
                 .Returns(new TestDbAsyncEnumerator<TEntity>(queryableData.GetEnumerator()));
@@ -45,7 +45,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.Repository
             dbSetMock.As<IQueryable<TEntity>>().Setup(m => m.Expression).Returns(queryableData.Expression);
             dbSetMock.As<IQueryable<TEntity>>().Setup(m => m.ElementType).Returns(queryableData.ElementType);
             dbSetMock.As<IQueryable<TEntity>>().Setup(m => m.GetEnumerator()).Returns(queryableData.GetEnumerator());
-            
+
             return dbSetMock.As<IDbSet<TEntity>>();
         }
 
@@ -141,9 +141,9 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.Repository
 
     public class TestDbSet<TEntity, TKey> : DbSet<TEntity>, IDbSet<TEntity>
             where TEntity : class, IEntity<TKey>, new()
-  {
-    public override ObservableCollection<TEntity> Local { get; }
-    IQueryable LocalQueryable => Local.AsQueryable();
+    {
+        public override ObservableCollection<TEntity> Local { get; }
+        IQueryable LocalQueryable => Local.AsQueryable();
 
         public TestDbSet() : this(new List<TEntity>())
         {
@@ -167,16 +167,16 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.Repository
 
         public override TEntity Remove(TEntity item)
         {
-          var wasRemoved = Local.Remove(item);
-          if (!wasRemoved)
-          {
-            var itemWithSameId = Local.SingleOrDefault(i => Equals(i.Id, item.Id));
-            if (itemWithSameId != null)
+            var wasRemoved = Local.Remove(item);
+            if (!wasRemoved)
             {
-              Local.Remove(itemWithSameId);
+                var itemWithSameId = Local.SingleOrDefault(i => Equals(i.Id, item.Id));
+                if (itemWithSameId != null)
+                {
+                    Local.Remove(itemWithSameId);
+                }
             }
-          }
-          return item;
+            return item;
         }
 
         public override TEntity Attach(TEntity item)
@@ -198,7 +198,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.Repository
         {
             return Activator.CreateInstance<TDerivedEntity>();
         }
-        
+
         Type IQueryable.ElementType => LocalQueryable.ElementType;
 
         Expression IQueryable.Expression => LocalQueryable.Expression;

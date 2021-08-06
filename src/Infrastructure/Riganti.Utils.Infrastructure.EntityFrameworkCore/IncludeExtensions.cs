@@ -8,7 +8,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
     {
 
         public static NextExpressionIncludeDefinition<TEntity, TResult, TNextResult> Then<TEntity, TResult, TNextResult>(
-            this IChainableIncludeDefinition<TEntity, TResult> target, 
+            this IChainableIncludeDefinition<TEntity, TResult> target,
             Expression<Func<TResult, TNextResult>> expression
         )
             where TEntity : class where TResult : class where TNextResult : class
