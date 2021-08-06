@@ -3,7 +3,7 @@
     <PropertyGroup>
         <VersionPrefix>2.2.0-rc2</VersionPrefix>
         <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
-        <PackageId>Riganti.Utils.Infrastructure.Services.Amazon.SES</PackageId>
+        <PackageId>Riganti.Utils.Infrastructure.Services.Mailing.SystemSmtpClient</PackageId>
         <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
         <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
         <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>

@@ -170,7 +170,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.StorageContext
             var mockContext = new StorageContextMockFactory().CreateStorageContextMock();
             var context = mockContext.Object;
             await context.SaveChangesAsync();
-            mockContext.Protected().Verify("InsertNewEntitiesAsync", Times.Once(), 
+            mockContext.Protected().Verify("InsertNewEntitiesAsync", Times.Once(),
                 ItExpr.IsAny<CancellationToken>(),
                 ItExpr.IsAny<TableRequestOptions>(),
                 ItExpr.IsAny<OperationContext>());

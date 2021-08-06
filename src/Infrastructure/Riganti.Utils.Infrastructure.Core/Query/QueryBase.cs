@@ -61,26 +61,26 @@ namespace Riganti.Utils.Infrastructure.Core
         public void AddSortCriteria(string fieldName, SortDirection direction = SortDirection.Ascending)
         {
             var propertyNames = fieldName.Split('.');
-            
+
             Type lastSearchedPropertyType;
             var expressionParameter = Expression.Parameter(typeof(TQueryableResult), "i");
-            
+
             var resultExpressions = CreateExpression(propertyNames.First(),
                                                                   expressionParameter,
                                                                   out lastSearchedPropertyType);
-            
+
             var objectBeingSearchedForProperty = lastSearchedPropertyType.GetTypeInfo();
-            
+
             foreach (var propertyName in propertyNames.Skip(1))
             {
                 resultExpressions = AddPropertyToExpression(propertyName,
                     objectBeingSearchedForProperty,
                     out lastSearchedPropertyType,
                     resultExpressions);
-                
+
                 objectBeingSearchedForProperty = lastSearchedPropertyType.GetTypeInfo();
             }
-             
+
             var resultLambda = Expression.Lambda(resultExpressions, expressionParameter);
 
             InvokeAddSortCriteriaCore(lastSearchedPropertyType, resultLambda, direction);
@@ -103,12 +103,12 @@ namespace Riganti.Utils.Infrastructure.Core
             addedPropertyType = property.PropertyType;
             return expression;
         }
-        
+
         private void InvokeAddSortCriteriaCore(Type tKey, LambdaExpression expression, SortDirection direction)
         {
             typeof(QueryBase<TQueryableResult, TResult>).GetTypeInfo().GetMethod(nameof(AddSortCriteriaCore),
                     BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(tKey)
-                .Invoke(this, new object[] {expression, direction});
+                .Invoke(this, new object[] { expression, direction });
         }
 
 

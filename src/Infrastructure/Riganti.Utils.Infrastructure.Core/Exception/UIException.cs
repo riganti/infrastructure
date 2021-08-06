@@ -13,7 +13,7 @@ namespace Riganti.Utils.Infrastructure.Core
         /// </summary>
         public UIException()
         {
-            
+
         }
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <param name="message">The message that describes the error.</param>
         public UIException(string message) : base(message)
         {
-            
+
         }
 
         /// <summary>
@@ -32,8 +32,8 @@ namespace Riganti.Utils.Infrastructure.Core
         /// <param name="innerException">The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified.</param>
         public UIException(string message, Exception innerException) : base(message, innerException)
         {
-            
+
         }
-        
+
     }
 }

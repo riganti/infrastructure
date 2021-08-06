@@ -25,12 +25,12 @@ namespace Riganti.Utils.Infrastructure.Logging
             {
                 telemetry.TrackTrace(new TraceTelemetry(message)
                 {
-                    Timestamp  = DateTimeProvider.Now,
+                    Timestamp = DateTimeProvider.Now,
                     SeverityLevel = MapSeverityLevel(severity)
                 });
             }
         }
-    
+
 
         protected override void LogExceptionCore(Exception exception, IDictionary<string, string> additionalData, Severity severity)
         {

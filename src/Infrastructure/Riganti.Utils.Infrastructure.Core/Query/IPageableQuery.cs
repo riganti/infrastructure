@@ -14,7 +14,7 @@ namespace Riganti.Utils.Infrastructure.Core
         /// Gets or sets the page size. If this value is null, the paging will not be applied.
         /// </summary>
         int? Take { get; set; }
-        
+
         /// <summary>
         /// Gets the total row count without respect to paging.
         /// </summary>

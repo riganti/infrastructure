@@ -7,7 +7,7 @@ namespace Riganti.Utils.Infrastructure.Logging
     /// <summary>
     /// Logger that aggregates other loggers.
     /// </summary>
-    public class AggregateLogger : ILogger 
+    public class AggregateLogger : ILogger
     {
         private readonly ILogger[] loggers;
 

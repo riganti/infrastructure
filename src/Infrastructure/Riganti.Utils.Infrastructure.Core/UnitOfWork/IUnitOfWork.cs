@@ -29,7 +29,7 @@ namespace Riganti.Utils.Infrastructure.Core
         /// Registers an action to be applied after the work is committed.
         /// </summary>
         void RegisterAfterCommitAction(Action action);
-        
+
         /// <summary>
         /// Occurs when this unit of work is disposed.
         /// </summary>

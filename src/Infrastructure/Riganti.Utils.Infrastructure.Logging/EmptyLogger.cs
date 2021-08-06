@@ -13,7 +13,7 @@ namespace Riganti.Utils.Infrastructure.Logging
         {
             // do nothing
         }
-        
+
         public void LogInfo(string message)
         {
             // do nothing
@@ -23,12 +23,12 @@ namespace Riganti.Utils.Infrastructure.Logging
         {
             // do nothing
         }
-        
+
         public void LogError(string message)
         {
             // do nothing
         }
-        
+
         public void LogCritical(string message)
         {
             // do nothing

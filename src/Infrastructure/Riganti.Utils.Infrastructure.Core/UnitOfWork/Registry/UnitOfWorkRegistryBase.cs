@@ -97,7 +97,7 @@ namespace Riganti.Utils.Infrastructure.Core
             {
                 return unitOfWorkStack.Peek();
             }
-            else 
+            else
             {
                 return unitOfWorkStack.ToArray()[ancestorLevel];
             }

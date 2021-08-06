@@ -224,7 +224,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.Repository
             Assert.Contains(expectedEpisode2, episodes);
             Assert.Contains(expectedEpisode3, episodes);
         }
-        
+
 
 
         private EntityFrameworkRepository<TEntity, int> CreateEntityFrameworkRepository<TEntity>() where TEntity : class, IEntity<int>, new()

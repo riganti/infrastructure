@@ -30,7 +30,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 
         public void Delete(IEnumerable<TEntity> entities)
         {
-            foreach (var entity in entities) 
+            foreach (var entity in entities)
                 Context.RegisterRemoved(entity);
         }
 
@@ -47,7 +47,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
 
         public Task<TEntity> GetByKeyAsync(string partitionKey, string rowKey, CancellationToken cancellationToken)
         {
-                        
+
             return Context.GetAsync<TEntity>(partitionKey, rowKey, cancellationToken);
         }
 
@@ -64,7 +64,7 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage
         public TableQuery<TEntity> InitializeNewQuery()
         {
             return new TableQuery<TEntity>();
-        } 
+        }
 
         public void Insert(TEntity entity)
         {

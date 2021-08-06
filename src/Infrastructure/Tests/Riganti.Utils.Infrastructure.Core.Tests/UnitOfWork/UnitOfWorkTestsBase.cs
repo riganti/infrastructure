@@ -8,7 +8,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork
 {
     public class UnitOfWorkTestsBase
     {
-        
+
         protected static UnitOfWorkRegistryBase CreateUnitOfWorkRegistryStub()
         {
             return new UnitOfWorkRegistryStub();
@@ -35,7 +35,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.UnitOfWork
         {
             public UnitOfWorkRegistryStub()
             {
-                
+
             }
 
             readonly Stack<IUnitOfWork> stack = new Stack<IUnitOfWork>();

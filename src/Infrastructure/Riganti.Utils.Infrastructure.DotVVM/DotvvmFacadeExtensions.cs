@@ -22,7 +22,7 @@ namespace Riganti.Utils.Infrastructure
                 dataSet.LoadFromQuery(query);
             }
         }
-        
+
         /// <summary>
         /// Fills the data set using the query specified in the facade.
         /// </summary>
@@ -38,7 +38,7 @@ namespace Riganti.Utils.Infrastructure
                 dataSet.LoadFromQuery(query);
             }
         }
-        
+
         /// <summary>
         /// Fills the data set using the query specified in the facade.
         /// </summary>

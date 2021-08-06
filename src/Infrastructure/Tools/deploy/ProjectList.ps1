@@ -10,8 +10,10 @@ $packages = @(
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Logging.ApplicationInsights"; Directory = "Riganti.Utils.Infrastructure.Logging.ApplicationInsights" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Mailing"; Directory = "Riganti.Utils.Infrastructure.Services.Mailing" }
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Azure"; Directory = "Riganti.Utils.Infrastructure.Services.Azure" },
-	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.SendGrid"; Directory = "Riganti.Utils.Infrastructure.Services.SendGrid" },
-	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Amazon.SES"; Directory = "Riganti.Utils.Infrastructure.Services.Amazon.SES" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Mailing.AmazonSes"; Directory = "Riganti.Utils.Infrastructure.Services.Mailing.AmazonSes" },
+    [pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Mailing.MailKit"; Directory = "Riganti.Utils.Infrastructure.Services.Mailing.MailKit" },
+	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Mailing.SendGrid"; Directory = "Riganti.Utils.Infrastructure.Services.Mailing.SendGrid" },
+    [pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.Services.Mailing.SystemSmtpClient"; Directory = "Riganti.Utils.Infrastructure.Services.Mailing.SystemSmtpClient" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.DotVVM"; Directory = "Riganti.Utils.Infrastructure.DotVVM" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.AutoMapper"; Directory = "Riganti.Utils.Infrastructure.AutoMapper" },
 	[pscustomobject]@{ Package = "Riganti.Utils.Infrastructure.AutoMapper.EntityFramework"; Directory = "Riganti.Utils.Infrastructure.AutoMapper.EntityFramework" },

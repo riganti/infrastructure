@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Riganti.Utils.Infrastructure.Core;
+using Riganti.Utils.Infrastructure.EntityFrameworkCore.Transactions;
 
 namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
 {
@@ -10,5 +11,11 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
     public interface IEntityFrameworkUnitOfWorkProvider<TDbContext> : IUnitOfWorkProvider
         where TDbContext : DbContext
     {
+        /// <summary>
+        /// Creates the unit of work with specified options.
+        /// </summary>
+        IUnitOfWork Create(DbContextOptions options);
+
+        IUnitOfWorkTransactionScope<TDbContext> CreateTransactionScope();
     }
 }

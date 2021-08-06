@@ -3,6 +3,7 @@ using System;
 using System.Data.Entity;
 using System.Threading;
 using System.Threading.Tasks;
+using Riganti.Utils.Infrastructure.EntityFramework.Transactions;
 
 namespace Riganti.Utils.Infrastructure.EntityFramework
 {
@@ -48,12 +49,28 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
     }
 
     /// <summary>
-    /// An implementation of unit of work in Entity ramework.
+    /// An implementation of unit of work in Entity Framework.
     /// </summary>
-    public class EntityFrameworkUnitOfWork<TDbContext> : UnitOfWorkBase, ICheckChildCommitUnitOfWork
-        where TDbContext : DbContext
+    public class EntityFrameworkUnitOfWork<TDbContext> : UnitOfWorkBase, ICheckChildCommitUnitOfWork where TDbContext : DbContext
     {
         private readonly bool hasOwnContext;
+        private bool? isInTransaction;
+
+        /// <summary>
+        /// Flag if UnitOfWork is in a tree that originates in UnitOfWorkTransactionScope.
+        /// </summary>
+	    public bool IsInTransaction
+        {
+            get => isInTransaction ?? (Parent as EntityFrameworkUnitOfWork<TDbContext>)?.IsInTransaction ?? false;
+            internal set
+            {
+                if (isInTransaction.HasValue)
+                {
+                    throw new Exception("Cannot change IsInTransaction once set.");
+                }
+                isInTransaction = value;
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="DbContext" />.
@@ -65,6 +82,15 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
 
         /// <inheritdoc cref="ICheckChildCommitUnitOfWork.CommitPending" />
         public bool CommitPending { get; private set; }
+
+        public bool RollbackRequested { get; private set; }
+
+        /// <summary>
+        /// Count of full CommitCore calls.
+        /// Informs that there were changes being saved.
+        /// Used to detect whether CommitTransaction is required.
+        /// </summary>
+        public int CommitsCount { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkUnitOfWork{TDbContext}" /> class.
@@ -80,6 +106,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         protected EntityFrameworkUnitOfWork(IUnitOfWorkProvider unitOfWorkProvider, Func<TDbContext> dbContextFactory, DbContextOptions options)
         {
             Parent = unitOfWorkProvider.GetCurrent();
+            CommitsCount = 0;
 
             if (options == DbContextOptions.ReuseParentContext)
             {
@@ -100,7 +127,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         /// </summary>
         public override void Commit()
         {
-            if (HasOwnContext())
+            if (CanCommit())
             {
                 CommitPending = false;
                 base.Commit();
@@ -110,12 +137,13 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
                 TryRequestParentCommit();
             }
         }
+
         /// <summary>
         /// Commits this instance when we have to. Skip and request from parent, if we don't own the context.
         /// </summary>
         public override Task CommitAsync(CancellationToken cancellationToken)
         {
-            if (HasOwnContext())
+            if (CanCommit())
             {
                 CommitPending = false;
                 return base.CommitAsync(cancellationToken);
@@ -138,15 +166,54 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         }
 
         /// <summary>
+        /// Throws <see cref="RollbackRequestedException"/> which is handled in the <see cref="UnitOfWorkTransactionScope{TDbContext}"/> Execute or ExecuteAsync call.
+        /// </summary>
+        /// <exception cref="RollbackRequestedException"></exception>
+        /// <exception cref="Exception">In case of calling this method when IsInTransaction is false</exception>
+        public void RollbackTransaction()
+        {
+            if (IsInTransaction)
+            {
+                RollbackRequested = true;
+
+                if (!HasOwnContext() && Parent is EntityFrameworkUnitOfWork<TDbContext> parentUow)
+                {
+                    parentUow.RollbackRequested = true;
+                }
+
+                throw new RollbackRequestedException();
+            }
+            else
+            {
+                throw new Exception("UnitOfWork - There is no transaction to roll back!");
+            }
+        }
+
+        private void IncrementCommitsCount()
+        {
+            CommitsCount++;
+
+            if (!HasOwnContext() && Parent is EntityFrameworkUnitOfWork<TDbContext> parentUow)
+            {
+                parentUow.IncrementCommitsCount();
+            }
+        }
+
+        /// <summary>
         /// Commits the changes.
         /// </summary>
         protected override void CommitCore()
         {
+            IncrementCommitsCount();
             Context.SaveChanges();
         }
 
+        /// <summary>
+        /// Commits the changes.
+        /// </summary>
         protected override async Task CommitAsyncCore(CancellationToken cancellationToken)
         {
+            IncrementCommitsCount();
             await Context.SaveChangesAsync(cancellationToken);
         }
 
@@ -157,7 +224,7 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         {
             if (HasOwnContext())
             {
-                Context.Dispose();
+                Context?.Dispose();
 
                 if (CommitPending)
                 {
@@ -182,5 +249,10 @@ namespace Riganti.Utils.Infrastructure.EntityFramework
         {
             return hasOwnContext;
         }
+
+        /// <summary>
+        /// Checks whether immediate commit is allowed at the moment.
+        /// </summary>
+        private bool CanCommit() => HasOwnContext() || IsInTransaction;
     }
 }

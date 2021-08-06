@@ -51,7 +51,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         /// Initializes a new instance of the <see cref="EntityFrameworkRepository{TEntity, TKey,TDbContext}"/> class.
         /// </summary>
         public EntityFrameworkRepository(IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider, IDateTimeProvider dateTimeProvider)
-            : this((IUnitOfWorkProvider) unitOfWorkProvider, dateTimeProvider)
+            : this((IUnitOfWorkProvider)unitOfWorkProvider, dateTimeProvider)
         {
         }
 
@@ -85,7 +85,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         /// </summary>
         public async Task<TEntity> GetByIdAsync(CancellationToken cancellationToken, TKey id, params Expression<Func<TEntity, object>>[] includes)
         {
-            var items = await GetByIdsAsync(cancellationToken, new[] {id}, includes);
+            var items = await GetByIdsAsync(cancellationToken, new[] { id }, includes);
             return items.FirstOrDefault();
         }
 

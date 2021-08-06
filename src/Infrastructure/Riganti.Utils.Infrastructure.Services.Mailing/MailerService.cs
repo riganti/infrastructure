@@ -38,7 +38,7 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
         /// This property is used in the test environments to redirect all e-mails to one common test mailbox.
         /// </summary>
         public ICollection<MailAddressDTO> OverrideToAddresses { get; set; }
-        
+
 
 
         public MailerService(IMailSender sender)
@@ -50,14 +50,14 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
         /// <summary>
         /// Sends an e-mail message to a specified recipient.
         /// </summary>
-        public Task SendMailAsync(string to, string subject, string body, 
-            IEnumerable<string> ccAddresses = null, 
+        public Task SendMailAsync(string to, string subject, string body,
+            IEnumerable<string> ccAddresses = null,
             IEnumerable<string> bccAddresses = null,
             IEnumerable<string> replyToAddresses = null,
-            IEnumerable<AttachmentDTO> attachments = null  
+            IEnumerable<AttachmentDTO> attachments = null
         )
         {
-            return SendMailAsync(new [] { to }, subject, body, ccAddresses, bccAddresses, replyToAddresses, attachments);
+            return SendMailAsync(new[] { to }, subject, body, ccAddresses, bccAddresses, replyToAddresses, attachments);
         }
 
         /// <summary>
@@ -156,6 +156,6 @@ namespace Riganti.Utils.Infrastructure.Services.Mailing
         protected virtual void OnMessageSending(MessageSendingEventArgs args)
         {
         }
-        
+
     }
 }

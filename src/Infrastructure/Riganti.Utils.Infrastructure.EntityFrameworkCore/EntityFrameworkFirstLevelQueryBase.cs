@@ -31,7 +31,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
         /// </summary>
         /// <param name="unitOfWorkProvider">The unit of work provider.</param>
         public EntityFrameworkFirstLevelQueryBase(IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider)
-            : this((IUnitOfWorkProvider) unitOfWorkProvider)
+            : this((IUnitOfWorkProvider)unitOfWorkProvider)
         {
         }
 
@@ -64,7 +64,7 @@ namespace Riganti.Utils.Infrastructure.EntityFrameworkCore
 
             if (typeof(ISoftDeleteEntity).GetTypeInfo().IsAssignableFrom(typeof(TEntity)))
             {
-                set = set.Where(t => ((ISoftDeleteEntity) t).DeletedDate == null);
+                set = set.Where(t => ((ISoftDeleteEntity)t).DeletedDate == null);
             }
 
             return set;

@@ -4,7 +4,7 @@
     {
         public static TOut CastTo<TOut>(this object original) where TOut : class
         {
-            return (TOut) original;
+            return (TOut)original;
         }
 
         public static TOut CastAs<TOut>(this object original) where TOut : class
