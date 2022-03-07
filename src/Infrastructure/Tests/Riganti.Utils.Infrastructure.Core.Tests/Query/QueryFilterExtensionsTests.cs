@@ -18,7 +18,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
         {
             var jim = "Jim";
             var filtered = customers.FilterOptionalString(c => c.FirstName, jim, StringFilterMode.Equals).ToList();
-            Assert.Equal(1, filtered.Count);
+            Assert.Single(filtered);
             Assert.Equal(jim, filtered[0].FirstName);
         }
 
@@ -29,7 +29,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
         public void StringFilterTest_StartsWith_NonEmptyFilter(string valueToFilter)
         {
             var filtered = customers.FilterOptionalString(c => c.FirstName, valueToFilter, StringFilterMode.StartsWith).ToList();
-            Assert.Equal(1, filtered.Count);
+            Assert.Single(filtered);
             Assert.Equal("Jim", filtered[0].FirstName);
         }
 
@@ -60,7 +60,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
         public void RequiredFilterTest_NonEmpty()
         {
             var filtered = customers.FilterOptional(c => c.CategoryId, 1).ToList();
-            Assert.Equal(1, filtered.Count);
+            Assert.Single(filtered);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.Query
         {
             bool? truthful = true;
             var filtered = customers.FilterOptional(c => c.Truthful, truthful).ToList();
-            Assert.Equal(1, filtered.Count);
+            Assert.Single(filtered);
         }
 
         [Fact]
