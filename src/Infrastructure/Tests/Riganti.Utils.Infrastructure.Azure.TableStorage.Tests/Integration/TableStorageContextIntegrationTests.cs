@@ -61,7 +61,6 @@ namespace Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.Integration
             var loaded = await context.GetAsync<Musician>(musician.PartitionKey, musician.RowKey);
             Assert.NotNull(loaded);
             Assert.NotEmpty(loaded.ETag);
-            Assert.NotNull(loaded.Timestamp);
         }
 
         [Fact]
