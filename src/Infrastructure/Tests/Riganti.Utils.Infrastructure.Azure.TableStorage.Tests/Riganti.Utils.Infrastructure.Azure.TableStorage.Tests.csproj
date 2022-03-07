@@ -19,7 +19,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/riganti/infrastructure</PackageProjectUrl>
     <RepositoryUrl>https://github.com/riganti/infrastructure.git</RepositoryUrl>
-    <LangVersion>7.1</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

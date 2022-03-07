@@ -21,7 +21,7 @@
     <RepositoryUrl>https://github.com/riganti/infrastructure.git</RepositoryUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/riganti/infrastructure/master/img/logo_64x64_transparent.png</PackageIconUrl>
     <RootNamespace>Riganti.Utils.Infrastructure.Logging</RootNamespace>
-    <LangVersion>7.1</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">

@@ -20,7 +20,7 @@
     <PackageProjectUrl>https://github.com/riganti/infrastructure</PackageProjectUrl>
     <RepositoryUrl>https://github.com/riganti/infrastructure.git</RepositoryUrl>   
     <PackageIconUrl>https://raw.githubusercontent.com/riganti/infrastructure/master/img/logo_64x64_transparent.png</PackageIconUrl>   
-    <LangVersion>7.1</LangVersion> 
+    <LangVersion>latest</LangVersion> 
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
