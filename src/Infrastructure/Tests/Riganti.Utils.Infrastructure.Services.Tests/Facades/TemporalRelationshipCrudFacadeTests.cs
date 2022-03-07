@@ -39,7 +39,7 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
             var respositoryMock = new Mock<IRepository<EmployeeProject, int>>();
             respositoryMock.Setup(r => r.GetById(It.IsAny<int>(), It.IsAny<Expression<Func<EmployeeProject, object>>[]>())).Returns<int, Expression<Func<EmployeeProject, object>>[]>((id, x) => employeeProject);
             var parentRepositoryMock = new Mock<IRepository<Employee, int>>();
-            parentRepositoryMock.Setup(r => r.GetById(It.IsAny<int>())).Returns<int>(id => employee);
+            parentRepositoryMock.Setup(r => r.GetById(It.IsAny<int>(), It.IsAny<Expression<Func<Employee, object>>[]>())).Returns<int, Expression<Func<Employee, object>>[]> ((id, x) => employee);
             var dateTimeProvider = new LocalDateTimeProvider();
             var unitOfWorkProviderMock = new Mock<IUnitOfWorkProvider>();
             unitOfWorkProviderMock.Setup(p => p.Create()).Returns(() => new Mock<IUnitOfWork>().Object);
