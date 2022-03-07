@@ -5,8 +5,6 @@
     <TargetFrameworks>netstandard2.1;net472</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.EntityFrameworkCore</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.EntityFrameworkCore</PackageId>
-    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>

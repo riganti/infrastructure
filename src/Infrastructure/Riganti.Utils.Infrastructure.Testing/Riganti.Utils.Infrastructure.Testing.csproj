@@ -5,7 +5,6 @@
     <TargetFrameworks>netstandard2.1;net472</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Testing</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Testing</PackageId>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard2.1' ">1.6.1</NetStandardImplicitPackageVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
