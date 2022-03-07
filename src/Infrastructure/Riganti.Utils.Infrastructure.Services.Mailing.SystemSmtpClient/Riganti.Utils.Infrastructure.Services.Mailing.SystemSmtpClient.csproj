@@ -2,10 +2,10 @@
 
     <PropertyGroup>
         <VersionPrefix>2.2.0-rc2</VersionPrefix>
-        <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;net472</TargetFrameworks>
         <PackageId>Riganti.Utils.Infrastructure.Services.Mailing.SystemSmtpClient</PackageId>
-        <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
-        <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
+        <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard2.1' ">1.6.1</NetStandardImplicitPackageVersion>
+        <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard2.1' ">$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
         <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
         <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
         <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -24,13 +24,13 @@
     </PropertyGroup>
     
 
-    <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
         <Reference Include="System" />
         <Reference Include="System.Net" />
         <Reference Include="Microsoft.CSharp" />
     </ItemGroup>
 
-    <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
         <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
     </ItemGroup>
 

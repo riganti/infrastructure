@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <VersionPrefix>2.2.2</VersionPrefix>
-    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net472</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Testing</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Testing</PackageId>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard2.1' ">1.6.1</NetStandardImplicitPackageVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>

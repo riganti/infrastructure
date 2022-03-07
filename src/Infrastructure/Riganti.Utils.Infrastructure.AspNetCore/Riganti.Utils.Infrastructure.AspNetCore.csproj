@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <VersionPrefix>2.2.2</VersionPrefix>
-    <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>net472;netstandard2.1</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.AspNetCore</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.AspNetCore</PackageId>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard2.1' ">1.6.1</NetStandardImplicitPackageVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -24,7 +24,7 @@
     <LangVersion>7.1</LangVersion> 
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
     <DefineConstants>$(DefineConstants);DotNetCore</DefineConstants>
   </PropertyGroup>
 

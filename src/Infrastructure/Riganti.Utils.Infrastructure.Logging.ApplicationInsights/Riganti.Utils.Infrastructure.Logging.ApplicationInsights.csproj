@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <VersionPrefix>2.2.2</VersionPrefix>
-    <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>net472;netstandard2.1</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Logging.ApplicationInsights</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.Logging.ApplicationInsights</PackageId>
-    <NetStandardImplicitPackageVersion Condition="'$(TargetFramework)' == 'netstandard1.6'">1.6.1</NetStandardImplicitPackageVersion>
-    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
+    <NetStandardImplicitPackageVersion Condition="'$(TargetFramework)' == 'netstandard2.1'">1.6.1</NetStandardImplicitPackageVersion>
+    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard2.1' ">$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>

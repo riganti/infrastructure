@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>2.2.2</VersionPrefix>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <AssemblyName>Riganti.Utils.Infrastructure.SystemWeb</AssemblyName>
     <PackageId>Riganti.Utils.Infrastructure.SystemWeb</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>

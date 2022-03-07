@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461</TargetFrameworks>
+    <TargetFrameworks>net472</TargetFrameworks>
     <AssemblyName>Riganti.Utils.Infrastructure.Services.Mailing.Tests</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Riganti.Utils.Infrastructure.Services.Smtp.Tests</PackageId>
