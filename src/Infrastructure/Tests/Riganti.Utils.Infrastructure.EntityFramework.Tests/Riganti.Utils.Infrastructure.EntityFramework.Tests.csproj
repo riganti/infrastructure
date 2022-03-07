@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
-    <PackageReference Include="EntityFramework" Version="6.1.3" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="moq" Version="4.7.145" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />

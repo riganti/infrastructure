@@ -8,7 +8,7 @@ using Xunit;
 
 #if EFCORE
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Riganti.Utils.Infrastructure.EntityFrameworkCore.Transactions;
 #else
 
