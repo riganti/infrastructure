@@ -11,8 +11,9 @@ namespace Riganti.Utils.Infrastructure.Core.Tests.DateTimeNowProvider
         public void ProvidesUtcTime_Test()
         {
             var utcDateTimeNowProviderValue = utcDateTimeProviderSUT.Now;
+            var diff = DateTime.UtcNow - utcDateTimeNowProviderValue;
 
-            Assert.True(DateTime.Compare(utcDateTimeNowProviderValue, DateTime.UtcNow) == 0);
+            Assert.True(diff < TimeSpan.FromSeconds(1));
         }
     }
 }
