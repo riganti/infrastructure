@@ -6,7 +6,8 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <PackageVersion>2.3.0-alpha01</PackageVersion>
+        <!-- Version is set in pipeline-->
+        <PackageVersion>1.0.0.0</PackageVersion>
         <PackageId>Riganti.Utils.Infrastructure.EntityFramework</PackageId>
         <Company>RIGANTI</Company>
         <Authors>RIGANTI</Authors>
