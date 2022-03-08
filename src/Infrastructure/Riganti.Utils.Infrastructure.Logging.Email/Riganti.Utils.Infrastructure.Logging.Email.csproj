@@ -6,7 +6,8 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <PackageVersion>2.2.0-rc2</PackageVersion>
+        <!-- Version is set in pipeline-->
+        <PackageVersion>1.0.0.0</PackageVersion>
         <PackageId>Riganti.Utils.Infrastructure.Logging.Email</PackageId>
         <Company>RIGANTI</Company>
         <Authors>RIGANTI</Authors>
