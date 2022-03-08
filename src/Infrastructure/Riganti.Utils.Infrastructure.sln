@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Services", "Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj", "{4480D5CB-3FED-46B7-B640-25C1B5315A28}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Services.Azure", "Riganti.Utils.Infrastructure.Services.Azure\Riganti.Utils.Infrastructure.Services.Azure.csproj", "{3F402D39-8F19-4FBA-B168-D33FB6102598}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.AutoMapper", "Riganti.Utils.Infrastructure.AutoMapper\Riganti.Utils.Infrastructure.AutoMapper.csproj", "{65CC1CEA-E110-40CE-A42A-2B5B2E2D5058}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.DotVVM", "Riganti.Utils.Infrastructure.DotVVM\Riganti.Utils.Infrastructure.DotVVM.csproj", "{9292CE0D-254D-4E6E-842F-160AF103EA43}"
@@ -32,10 +30,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Services.Mailing.SendGrid", "Riganti.Utils.Infrastructure.Services.Mailing.SendGrid\Riganti.Utils.Infrastructure.Services.Mailing.SendGrid.csproj", "{B0AF00E5-54AF-4346-A03B-1018B8849691}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Services.Mailing.AmazonSes", "Riganti.Utils.Infrastructure.Services.Mailing.AmazonSes\Riganti.Utils.Infrastructure.Services.Mailing.AmazonSes.csproj", "{96C19D40-BFC9-43DD-8B8C-381F8EA894D6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Azure.TableStorage", "Riganti.Utils.Infrastructure.Azure.TableStorage\Riganti.Utils.Infrastructure.Azure.TableStorage.csproj", "{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Azure.TableStorage.Tests", "Tests\Riganti.Utils.Infrastructure.Azure.TableStorage.Tests\Riganti.Utils.Infrastructure.Azure.TableStorage.Tests.csproj", "{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Riganti.Utils.Infrastructure.Services.Mailing", "Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj", "{BDB3B6EA-1F85-468A-AB75-63576C0E87BA}"
 EndProject
@@ -147,18 +141,6 @@ Global
 		{4480D5CB-3FED-46B7-B640-25C1B5315A28}.Release|x64.Build.0 = Release|Any CPU
 		{4480D5CB-3FED-46B7-B640-25C1B5315A28}.Release|x86.ActiveCfg = Release|Any CPU
 		{4480D5CB-3FED-46B7-B640-25C1B5315A28}.Release|x86.Build.0 = Release|Any CPU
-		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Debug|x64.Build.0 = Debug|Any CPU
-		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Debug|x86.Build.0 = Debug|Any CPU
-		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Release|x64.ActiveCfg = Release|Any CPU
-		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Release|x64.Build.0 = Release|Any CPU
-		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Release|x86.ActiveCfg = Release|Any CPU
-		{3F402D39-8F19-4FBA-B168-D33FB6102598}.Release|x86.Build.0 = Release|Any CPU
 		{65CC1CEA-E110-40CE-A42A-2B5B2E2D5058}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{65CC1CEA-E110-40CE-A42A-2B5B2E2D5058}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65CC1CEA-E110-40CE-A42A-2B5B2E2D5058}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -259,30 +241,6 @@ Global
 		{96C19D40-BFC9-43DD-8B8C-381F8EA894D6}.Release|x64.Build.0 = Release|Any CPU
 		{96C19D40-BFC9-43DD-8B8C-381F8EA894D6}.Release|x86.ActiveCfg = Release|Any CPU
 		{96C19D40-BFC9-43DD-8B8C-381F8EA894D6}.Release|x86.Build.0 = Release|Any CPU
-		{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}.Debug|x64.Build.0 = Debug|Any CPU
-		{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}.Debug|x86.Build.0 = Debug|Any CPU
-		{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}.Release|x64.ActiveCfg = Release|Any CPU
-		{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}.Release|x64.Build.0 = Release|Any CPU
-		{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}.Release|x86.ActiveCfg = Release|Any CPU
-		{5D9761F2-80A5-495F-8D6F-C1288CCC2FD4}.Release|x86.Build.0 = Release|Any CPU
-		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC}.Debug|x64.Build.0 = Debug|Any CPU
-		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC}.Debug|x86.Build.0 = Debug|Any CPU
-		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC}.Release|x64.ActiveCfg = Release|Any CPU
-		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC}.Release|x64.Build.0 = Release|Any CPU
-		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC}.Release|x86.ActiveCfg = Release|Any CPU
-		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC}.Release|x86.Build.0 = Release|Any CPU
 		{BDB3B6EA-1F85-468A-AB75-63576C0E87BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BDB3B6EA-1F85-468A-AB75-63576C0E87BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDB3B6EA-1F85-468A-AB75-63576C0E87BA}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -436,7 +394,6 @@ Global
 		{08A731F6-DC7F-427E-9CBB-007D33CB4491} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{B0AF00E5-54AF-4346-A03B-1018B8849691} = {34F8E8B6-20EB-4FB6-9A55-54D2D4F1AD1A}
 		{96C19D40-BFC9-43DD-8B8C-381F8EA894D6} = {34F8E8B6-20EB-4FB6-9A55-54D2D4F1AD1A}
-		{53A0FE75-1EC6-4E22-89E6-B712A3C2B0CC} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{BDB3B6EA-1F85-468A-AB75-63576C0E87BA} = {34F8E8B6-20EB-4FB6-9A55-54D2D4F1AD1A}
 		{1373AA88-83A9-48E2-8C29-782135CB98AD} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
 		{7EFFD697-35E1-4A38-9E80-5710DC8601D2} = {4AFD9A5B-FFCD-4D8D-BEA0-ED32089F0178}
