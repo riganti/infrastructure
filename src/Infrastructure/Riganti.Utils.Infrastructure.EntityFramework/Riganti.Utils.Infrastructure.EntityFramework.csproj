@@ -11,7 +11,7 @@
         <Company>RIGANTI</Company>
         <Authors>RIGANTI</Authors>
         <Description>Infrastructure project setup for building modern enterprise applications using EntityFramework or Azure Table Storage.</Description>
-        <Copyright>Copyright 2017 (c) Riganti s.r.o. - All rights reserved.</Copyright>
+        <Copyright>Copyright 2022 (c) Riganti s.r.o. - All rights reserved.</Copyright>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageTags>infrastructure utils enterprise ef entityframework</PackageTags>
         <PackageLicenseUrl>https://github.com/riganti/infrastructure/blob/master/LICENSE</PackageLicenseUrl>
