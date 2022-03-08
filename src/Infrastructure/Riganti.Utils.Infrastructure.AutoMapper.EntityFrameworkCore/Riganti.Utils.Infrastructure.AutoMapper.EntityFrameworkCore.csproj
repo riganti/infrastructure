@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <PackageVersion>2.2.2</PackageVersion>
+        <PackageVersion>2.3.0-alpha01</PackageVersion>
         <PackageId>Riganti.Utils.Infrastructure.AutoMapper.EntityFrameworkCore</PackageId>
         <Company>RIGANTI</Company>
         <Authors>RIGANTI</Authors>
