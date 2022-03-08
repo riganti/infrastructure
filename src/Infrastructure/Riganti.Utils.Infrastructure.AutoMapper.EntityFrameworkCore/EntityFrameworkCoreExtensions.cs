@@ -15,6 +15,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
         public static void DropAndCreateCollection<TDbContext, TSource, TSourceItem, TDestination, TDestinationItem>
         (
             this IMemberConfigurationExpression<TSource, TDestination, ICollection<TDestinationItem>> config,
+            IMapper mapper,
             IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider,
             Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
             Func<TSourceItem, TDestinationItem> projection = null,
@@ -33,7 +34,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 };
             }
 
-            Extensions.DropAndCreateCollection(config, sourceCollectionSelector, projection, removeCallback,
+            Extensions.DropAndCreateCollection(config, mapper, sourceCollectionSelector, projection, removeCallback,
                 destinationFilter);
         }
 
@@ -101,6 +102,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
         public static void SyncCollectionByKey<TDbContext, TSource, TSourceItem, TDestination, TDestinationItem, TKey>
         (
             this IMemberConfigurationExpression<TSource, TDestination, ICollection<TDestinationItem>> config,
+            IMapper mapper,
             IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider,
             Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
             Func<TSourceItem, TKey> sourceKeySelector,
@@ -123,7 +125,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 };
             }
 
-            Extensions.SyncCollectionByKey(config, sourceCollectionSelector, sourceKeySelector, destinationKeySelector,
+            Extensions.SyncCollectionByKey(config, mapper, sourceCollectionSelector, sourceKeySelector, destinationKeySelector,
                 createFunction, updateFunction, removeFunction, keepRemovedItemsInDestinationCollection,
                 destinationFilter);
         }
