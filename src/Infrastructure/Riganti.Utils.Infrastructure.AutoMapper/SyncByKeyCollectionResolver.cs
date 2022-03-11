@@ -27,6 +27,11 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
 
         public ICollection<TDestinationItem> Resolve(TSource source, TDestination destination, ICollection<TSourceItem> sourceMember, ICollection<TDestinationItem> destMember, ResolutionContext context)
         {
+            var createFunction = CreateFunction ?? context.Mapper.Map<TSourceItem, TDestinationItem>;
+            var updateFunction = UpdateFunction ?? ((s, d) => context.Mapper.Map(s, d));
+            var removeFunction = RemoveFunction ?? (d => { });
+
+
             var sourceKeys = sourceMember.Select(SourceKeySelector).ToList();
             var destinationKeys = destMember.Where(DestinationFilter).Select(DestinationKeySelector).ToList();
 
@@ -38,14 +43,14 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 if (!destinationKeys.Contains(key))
                 {
                     // create
-                    destItem = CreateFunction(sourceItem);
+                    destItem = createFunction(sourceItem);
                     destMember.Add(destItem);
                 }
                 else if (!EqualityComparer<TKey>.Default.Equals(key, default(TKey)))
                 {
                     // update
                     destItem = destMember.First(i => DestinationKeySelector(i).Equals(key));
-                    UpdateFunction(sourceItem, destItem);
+                    updateFunction(sourceItem, destItem);
                 }
             }
 
@@ -56,7 +61,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 if (!sourceKeys.Contains(key))
                 {
                     // delete
-                    RemoveFunction(destItem);
+                    removeFunction(destItem);
 
                     if (!KeepRemovedItemsInDestinationCollection)
                     {

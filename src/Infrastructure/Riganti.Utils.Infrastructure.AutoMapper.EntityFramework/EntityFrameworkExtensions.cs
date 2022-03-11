@@ -16,7 +16,6 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
         public static void DropAndCreateCollection<TDbContext, TSource, TSourceItem, TDestination, TDestinationItem>
             (
                 this IMemberConfigurationExpression<TSource, TDestination, ICollection<TDestinationItem>> config,
-                IMapper mapper,
                 IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider,
                 Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
                 Func<TSourceItem, TDestinationItem> projection = null,
@@ -35,7 +34,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 };
             }
 
-            Extensions.DropAndCreateCollection(config, mapper, sourceCollectionSelector, projection, removeCallback, destinationFilter);
+            Extensions.DropAndCreateCollection(config, sourceCollectionSelector, projection, removeCallback, destinationFilter);
         }
 
 
@@ -48,7 +47,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
                 Action<TDestinationItem> removeFunction = null,
                 Func<TDestinationItem, bool> destinationFilter = null,
-                 bool keepRemovedItemsInDestinationCollection = true
+                bool keepRemovedItemsInDestinationCollection = true
             )
             where TDbContext : DbContext
             where TDestinationItem : class
@@ -93,7 +92,6 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
         public static void SyncCollectionByKey<TDbContext, TSource, TSourceItem, TDestination, TDestinationItem, TKey>
             (
                 this IMemberConfigurationExpression<TSource, TDestination, ICollection<TDestinationItem>> config,
-                IMapper mapper,
                 IEntityFrameworkUnitOfWorkProvider<TDbContext> unitOfWorkProvider,
                 Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
                 Func<TSourceItem, TKey> sourceKeySelector,
@@ -116,7 +114,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 };
             }
 
-            Extensions.SyncCollectionByKey(config, mapper, sourceCollectionSelector, sourceKeySelector, destinationKeySelector, createFunction, updateFunction, removeFunction, keepRemovedItemsInDestinationCollection, destinationFilter);
+            Extensions.SyncCollectionByKey(config, sourceCollectionSelector, sourceKeySelector, destinationKeySelector, createFunction, updateFunction, removeFunction, keepRemovedItemsInDestinationCollection, destinationFilter);
         }
 
     }

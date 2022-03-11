@@ -14,14 +14,13 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
 
         public Func<TDestinationItem, bool> DestinationFilter { get; }
 
-        public DropAndCreateCollectionResolver(IMapper mapper,
-                                               Func<TSourceItem, TDestinationItem> projection = null,
+        public DropAndCreateCollectionResolver(Func<TSourceItem, TDestinationItem> projection = null,
                                                Action<TDestinationItem> removeCallback = null,
                                                Func<TDestinationItem, bool> destinationFilter = null)
         {
-            this.Projection = projection ?? mapper.Map<TSourceItem, TDestinationItem>;
-            this.RemoveCallback = removeCallback ?? (_ => { });
-            this.DestinationFilter = destinationFilter ?? (_ => true);
+            this.Projection = projection;
+            this.RemoveCallback = removeCallback;
+            this.DestinationFilter = destinationFilter;
         }
 
         public ICollection<TDestinationItem> Resolve(TSource source,
@@ -30,15 +29,19 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                                                      ICollection<TDestinationItem> destMember,
                                                      ResolutionContext context)
         {
-            foreach (var item in new List<TDestinationItem>(destMember.Where(DestinationFilter)))
+            var projection = Projection ?? context.Mapper.Map<TSourceItem, TDestinationItem>;
+            var removeCallback = RemoveCallback ?? (_ => { });
+            var destinationFilter = DestinationFilter ?? (_ => true);
+
+            foreach (var item in new List<TDestinationItem>(destMember.Where(destinationFilter)))
             {
-                RemoveCallback(item);
+                removeCallback(item);
                 destMember.Remove(item);
             }
 
             foreach (var item in sourceMember)
             {
-                var destItem = Projection(item);
+                var destItem = projection(item);
                 destMember.Add(destItem);
             }
 
