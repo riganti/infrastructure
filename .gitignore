@@ -196,3 +196,7 @@ FakesAssemblies/
 *.opt
 *.lock.json
 /src/Infrastructure/CodeMaid.config
+
+# JetBrains Rider
+.idea/
+*.sln.iml
