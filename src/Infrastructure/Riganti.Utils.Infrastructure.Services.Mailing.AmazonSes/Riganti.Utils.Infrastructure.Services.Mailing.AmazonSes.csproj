@@ -1,44 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <VersionPrefix>2.2.0-rc2</VersionPrefix>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
-    <PackageId>Riganti.Utils.Infrastructure.Services.Mailing.AmazonSes</PackageId>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
-    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <Company>RIGANTI</Company>
-    <Authors>RIGANTI</Authors>
-    <Description>Infrastructure project setup for building modern enterprise applications using EntityFramework or Azure Table Storage.</Description>
-    <Copyright>Copyright 2017 (c) Riganti s.r.o. - All rights reserved.</Copyright>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageTags>infrastructure utils enterprise services amazon</PackageTags>
-    <PackageLicenseUrl>https://github.com/riganti/infrastructure/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageProjectUrl>https://github.com/riganti/infrastructure</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/riganti/infrastructure.git</RepositoryUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/riganti/infrastructure/master/img/logo_64x64_transparent.png</PackageIconUrl>
-    <LangVersion>7.1</LangVersion>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.1;net472</TargetFrameworks>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj" />
-    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj" />
-  </ItemGroup>
+    <PropertyGroup>
+        <!-- Version is set in pipeline-->
+        <PackageVersion>1.0.0.0</PackageVersion>
+        <PackageId>Riganti.Utils.Infrastructure.Services.Mailing.AmazonSes</PackageId>
+        <Company>RIGANTI</Company>
+        <Authors>RIGANTI</Authors>
+        <Description>Infrastructure project setup for building modern enterprise applications using EntityFramework or Azure Table Storage.</Description>
+        <Copyright>Copyright 2022 (c) Riganti s.r.o. - All rights reserved.</Copyright>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageTags>infrastructure utils enterprise services amazon</PackageTags>
+        <PackageLicenseUrl>https://github.com/riganti/infrastructure/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageProjectUrl>https://github.com/riganti/infrastructure</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/riganti/infrastructure.git</RepositoryUrl>
+        <PackageIconUrl>https://raw.githubusercontent.com/riganti/infrastructure/master/img/logo_64x64_transparent.png</PackageIconUrl>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AWSSDK.SimpleEmail" Version="3.3.1.1" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AWSSDK.SimpleEmail" Version="3.7.0.132" />
+    </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj" />
+        <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj" />
+    </ItemGroup>
 
 </Project>

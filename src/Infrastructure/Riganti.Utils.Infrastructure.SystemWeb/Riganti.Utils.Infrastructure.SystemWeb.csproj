@@ -1,42 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <VersionPrefix>2.2.2</VersionPrefix>
-    <TargetFramework>net461</TargetFramework>
-    <AssemblyName>Riganti.Utils.Infrastructure.SystemWeb</AssemblyName>
-    <PackageId>Riganti.Utils.Infrastructure.SystemWeb</PackageId>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <Company>RIGANTI</Company>
-    <Authors>RIGANTI</Authors>
-    <Description>Infrastructure project setup for building modern enterprise applications using EntityFramework or Azure Table Storage.</Description>
-    <Copyright>Copyright 2017 (c) Riganti s.r.o. - All rights reserved.</Copyright>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageTags>infrastructure utils enterprise azure storage ef entityframework tablestorage</PackageTags>
-    <PackageLicenseUrl>https://github.com/riganti/infrastructure/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageProjectUrl>https://github.com/riganti/infrastructure</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/riganti/infrastructure.git</RepositoryUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/riganti/infrastructure/master/img/logo_64x64_transparent.png</PackageIconUrl>
-    <LangVersion>7.1</LangVersion>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj" />
-    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Logging\Riganti.Utils.Infrastructure.Logging.csproj" />
-    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj" />
-    <Reference Include="System.Web" />
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
+    <PropertyGroup>
+        <!-- Version is set in pipeline-->
+        <PackageVersion>1.0.0.0</PackageVersion>
+        <PackageId>Riganti.Utils.Infrastructure.SystemWeb</PackageId>
+        <Company>RIGANTI</Company>
+        <Authors>RIGANTI</Authors>
+        <Description>Infrastructure project setup for building modern enterprise applications using EntityFramework or Azure Table Storage.</Description>
+        <Copyright>Copyright 2022 (c) Riganti s.r.o. - All rights reserved.</Copyright>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageTags>infrastructure utils enterprise azure storage ef entityframework tablestorage</PackageTags>
+        <PackageLicenseUrl>https://github.com/riganti/infrastructure/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageProjectUrl>https://github.com/riganti/infrastructure</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/riganti/infrastructure.git</RepositoryUrl>
+        <PackageIconUrl>https://raw.githubusercontent.com/riganti/infrastructure/master/img/logo_64x64_transparent.png</PackageIconUrl>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+    <ItemGroup>
+        <Reference Include="System.Web" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Riganti.Utils.Infrastructure.Core\Riganti.Utils.Infrastructure.Core.csproj" />
+        <ProjectReference Include="..\Riganti.Utils.Infrastructure.Logging\Riganti.Utils.Infrastructure.Logging.csproj" />
+        <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services\Riganti.Utils.Infrastructure.Services.csproj" />
+        <ProjectReference Include="..\Riganti.Utils.Infrastructure.Services.Mailing\Riganti.Utils.Infrastructure.Services.Mailing.csproj" />
+    </ItemGroup>
 
 </Project>

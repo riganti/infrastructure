@@ -47,7 +47,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Action<TSourceItem, TDestinationItem> updateFunction = null,
                 Action<TDestinationItem> removeFunction = null,
                 Func<TDestinationItem, bool> destinationFilter = null,
-                 bool keepRemovedItemsInDestinationCollection = true
+                bool keepRemovedItemsInDestinationCollection = true
             )
             where TDbContext : DbContext
             where TDestinationItem : class

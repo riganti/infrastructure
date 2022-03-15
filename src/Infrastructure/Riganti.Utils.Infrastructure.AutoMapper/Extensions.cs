@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using AutoMapper;
-using Riganti.Utils.Infrastructure.Core;
 
 namespace Riganti.Utils.Infrastructure.AutoMapper
 {
     public static class Extensions
     {
-
         public static void DropAndCreateCollection<TSource, TSourceItem, TDestination, TDestinationItem>
             (
                 this IMemberConfigurationExpression<TSource, TDestination, ICollection<TDestinationItem>> config,
@@ -20,7 +16,8 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Func<TDestinationItem, bool> destinationFilter = null
             )
         {
-            config.ResolveUsing(new DropAndCreateCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem>(projection, removeCallback, destinationFilter), sourceCollectionSelector);
+            var dropAndCreateCollectionResolver = new DropAndCreateCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem>(projection, removeCallback, destinationFilter);
+            config.MapFrom(dropAndCreateCollectionResolver, sourceCollectionSelector);
         }
 
         private static void SyncCollectionByKeyReflectionOnly<TSource, TSourceItem, TDestination, TDestinationItem, TKey>
@@ -53,15 +50,15 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 Func<TDestinationItem, bool> destinationFilter = null
             )
         {
-            config.ResolveUsing(new SyncByKeyCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem, TKey>()
+            config.MapFrom(new SyncByKeyCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem, TKey>()
             {
                 SourceKeySelector = sourceKeySelector,
                 DestinationKeySelector = destinationSelector,
-                CreateFunction = createFunction ?? Mapper.Map<TSourceItem, TDestinationItem>,
-                UpdateFunction = updateFunction ?? ((s, d) => Mapper.Map(s, d)),
-                RemoveFunction = removeFunction ?? (d => { }),
+                CreateFunction = createFunction,
+                UpdateFunction = updateFunction,
+                RemoveFunction = removeFunction,
                 KeepRemovedItemsInDestinationCollection = keepRemovedItemsInDestinationCollection,
-                DestinationFilter = destinationFilter ?? (e => true)
+                DestinationFilter = destinationFilter
             }, sourceCollectionSelector);
         }
 

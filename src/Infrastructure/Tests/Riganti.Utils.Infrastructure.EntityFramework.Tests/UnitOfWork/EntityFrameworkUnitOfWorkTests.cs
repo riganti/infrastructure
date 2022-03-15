@@ -8,7 +8,7 @@ using Xunit;
 
 #if EFCORE
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Riganti.Utils.Infrastructure.EntityFrameworkCore.Transactions;
 #else
 
@@ -616,9 +616,9 @@ namespace Riganti.Utils.Infrastructure.EntityFramework.Tests.UnitOfWork
         {
             return () =>
 #if EFCORE
-            new InMemoryDbContext();
+             new InMemoryDbContext();
 #else
-            new Mock<InMemoryDbContext>().Object;
+          new Mock<InMemoryDbContext>().Object;
 #endif
         }
     }

@@ -39,7 +39,7 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
             var respositoryMock = new Mock<IRepository<EmployeeProject, int>>();
             respositoryMock.Setup(r => r.GetById(It.IsAny<int>(), It.IsAny<Expression<Func<EmployeeProject, object>>[]>())).Returns<int, Expression<Func<EmployeeProject, object>>[]>((id, x) => employeeProject);
             var parentRepositoryMock = new Mock<IRepository<Employee, int>>();
-            parentRepositoryMock.Setup(r => r.GetById(It.IsAny<int>())).Returns<int>(id => employee);
+            parentRepositoryMock.Setup(r => r.GetById(It.IsAny<int>(), It.IsAny<Expression<Func<Employee, object>>[]>())).Returns<int, Expression<Func<Employee, object>>[]> ((id, x) => employee);
             var dateTimeProvider = new LocalDateTimeProvider();
             var unitOfWorkProviderMock = new Mock<IUnitOfWorkProvider>();
             unitOfWorkProviderMock.Setup(p => p.Create()).Returns(() => new Mock<IUnitOfWork>().Object);
@@ -93,6 +93,7 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
             // Arrange
             var options = CreateInMemoryDatabase();
             var facade = GetFacade(options);
+            var mapper = CreateMapper();
             var employeeId = 1; // has only one project
             EmployeeProject employeeProject;
             // get current EmployeeProject for the employee
@@ -100,7 +101,7 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
             {
                 employeeProject = ctx.EmployeeProjects.Single(ep => ep.EmployeeId == employeeId);
             }
-            var employeeProjectDTO = Mapper.Map<EmployeeProjectDTO>(employeeProject);
+            var employeeProjectDTO = mapper.Map<EmployeeProjectDTO>(employeeProject);
 
             // Act
             var savedDTO = facade.Save(employeeProjectDTO);
@@ -128,6 +129,7 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
             // Arrange
             var options = CreateInMemoryDatabase();
             var facade = GetFacade(options);
+            var mapper = CreateMapper();
             EmployeeProject employeeProject;
             // get the EmployeeProject
             using (var ctx = new EmployeeProjectDbContext(options))
@@ -136,7 +138,7 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
             }
             var employeeId = employeeProject.EmployeeId;
             var projectId = employeeProject.ProjectId;
-            var employeeProjectDTO = Mapper.Map<EmployeeProjectDTO>(employeeProject);
+            var employeeProjectDTO = mapper.Map<EmployeeProjectDTO>(employeeProject);
 
             // Act
             facade.Delete(employeeProjectDTO);
@@ -185,20 +187,24 @@ namespace Riganti.Utils.Infrastructure.Services.Tests.Facades
 
         private static EmployeeProjectsFacade GetFacade(DbContextOptions<EmployeeProjectDbContext> options)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<EmployeeProjectDTO, EmployeeProject>();
-                cfg.CreateMap<EmployeeProject, EmployeeProjectDTO>();
-            });
-
             var dateTimeProvider = new LocalDateTimeProvider();
             IUnitOfWorkProvider unitOfWorkProvider = new EntityFrameworkUnitOfWorkProvider(new AsyncLocalUnitOfWorkRegistry(), () => new EmployeeProjectDbContext(options));
             Func<IFilteredQuery<EmployeeProjectDTO, EmployeeProjectFilterDTO>> queryFactory = () => new Mock<IFilteredQuery<EmployeeProjectDTO, EmployeeProjectFilterDTO>>().Object;
-            var entityMapper = new EntityDTOMapper<EmployeeProject, EmployeeProjectDTO>();
+            var mapper = CreateMapper();
+            var entityMapper = new EntityDTOMapper<EmployeeProject, EmployeeProjectDTO>(mapper);
             var respository = new EntityFrameworkRepository<EmployeeProject, int>(unitOfWorkProvider, dateTimeProvider);
             var parentRepository = new EntityFrameworkRepository<Employee, int>(unitOfWorkProvider, dateTimeProvider);
             var facade = new EmployeeProjectsFacade(queryFactory, entityMapper, respository, parentRepository, dateTimeProvider, unitOfWorkProvider);
             return facade;
+        }
+
+        private static IMapper CreateMapper()
+        {
+            return new MapperConfiguration(cfg => {
+                cfg.CreateMap<EmployeeProjectDTO, EmployeeProject>();
+                cfg.CreateMap<EmployeeProject, EmployeeProjectDTO>();
+            }).CreateMapper();
+
         }
 
         private static void PrepareInMemoryDbContext(DbContextOptions<EmployeeProjectDbContext> options)
