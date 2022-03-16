@@ -1,10 +1,17 @@
 # Change Log
 
+## 2.5.0
+- Target frameworks updated to .NET Standard 2.1, .NET 6 and .NET Framework 4.7.2
+- Updated nuget packages
+- AutoMapper updated to version 10 (for .NET Framework 4.7.2) and 11 (for .NET Standard 2.1 and .NET 6)
+  - **Breaking change:** implementation changed to use `IMapper` instead of static `Mapper`
+- Removed projects for Azure Table Storage
+
 ## 2.3.0
 - **Fix with breaking change!** Fixed insidious bug in EFCore and EF unit of work which appeared after async methods were added into facades (v2.2.0). In class `CrudFacadeBase` there is async method `SaveAsync` which calls `uow.CommitAsync(cancellationToken)`. If you called this in nested `uow` scope then it would raise `Context.SaveChanges` and that was wrong. PR [#43](https://github.com/riganti/infrastructure/pull/43)
 
 ## 2.2.4
- Add asynchronous metod in `DotvvmFacadeExtensions`.
+Add asynchronous metod in `DotvvmFacadeExtensions`.
 
 ## 2.2.3
 - Fix - added missing `this` keyword for [Then overload in IncludeExtensions](https://github.com/riganti/infrastructure/blob/8055ea6ee4da68276f0429baa674356e3f6ecc64/src/Infrastructure/Riganti.Utils.Infrastructure.EntityFrameworkCore/IncludeExtensions.cs#L19).
