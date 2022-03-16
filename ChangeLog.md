@@ -3,6 +3,8 @@
 ## 2.5.0
 - Target frameworks updated to .NET Standard 2.1, .NET 6 and .NET Framework 4.7.2
 - Updated nuget packages
+- Entity Framework (full) updated to 6.4.4
+- Entity Framework Core updated to 6.0.2
 - AutoMapper updated to version 10 (for .NET Framework 4.7.2) and 11 (for .NET Standard 2.1 and .NET 6)
   - **Breaking change:** implementation changed to use `IMapper` instead of static `Mapper`
 - Removed projects for Azure Table Storage
