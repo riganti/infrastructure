@@ -81,6 +81,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C95B8244-DF34-4433-BD87-D2AABFA8AB43}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		clean-bin-obj.cmd = clean-bin-obj.cmd
+		clean-bin-obj-packages.cmd = clean-bin-obj-packages.cmd
+		Directory.Build.props = Directory.Build.props
+		Riganti.Utils.Infrastructure.sln.DotSettings = Riganti.Utils.Infrastructure.sln.DotSettings
 	EndProjectSection
 EndProject
 Global
