@@ -31,6 +31,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
             if (DestinationFilter is null) throw new InvalidOperationException($"{nameof(DestinationFilter)} has not been set for {typeof(SyncByKeyCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem, TKey>)}."); 
             if (DestinationKeySelector is null) throw new InvalidOperationException($"{nameof(DestinationKeySelector)} has not been set for {typeof(SyncByKeyCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem, TKey>)}."); 
             
+            destMember ??= new List<TDestinationItem>();
             var createFunction = CreateFunction ?? context.Mapper.Map<TSourceItem, TDestinationItem>;
             var updateFunction = UpdateFunction ?? ((s, d) => context.Mapper.Map(s, d));
             var removeFunction = RemoveFunction ?? (d => { });
