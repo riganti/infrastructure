@@ -1,6 +1,9 @@
 # Change Log
 
 ## 2.5.0
+- Fixed synchronization of collections via `SyncByKeyCollectionResolver` - [PR #59](https://github.com/riganti/infrastructure/pull/59)
+
+## 2.5.0
 - Target frameworks updated to .NET Standard 2.1, .NET 6 and .NET Framework 4.7.2
 - Updated nuget packages
 - Entity Framework (full) updated to 6.4.4
