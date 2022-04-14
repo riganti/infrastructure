@@ -38,17 +38,17 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
 
 
         public static void SyncCollectionByKey<TSource, TSourceItem, TDestination, TDestinationItem, TKey>
-            (
-                this IMemberConfigurationExpression<TSource, TDestination, ICollection<TDestinationItem>> config,
-                Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
-                Func<TSourceItem, TKey> sourceKeySelector,
-                Func<TDestinationItem, TKey> destinationSelector,
-                Func<TSourceItem, TDestinationItem> createFunction = null,
-                Action<TSourceItem, TDestinationItem> updateFunction = null,
-                Action<TDestinationItem> removeFunction = null,
-                bool keepRemovedItemsInDestinationCollection = false,
-                Func<TDestinationItem, bool> destinationFilter = null
-            )
+        (
+            this IMemberConfigurationExpression<TSource, TDestination, ICollection<TDestinationItem>> config,
+            Expression<Func<TSource, ICollection<TSourceItem>>> sourceCollectionSelector,
+            Func<TSourceItem, TKey> sourceKeySelector,
+            Func<TDestinationItem, TKey> destinationSelector,
+            Func<TSourceItem, TDestinationItem> createFunction = null,
+            Action<TSourceItem, TDestinationItem> updateFunction = null,
+            Action<TDestinationItem> removeFunction = null,
+            bool keepRemovedItemsInDestinationCollection = false,
+            Func<TDestinationItem, bool> destinationFilter = null
+        )
         {
             config.MapFrom(new SyncByKeyCollectionResolver<TSource, TSourceItem, TDestination, TDestinationItem, TKey>()
             {
@@ -58,7 +58,7 @@ namespace Riganti.Utils.Infrastructure.AutoMapper
                 UpdateFunction = updateFunction,
                 RemoveFunction = removeFunction,
                 KeepRemovedItemsInDestinationCollection = keepRemovedItemsInDestinationCollection,
-                DestinationFilter = destinationFilter
+                DestinationFilter = destinationFilter ?? (_ => true) 
             }, sourceCollectionSelector);
         }
 
