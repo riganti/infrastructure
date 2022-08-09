@@ -1,6 +1,6 @@
 # Change Log
 
-## 2.5.0
+## 2.5.1
 - Fixed synchronization of collections via `SyncByKeyCollectionResolver` - [PR #59](https://github.com/riganti/infrastructure/pull/59)
 
 ## 2.5.0
