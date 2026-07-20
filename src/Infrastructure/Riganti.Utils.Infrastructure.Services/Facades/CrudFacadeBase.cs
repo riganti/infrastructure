@@ -158,6 +158,9 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
+                var entity = Repository.GetById(id);
+                ValidateModifyPermissions(entity, ModificationStage.BeforeMap);
+
                 Repository.Delete(id);
                 uow.Commit();
             }
@@ -172,7 +175,10 @@ namespace Riganti.Utils.Infrastructure.Services.Facades
 
             using (var uow = UnitOfWorkProvider.Create())
             {
-                Repository.Delete(id);
+                var entity = await Repository.GetByIdAsync(cancellationToken, id);
+                await ValidateModifyPermissionsAsync(entity, ModificationStage.BeforeMap, cancellationToken);
+
+                Repository.Delete(entity);
                 await uow.CommitAsync(cancellationToken);
             }
         }
