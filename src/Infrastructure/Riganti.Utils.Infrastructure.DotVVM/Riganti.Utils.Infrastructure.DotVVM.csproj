@@ -22,7 +22,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="DotVVM.Core" Version="5.0.0-preview10-final" />
+        <PackageReference Include="DotVVM.Core" Version="5.0.1" />
     </ItemGroup>
 
     <ItemGroup>
