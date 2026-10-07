@@ -1,4 +1,4 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
 using DotVVM.Framework.Controls;
 using Riganti.Utils.Infrastructure.Core;
@@ -12,9 +12,14 @@ namespace Riganti.Utils.Infrastructure
         /// <summary>
         /// Fills the data set using the query specified in the facade.
         /// </summary>
-        public static void FillDataSet<TListDTO>(this ICrudListFacade<TListDTO> facade,
-            GridViewDataSet<TListDTO> dataSet,
+        public static void FillDataSet<TListDTO, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions>(this ICrudListFacade<TListDTO> facade,
+            GenericGridViewDataSet<TListDTO, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions> dataSet,
             IUnitOfWorkProvider unitOfWorkProvider)
+            where TFilteringOptions : IFilteringOptions
+            where TSortingOptions : SortingOptions
+            where TPagingOptions : IPagingOptions, IPagingPageIndexCapability, IPagingPageSizeCapability, IPagingTotalItemsCountCapability
+            where TRowInsertOptions : IRowInsertOptions
+            where TRowEditOptions : IRowEditOptions
         {
             using (unitOfWorkProvider.Create())
             {
@@ -26,10 +31,15 @@ namespace Riganti.Utils.Infrastructure
         /// <summary>
         /// Fills the data set using the query specified in the facade.
         /// </summary>
-        public static void FillDataSet<TListDTO, TFilterDTO>(this ICrudFilteredListFacade<TListDTO, TFilterDTO> facade,
-            GridViewDataSet<TListDTO> dataSet,
+        public static void FillDataSet<TListDTO, TFilterDTO, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions>(this ICrudFilteredListFacade<TListDTO, TFilterDTO> facade,
+            GenericGridViewDataSet<TListDTO, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions> dataSet,
             TFilterDTO filter,
             IUnitOfWorkProvider unitOfWorkProvider)
+            where TFilteringOptions : IFilteringOptions
+            where TSortingOptions : SortingOptions
+            where TPagingOptions : IPagingOptions, IPagingPageIndexCapability, IPagingPageSizeCapability, IPagingTotalItemsCountCapability
+            where TRowInsertOptions : IRowInsertOptions
+            where TRowEditOptions : IRowEditOptions
         {
             using (unitOfWorkProvider.Create())
             {
@@ -42,9 +52,14 @@ namespace Riganti.Utils.Infrastructure
         /// <summary>
         /// Fills the data set using the query specified in the facade.
         /// </summary>
-        public static void FillDataSet<TKey, TListDTO, TDetailDTO>(this ICrudFacade<TListDTO, TDetailDTO, TKey> facade,
-            GridViewDataSet<TListDTO> dataSet)
+        public static void FillDataSet<TKey, TListDTO, TDetailDTO, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions>(this ICrudFacade<TListDTO, TDetailDTO, TKey> facade,
+            GenericGridViewDataSet<TListDTO, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions> dataSet)
             where TDetailDTO : IEntity<TKey>
+            where TFilteringOptions : IFilteringOptions
+            where TSortingOptions : SortingOptions
+            where TPagingOptions : IPagingOptions, IPagingPageIndexCapability, IPagingPageSizeCapability, IPagingTotalItemsCountCapability
+            where TRowInsertOptions : IRowInsertOptions
+            where TRowEditOptions : IRowEditOptions
         {
             using (facade.UnitOfWorkProvider.Create())
             {
@@ -56,9 +71,16 @@ namespace Riganti.Utils.Infrastructure
         /// <summary>
         /// Fills the data set using the query specified in the facade.
         /// </summary>
-        public static void FillDataSet<TKey, TListDTO, TDetailDTO, TFilterDTO>(
-            this ICrudFilteredFacade<TListDTO, TDetailDTO, TFilterDTO, TKey> facade, GridViewDataSet<TListDTO> dataSet,
-            TFilterDTO filter) where TDetailDTO : IEntity<TKey>
+        public static void FillDataSet<TKey, TListDTO, TDetailDTO, TFilterDTO, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions>(
+            this ICrudFilteredFacade<TListDTO, TDetailDTO, TFilterDTO, TKey> facade, 
+            GenericGridViewDataSet<TListDTO, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions> dataSet,
+            TFilterDTO filter) 
+            where TDetailDTO : IEntity<TKey>
+            where TFilteringOptions : IFilteringOptions
+            where TSortingOptions : SortingOptions
+            where TPagingOptions : IPagingOptions, IPagingPageIndexCapability, IPagingPageSizeCapability, IPagingTotalItemsCountCapability
+            where TRowInsertOptions : IRowInsertOptions
+            where TRowEditOptions : IRowEditOptions
         {
             using (facade.UnitOfWorkProvider.Create())
             {
@@ -71,7 +93,13 @@ namespace Riganti.Utils.Infrastructure
         /// <summary>
         /// Fills the GridViewDataSet from the specified query object.
         /// </summary>
-        public static void LoadFromQuery<T>(this GridViewDataSet<T> dataSet, IQuery<T> query)
+        public static void LoadFromQuery<T, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions>(
+            this GenericGridViewDataSet<T, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions> dataSet, IQuery<T> query)
+            where TFilteringOptions : IFilteringOptions
+            where TSortingOptions : SortingOptions
+            where TPagingOptions : IPagingOptions, IPagingPageIndexCapability, IPagingPageSizeCapability, IPagingTotalItemsCountCapability
+            where TRowInsertOptions : IRowInsertOptions
+            where TRowEditOptions : IRowEditOptions
         {
             query.Skip = dataSet.PagingOptions.PageIndex * dataSet.PagingOptions.PageSize;
             query.Take = dataSet.PagingOptions.PageSize;
@@ -91,9 +119,14 @@ namespace Riganti.Utils.Infrastructure
         /// <summary>
         /// Fills the data set using the query specified in the facade.
         /// </summary>
-        public static async Task FillDataSetAsync<TKey, TListDTO, TDetailDTO>(this ICrudFacade<TListDTO, TDetailDTO, TKey> facade,
-            GridViewDataSet<TListDTO> dataSet)
+        public static async Task FillDataSetAsync<TKey, TListDTO, TDetailDTO, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions>(this ICrudFacade<TListDTO, TDetailDTO, TKey> facade,
+            GenericGridViewDataSet<TListDTO, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions> dataSet)
             where TDetailDTO : IEntity<TKey>
+            where TFilteringOptions : IFilteringOptions
+            where TSortingOptions : SortingOptions
+            where TPagingOptions : IPagingOptions, IPagingPageIndexCapability, IPagingPageSizeCapability, IPagingTotalItemsCountCapability
+            where TRowInsertOptions : IRowInsertOptions
+            where TRowEditOptions : IRowEditOptions
         {
             using (facade.UnitOfWorkProvider.Create())
             {
@@ -105,9 +138,16 @@ namespace Riganti.Utils.Infrastructure
         /// <summary>
         /// Fills the data set using the query specified in the facade.
         /// </summary>
-        public static async Task FillDataSetAsync<TKey, TListDTO, TDetailDTO, TFilterDTO>(
-            this ICrudFilteredFacade<TListDTO, TDetailDTO, TFilterDTO, TKey> facade, GridViewDataSet<TListDTO> dataSet,
-            TFilterDTO filter) where TDetailDTO : IEntity<TKey>
+        public static async Task FillDataSetAsync<TKey, TListDTO, TDetailDTO, TFilterDTO, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions>(
+            this ICrudFilteredFacade<TListDTO, TDetailDTO, TFilterDTO, TKey> facade,
+            GenericGridViewDataSet<TListDTO, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions> dataSet,
+            TFilterDTO filter) 
+            where TDetailDTO : IEntity<TKey>
+            where TFilteringOptions : IFilteringOptions
+            where TSortingOptions : SortingOptions
+            where TPagingOptions : IPagingOptions, IPagingPageIndexCapability, IPagingPageSizeCapability, IPagingTotalItemsCountCapability
+            where TRowInsertOptions : IRowInsertOptions
+            where TRowEditOptions : IRowEditOptions
         {
             using (facade.UnitOfWorkProvider.Create())
             {
@@ -120,7 +160,14 @@ namespace Riganti.Utils.Infrastructure
         /// <summary>
         /// Fills the GridViewDataSet from the specified query object.
         /// </summary>
-        public static async Task LoadFromQueryAsync<T>(this GridViewDataSet<T> dataSet, IQuery<T> query, CancellationToken cancellationToken = default)
+        public static async Task LoadFromQueryAsync<T, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions>(
+            this GenericGridViewDataSet<T, TFilteringOptions, TSortingOptions, TPagingOptions, TRowInsertOptions, TRowEditOptions> dataSet, 
+            IQuery<T> query, CancellationToken cancellationToken = default) 
+            where TFilteringOptions : IFilteringOptions 
+            where TSortingOptions : SortingOptions 
+            where TPagingOptions : IPagingOptions, IPagingPageIndexCapability, IPagingPageSizeCapability, IPagingTotalItemsCountCapability 
+            where TRowInsertOptions : IRowInsertOptions 
+            where TRowEditOptions : IRowEditOptions
         {
             query.Skip = dataSet.PagingOptions.PageIndex * dataSet.PagingOptions.PageSize;
             query.Take = dataSet.PagingOptions.PageSize;
